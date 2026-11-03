@@ -239,6 +239,82 @@ button.rc{width:100%;margin-top:10px}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 input,select,textarea{font-size:16px!important}
 button,input,select,textarea,summary,label{touch-action:manipulation}
+
+.qa{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.qa button{clip-path:none;border-radius:99px;min-height:34px;padding:0 12px;font-size:13px;background:transparent;border:1.5px solid var(--ac);color:var(--ac);font-weight:600}
+.qa button.fin{background:var(--ac);color:var(--acink)}
+.qa button.tmb{border-color:var(--teal);color:var(--teal)}
+.ttlp{font-weight:800;font-size:15px;color:var(--gold);text-shadow:0 0 12px color-mix(in srgb,var(--gold) 55%,transparent);margin:2px 0}
+.ttlp small{font-weight:500;font-size:12px;opacity:.85;color:var(--ink)}
+.ttlp:empty{display:none}
+
+.qtbar{position:fixed;left:8px;right:8px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:15;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--panel2);border:1px solid var(--ac);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.55)}
+.qtbar[hidden]{display:none}
+.qtbar.done{border-color:var(--teal);box-shadow:0 0 18px -2px var(--teal)}
+.qti{font-size:26px;line-height:1}
+.qtm{flex:1;min-width:0}.qtm b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qtm #qtT{font-family:var(--px);font-size:16px;color:var(--gold)}
+.qtm small{display:block;color:var(--mute);font-size:12px}
+.qtbar button{clip-path:none;border-radius:8px;min-height:38px;padding:0 10px;font-size:13px}
+body.qtOn{padding-bottom:84px}
+body.qtOn .toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+
+/* ===== compact UI ===== */
+main{padding-block:12px 100px}
+.grid{gap:12px;margin-top:12px}
+section{padding:14px}
+section h2{font-size:16px;margin-bottom:8px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+section h2::before{content:"";order:2;width:7px;height:7px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:rotate(45deg);transition:transform .2s;flex:none;margin-top:-3px}
+section h2::after{order:1}
+section.col h2::before{transform:rotate(-45deg);margin-top:0}
+section.col>*:not(h2){display:none!important}
+section.col h2{margin-bottom:0}
+button{padding:8px 14px}
+.q{padding:8px 0}
+.mon{padding:8px 0}
+.res{margin:8px 0;padding:8px 10px 10px}
+.chips{margin-top:8px}
+.rings{margin:10px 0 4px}
+.nx{margin-top:8px;padding:8px 10px}
+.al{margin:8px 0;padding:7px 10px;font-size:13px}
+.rkc{padding:10px;margin-bottom:8px}
+.drop{padding:8px 10px;margin-bottom:8px}
+.hist{margin-top:6px}
+.car{display:grid;grid-auto-flow:column;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 8px;margin:6px -2px 0;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.car>*{scroll-snap-align:start;min-width:0}
+.car.r2{grid-template-rows:repeat(2,auto)}
+.car.w1{grid-auto-columns:minmax(150px,172px)}
+.car.am{grid-auto-columns:126px;grid-template-columns:none;gap:8px}
+.car.am .ab{padding:8px 6px;font-size:12px}
+.car.am .ab .i{font-size:26px}
+.car.am .ab b{font-size:13px}
+.cc{display:flex;flex-direction:column;gap:3px;padding:10px;background:var(--panel2);border:1px solid var(--line);border-radius:8px}
+.cc.lock{opacity:.55}
+.cc .ci{font-size:28px;line-height:1}
+.cc b{font-size:14px;line-height:1.25}
+.cc .sub{font-size:12px;line-height:1.3}
+.cc button{margin-top:auto;padding-top:0;padding-bottom:0;clip-path:none;border-radius:8px;min-height:36px;font-size:13px;width:100%;margin-top:6px}
+.hint-sw{font-size:11.5px;color:var(--mute);text-align:right}
+.fcs{display:flex;gap:6px;margin-bottom:4px}
+.fc{clip-path:none;border-radius:99px;min-height:32px;padding:0 12px;font-size:13px;background:transparent;border:1.5px solid var(--line);color:var(--mute);font-weight:500}
+.fc.on{background:var(--ac);color:var(--acink);border-color:var(--ac)}
+.shop{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:92px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:8px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.shop button{scroll-snap-align:start}
+.av{width:96px;height:96px;font-size:46px;margin:14px auto 8px}
+.av .h{font-size:28px;top:-16px}.av .r{font-size:28px}
+.lad{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:76px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.brk{margin:6px 0}
+@media(max-width:720px){
+ .hero{padding:14px 14px 12px;gap:6px}
+ .lv{width:84px;height:95px}.lv b{font-size:24px;margin-top:5px}
+ .lvw{margin:0 20px;gap:6px}
+ .lvw::before,.lvw::after{height:60px;width:24px;top:12px}
+ .lvw::before{left:-24px}.lvw::after{right:-24px}
+ .hero .title{font-size:20px}
+ .pw{gap:16px;margin-top:4px}
+ .bar{margin:6px 0 2px}
+ .emb{top:68px;width:32px;height:32px;font-size:17px}
+}
 </style>
 </head>
 <body>
@@ -247,6 +323,7 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
   <div class="lvw" id="lvw"><div class="lv"><div><small>เลเวล</small><br><b id="lv">1</b></div></div><div class="emb" id="emb"></div><div class="pips" id="pips"></div></div>
   <div>
    <h1 class="title" id="rank">มือใหม่หัดเดิน</h1>
+   <div class="ttlp" id="ttlp"></div>
    <div class="clspill" id="clspill"></div> <div class="tierpill" id="tierpill"></div>
    <div class="sub" id="streak"></div>
    <button class="ghost" id="restBtn" style="margin-top:4px">😴 วันนี้ขอพัก</button>
@@ -378,8 +455,16 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
   <div class="wk" id="wk"></div>
  </section>
  <section class="wide" style="margin-top:16px">
+  <h2>ฉายา <span class="sub" id="tic"></span></h2>
+  <div class="sub" style="margin-bottom:6px">ฉายาได้จากเหรียญความสำเร็จ เลือกสวมได้ 1 ฉายา จะแสดงที่โปรไฟล์ด้านบน</div>
+  <div id="ti"></div>
+  <div class="hint-sw">ปัดซ้าย–ขวาเพื่อดูฉายาทั้งหมด</div>
+ </section>
+ <section class="wide" style="margin-top:16px">
   <h2>เหรียญความสำเร็จ <span class="sub" id="achc"></span></h2>
-  <div class="ach" id="ach"></div>
+  <div class="fcs" id="achf"></div>
+  <div class="car r2 am" id="ach"></div>
+  <div class="hint-sw">ปัดซ้าย–ขวาเพื่อดูเหรียญทั้งหมด</div>
  </section>
 <section class="wide" style="margin-top:16px">
   <h2>อันดับเพื่อน</h2>
@@ -391,6 +476,7 @@ button,input,select,textarea,summary,label{touch-action:manipulation}
   <button class="ghost" id="lbLeave" hidden>ออกจากอันดับ</button>
  </section>
 </main>
+<div class="qtbar" id="qtbar" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -468,7 +554,8 @@ prst:{b:"mon",n:"นักบวชผู้รักษา",e:"Priest",i:"🪄"
 const MPERK={xp:"XP ล่ามอน +25%",drop:"ดรอปไอเทม +10%",crit:"โบนัส XP ใหญ่ +15%"};
 const c2f=()=>S.cls&&S.cls2&&CL2[S.cls2]&&CL2[S.cls2].b===S.cls?CL2[S.cls2]:null;
 const RT=[{n:"บรอนซ์",i:"🥉",c:"#c98a4a",min:0},{n:"ซิลเวอร์",i:"🥈",c:"#c9d1e6",min:12},{n:"โกลด์",i:"🥇",c:"#ffb938",min:28},{n:"แพลทินัม",i:"💠",c:"#38e0c4",min:48},{n:"ไดมอนด์",i:"💎",c:"#7fd4ff",min:70},{n:"มาสเตอร์",i:"🔱",c:"#ff7ad9",min:95},{n:"เลเจนด์",i:"🌠",c:"#ff5c7a",min:120}];
-function rankInfo(lv){const a=ACH.filter(x=>S.ach[x.id]).length,sc=lv+a*3;let t=0;RT.forEach((r,i)=>{if(sc>=r.min)t=i});const nx=RT[t+1];return{a,sc,t,r:RT[t],nx}}
+const ACHN=()=>ACH.filter(x=>x.id.indexOf("ti_")!==0);
+function rankInfo(lv){const a=ACHN().filter(x=>S.ach[x.id]).length,sc=lv+a*3;let t=0;RT.forEach((r,i)=>{if(sc>=r.min)t=i});const nx=RT[t+1];return{a,sc,t,r:RT[t],nx}}
 const ACH=[
 {id:"first",i:"🥾",n:"ก้าวแรก",t:"บันทึกการออกกำลังกายครั้งแรก",f:c=>c.n>=1},
 {id:"push",i:"💪",n:"นักดันพื้น",t:"วิดพื้นสะสม 100 ครั้ง",f:c=>c.tot("push")>=100},
@@ -503,7 +590,7 @@ const bmiCat=b=>b<18.5?"น้ำหนักต่ำกว่าเกณฑ�
 function fillProfile(){const p=S.prof||{};$("pH").value=p.h||"";$("pW0").value=p.w0||"";$("pT").value=p.t||"";$("pG").value=p.g||"lose";$("pF").value=p.f||"gen";$("pA").value=p.a||"";$("pS").value=p.s||"m";$("pAct").value=p.x||"1.375"}
 function extra(st,xp,lv,power){
  const tot=k=>S.log.filter(e=>e.k===k).reduce((a,e)=>a+e.n,0);
- const w=wInfo(),C={tot,lv,power,sk:streak(),w,n:S.log.length};
+ const w=wInfo(),C={tot,lv,power,st,sk:streak(),w,n:S.log.length};
  ACH.forEach(a=>{if(!S.ach[a.id]&&a.f(C)){S.ach[a.id]=today();PEND.push(a.n)}});
  {const R0=rankInfo(lv);if(S.rk==null)S.rk=R0.t;else if(R0.t>S.rk){S.rk=R0.t;PEND.push("แรงก์ "+R0.r.n)}else if(R0.t<S.rk)S.rk=R0.t}
  if(PEND.length){save();fx("ach")}
@@ -528,15 +615,17 @@ function extra(st,xp,lv,power){
   $("pips").innerHTML=RT.map((x,i)=>`<i class="${i<=R.t?"on":""}"></i>`).join("");
   $("tierpill").innerHTML=`${r.i} แรงก์ ${r.n}`;
   {const cp=$("clspill");cp.style.setProperty("--pc",c2?c2.c:"var(--ac)");cp.innerHTML=c2?`${c2.i} ${c2.n} <small>${c2.e} · คลาส 2</small>`:S.cls&&CL[S.cls]?`${CL[S.cls].i} ${CL[S.cls].n} <small>คลาส 1</small>`:""}
-  const lp=lv,ap=R.a*3,need=R.nx?R.nx.min-R.sc:0,pc=R.nx?Math.round((R.sc-r.min)/(R.nx.min-r.min)*100):100,lr=Math.min(1,lv/40),ar=ACH.length?R.a/ACH.length:0;
+  const lp=lv,ap=R.a*3,need=R.nx?R.nx.min-R.sc:0,pc=R.nx?Math.round((R.sc-r.min)/(R.nx.min-r.min)*100):100,lr=Math.min(1,lv/40),ar=ACHN().length?R.a/ACHN().length:0;
   const adv=ar-lr>.2?"ความสำเร็จนำเลเวล ออกกำลังกายสะสม XP เพิ่มเพื่อดันเลเวล":lr-ar>.2?"เลเวลนำความสำเร็จ ลองไล่เก็บเหรียญความสำเร็จที่ยังล็อกอยู่":"เลเวลและความสำเร็จเดินไปพร้อมกัน ดีมาก";
   $("rk").innerHTML=`<div class="rkc" style="--tc:${r.c}"><div class="big">${r.i}</div><div><b class="n">แรงก์ ${r.n}</b>${c2?` <span class="sub">· ${c2.i} ${c2.n}</span>`:""}<div class="sub">คะแนนแรงก์ ${R.sc} = เลเวล ${lp} + ความสำเร็จ ${R.a}×3</div><div class="bar"><i style="width:${pc}%"></i></div><div class="sub">${R.nx?`อีก ${need} คะแนนถึง ${R.nx.i} ${R.nx.n} (เลเวล +${need} หรือความสำเร็จ +${Math.ceil(need/3)})`:"สูงสุดแล้ว เป็นตำนานของจริง"}</div></div></div>
-  <div class="brk"><div>จากเลเวล<b>${lp} / ${R.sc} แต้ม</b></div><div>จากความสำเร็จ (${R.a}/${ACH.length})<b>${ap} / ${R.sc} แต้ม</b></div></div>
+  <div class="brk"><div>จากเลเวล<b>${lp} / ${R.sc} แต้ม</b></div><div>จากความสำเร็จ (${R.a}/${ACHN().length})<b>${ap} / ${R.sc} แต้ม</b></div></div>
   <div class="sub" style="margin-bottom:6px">${adv}</div>
   <div class="lad">${RT.map((x,i)=>`<div class="${i<=R.t?"on":""} ${i===R.t?"cur":""}" style="--tc:${x.c}">${x.i}<b>${x.n}</b>${x.min}+</div>`).join("")}</div>`;
-  hunt(lv);hiclass(lv);story(lv);dif(lv);wch();alerts();todaySum(lv)}
+  hunt(lv);hiclass(lv);story(lv);dif(lv);wch();alerts();todaySum(lv);titles()}
  // achievements
- $("ach").innerHTML=ACH.map(a=>`<div class="ab ${S.ach[a.id]?"on":"lock"}"><div class="i">${a.i}</div><b>${a.n}</b><span>${a.t}</span></div>`).join("");
+ {const L=ACH.filter(a=>ACHF==="all"||(ACHF==="on")===!!S.ach[a.id]);L.sort((a,b)=>(!!S.ach[b.id])-(!!S.ach[a.id]));
+ $("ach").innerHTML=L.map(a=>`<div class="ab ${S.ach[a.id]?"on":"lock"}"><div class="i">${a.i}</div><b>${a.n}</b><span>${a.t}</span></div>`).join("")||`<div class="sub">ไม่มีรายการ</div>`;
+ $("achf").innerHTML=[["all","ทั้งหมด"],["on","ได้แล้ว"],["lock","ยังไม่ได้"]].map(([k,t])=>`<button class="fc ${ACHF===k?"on":""}" data-af="${k}">${t}</button>`).join("")}
  $("achc").textContent=ACH.filter(a=>S.ach[a.id]).length+" / "+ACH.length;
  applyPlan();extra2(lv);extra3(st,xp,lv,power);extra4();extra5();setTimeout(()=>toast(""),0);
 }
@@ -645,9 +734,9 @@ function hunt(lv){
  if(S.hunt&&!P)S.hunt=null;
  if(P){const m=P.m,left=Math.round((1-P.pc)*100);
   t=`<div class="mon on"><div class="mi">${m.i}</div><div class="mm"><b>${m.n}</b><div class="rbar" style="--c:var(--hp);margin:6px 0 2px"><i style="width:${left}%"></i></div><span class="sub">HP เหลือ ${left}%</span></div></div>`
-  +P.rows.map(r=>{const x=EX[r.k];return `<div class="q"><div class="i">${x.i}</div><div class="m"><b>${x.n}</b><span>${r.a} / ${r.n} ${x.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div></div></div>`}).join("")
-  +`<div class="sub" style="margin:8px 0">บันทึกท่าในส่วน "บันทึกการออกกำลังกาย" ระบบจะนับให้ตั้งแต่ตอนกดท้าสู้</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="hKill" ${P.ok?"":"disabled"}>ปราบ! รับดรอป</button><button class="ghost" id="hFlee">ถอยทัพ</button></div>`}
- else t=(S.ld&&S.ld.d===td?`<div class="drop">${S.ld.t}</div>`:"")+`<div class="sub">เลือกมอนสเตอร์ ทำท่าตามที่กำหนดเพื่อปราบ แล้วลุ้นดรอปไอเทมหรือ XP · ปราบได้วันละครั้งต่อตัว · ปราบแล้วทั้งหมด ${nKills()} ตัว</div>`+MON.map(m=>{const lk=lv<m.lv,dn=done[m.id],it=ITEMS.find(x=>x.id===m.item);return `<div class="mon ${lk?"lock":""}"><div class="mi">${m.i}</div><div class="mm"><b>${m.n}</b> <span class="sub">เลเวล ${m.lv}+ · ปราบแล้ว ${S.kd[m.id]||0}</span><div class="sub">${m.req.map(([k,n])=>EX[k].n+" "+n+" "+EX[k].u).join(" · ")}</div><div class="sub">XP +${m.xp} · ดรอป ${it.i} ${it.n}${S.own[it.id]?" (มีแล้ว)":""}</div></div><button data-h="${m.id}" ${lk||dn?"disabled":""}>${lk?"ล็อก":dn?"ปราบแล้ว":"ท้าสู้"}</button></div>`}).join("");
+  +P.rows.map(r=>{const x=EX[r.k];return `<div class="q"><div class="i">${x.i}</div><div class="m"><b>${x.n}</b><span>${r.a} / ${r.n} ${x.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div>${quick(r.k,r.n-r.a)}</div></div>`}).join("")
+  +`<div class="sub" style="margin:8px 0">ทำแล้วกดปุ่ม + ใต้แต่ละท่าเพื่อบันทึกได้เลย (หรือบันทึกจากแท็บวันนี้ก็นับให้) ระบบนับตั้งแต่ตอนกดท้าสู้</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="hKill" ${P.ok?"":"disabled"}>ปราบ! รับดรอป</button><button class="ghost" id="hFlee">ถอยทัพ</button></div>`}
+ else t=(S.ld&&S.ld.d===td?`<div class="drop">${S.ld.t}</div>`:"")+`<div class="sub">เลือกมอนสเตอร์ ทำท่าตามที่กำหนดเพื่อปราบ แล้วลุ้นดรอปไอเทมหรือ XP · ปราบได้วันละครั้งต่อตัว · ปราบแล้วทั้งหมด ${nKills()} ตัว</div>`+`<div class="car w1">`+MON.map(m=>{const lk=lv<m.lv,dn=done[m.id],it=ITEMS.find(x=>x.id===m.item);return `<div class="cc ${lk?"lock":""}"><div class="ci">${m.i}</div><b>${m.n}</b><span class="sub">เลเวล ${m.lv}+ · ปราบแล้ว ${S.kd[m.id]||0}</span><span class="sub">${m.req.map(([k,n])=>EX[k].n+" "+n+" "+EX[k].u).join(" · ")}</span><span class="sub">XP +${m.xp} · ${it.i} ${it.n}${S.own[it.id]?" ✓":""}</span><button data-h="${m.id}" ${lk||dn?"disabled":""}>${lk?"ล็อก":dn?"ปราบแล้ว":"ท้าสู้"}</button></div>`}).join("")+`</div><div class="hint-sw">ปัดซ้าย–ขวาเพื่อดูมอนสเตอร์ทั้งหมด</div>`;
  $("hunt").innerHTML=t;
  document.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{S.hunt={id:b.dataset.h,idx:S.log.length};save();render()});
  const fl=$("hFlee");if(fl)fl.onclick=()=>{if(armed(fl)){S.hunt=null;save();render()}};
@@ -675,10 +764,10 @@ function hiclass(lv){
   const lk=lv<30,opts=Object.entries(CL2).filter(([k,x])=>x.b===base);
   t=`<h3 style="font-size:15px;margin:16px 0 4px">ไฮคลาส (อาชีพขั้นสอง)</h3>`+(lk?`<div class="lock2">ล็อกอยู่ ปลดล็อกที่เลเวล 30 · อีก ${30-lv} เลเวล<br>เมื่อถึงแล้วต้องทำภารกิจเปลี่ยนคลาสของไฮคลาสนั้นให้สำเร็จก่อน จึงจะเปลี่ยนได้ ได้โบนัส XP สาย ${CL[base].s} เพิ่มเป็น +40%</div>`:`<div class="sub">เลือกไฮคลาส ต้องทำภารกิจเปลี่ยนคลาสให้ผ่านก่อน ผ่านแล้วสลับไปมาได้ตลอด ได้โบนัส XP สาย ${CL[base].s} +40%</div>`);
   if(T&&!lk){const x=CL2[T.id];
-   t+=`<div class="drop" style="margin-top:10px;border-color:${x.c}"><b>ภารกิจเปลี่ยนคลาส: ${x.i} ${x.n} (${x.e})</b>`+T.rows.map(r=>{const e=EX[r.k];return `<div class="q" style="padding:8px 0"><div class="i">${e.i}</div><div class="m"><b>${e.n}</b><span>${r.a} / ${r.n} ${e.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div></div></div>`}).join("")+`<div class="sub" style="margin:6px 0">บันทึกท่าในส่วน "บันทึกการออกกำลังกาย" ระบบนับให้ตั้งแต่ตอนกดเริ่มภารกิจ</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="tDone" ${T.ok?"":"disabled"}>ผ่านภารกิจ! เปลี่ยนคลาส</button><button class="ghost" id="tCancel">ยกเลิกภารกิจ</button></div></div>`}
-  t+=opts.map(([k,x])=>{const cur=S.cls2===k,un=u[k],run=T&&T.id===k;
+   t+=`<div class="drop" style="margin-top:10px;border-color:${x.c}"><b>ภารกิจเปลี่ยนคลาส: ${x.i} ${x.n} (${x.e})</b>`+T.rows.map(r=>{const e=EX[r.k];return `<div class="q" style="padding:8px 0"><div class="i">${e.i}</div><div class="m"><b>${e.n}</b><span>${r.a} / ${r.n} ${e.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div>${quick(r.k,r.n-r.a)}</div></div>`}).join("")+`<div class="sub" style="margin:6px 0">ทำแล้วกดปุ่ม + ใต้แต่ละท่าเพื่อบันทึกได้เลย (หรือบันทึกจากแท็บวันนี้ก็นับให้) ระบบนับตั้งแต่ตอนกดเริ่ม</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="tDone" ${T.ok?"":"disabled"}>ผ่านภารกิจ! เปลี่ยนคลาส</button><button class="ghost" id="tCancel">ยกเลิกภารกิจ</button></div></div>`}
+  t+=`<div class="car w1">`+opts.map(([k,x])=>{const cur=S.cls2===k,un=u[k],run=T&&T.id===k;
    const btn=lk?`<button disabled>ล็อก</button>`:cur?`<button disabled>ใช้อยู่</button>`:un?`<button data-cw="${k}">เปลี่ยนคลาส</button>`:run?`<button disabled>กำลังทำ</button>`:`<button data-cs="${k}" ${T?"disabled":""}>เริ่มภารกิจ</button>`;
-   return `<div class="mon ${lk&&!un?"lock":""}" style="--hc:${x.c}"><div class="mi">${x.i}</div><div class="mm"><b>${x.n}</b> <span class="sub">${x.e}${cur?" · ใช้อยู่":un?" · ปลดล็อกแล้ว":""}</span><div class="sub">${x.d} · ★ ${MPERK[x.p]}</div>${un?"":`<div class="sub">ภารกิจ: ${reqTxt(CQ[k])}</div>`}</div>${btn}</div>`}).join("")}
+   return `<div class="cc ${lk&&!un?"lock":""}" style="border-color:${x.c}"><div class="ci">${x.i}</div><b>${x.n}</b><span class="sub">${x.e}${cur?" · ใช้อยู่":un?" · ปลดล็อกแล้ว":""}</span><span class="sub">${x.d} · ★ ${MPERK[x.p]}</span>${un?"":`<span class="sub">ภารกิจ: ${reqTxt(CQ[k])}</span>`}${btn}</div>`}).join("")+`</div>`}
  $("c2").innerHTML=t;
  document.querySelectorAll("[data-cs]").forEach(b=>b.onclick=()=>{if(lv<30||S.trial)return;S.trial={id:b.dataset.cs,idx:S.log.length};save();render()});
  document.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{const k=b.dataset.cw;if(lv<30||!(S.c2u||{})[k])return;S.cls2=k;save();render();fx("ach");toast("เปลี่ยนเป็นไฮคลาส "+CL2[k].n+" แล้ว")});
@@ -736,11 +825,11 @@ function storyProg(){const st=S.story,ch=STORY[st.done];if(!ch||!st.cur)return n
 function story(lv){
  const st=S.story,d=st.done,ch=STORY[d],P=storyProg();let t=`<div class="sub">บทที่ผ่านแล้ว ${d}/${STORY.length} · ทำทีละบท ปลดล็อกตามเลเวล ได้ XP และไอเทมเฉพาะเนื้อเรื่อง</div>`;
  if(st.cur&&!P)st.cur=null;
- STORY.slice(0,d).forEach((c,i)=>{const it=ITEMS.find(x=>x.id===c.item);t+=`<div class="chap done">✓ บทที่ ${i+1} ${c.n} · ${it.i} ${it.n}</div>`});
+ if(d)t+=`<div class="fcs" style="flex-wrap:wrap">${STORY.slice(0,d).map((c,i)=>`<span class="fc on" title="${c.n}" style="cursor:default;display:inline-flex;align-items:center;min-height:30px">✓ บท ${i+1} ${ITEMS.find(x=>x.id===c.item).i}</span>`).join("")}</div>`;
  if(!ch)t+=`<div class="drop" style="margin-top:10px">จบเนื้อเรื่องครบทุกบทแล้ว เจ้าคือราชันฟิตเนส</div>`;
  else{const it=ITEMS.find(x=>x.id===ch.item);
   t+=`<div class="chap"><b>บทที่ ${d+1} ${ch.n}</b><div class="sub" style="margin:4px 0">${ch.t}</div><div class="sub">รางวัล XP +${ch.xp} · ${it.i} ${it.n}</div>`;
-  if(P)t+=P.rows.map(r=>{const e=EX[r.k];return `<div class="q" style="padding:8px 0"><div class="i">${e.i}</div><div class="m"><b>${e.n}</b><span>${r.a} / ${r.n} ${e.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div></div></div>`}).join("")+`<div class="sub" style="margin:6px 0">บันทึกท่าตามปกติ ระบบนับตั้งแต่ตอนกดเริ่มบท</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="sDone" ${P.ok?"":"disabled"}>จบบท รับรางวัล</button><button class="ghost" id="sCancel">ยกเลิกบทนี้</button></div>`;
+  if(P)t+=P.rows.map(r=>{const e=EX[r.k];return `<div class="q" style="padding:8px 0"><div class="i">${e.i}</div><div class="m"><b>${e.n}</b><span>${r.a} / ${r.n} ${e.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div>${quick(r.k,r.n-r.a)}</div></div>`}).join("")+`<div class="sub" style="margin:6px 0">ทำแล้วกดปุ่ม + ใต้แต่ละท่าเพื่อบันทึกได้เลย (หรือบันทึกจากแท็บวันนี้ก็นับให้) ระบบนับตั้งแต่ตอนกดเริ่มบท</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="sDone" ${P.ok?"":"disabled"}>จบบท รับรางวัล</button><button class="ghost" id="sCancel">ยกเลิกบทนี้</button></div>`;
   else t+=`<div class="sub" style="margin:6px 0">ภารกิจ: ${reqTxt(ch.req)}</div>`+(lv<ch.lv?`<button disabled>ล็อก ปลดล็อกที่เลเวล ${ch.lv}</button>`:`<button id="sStart">เริ่มบทที่ ${d+1}</button>`);
   t+=`</div>`}
  $("story").innerHTML=t;
@@ -774,6 +863,82 @@ function todaySum(lv){
  $("tds").innerHTML=`<div class="tdh"><div><b>${dt}</b><div class="sub">${sk>0?"🔥 สตรีค "+sk+" วัน":"ยังไม่มีสตรีค เริ่มวันนี้ได้เลย"}</div></div><div class="tdx">+${Math.round(xpT)} XP วันนี้</div></div><div class="rings">${rings}</div><div class="nx"><span>${nx}</span><button class="ghost" id="goQ">ไปแท็บเควส</button></div><div class="qk"><small>บันทึกด่วน แตะเพื่อเลือกท่า</small>${top.map(k=>`<button data-qk="${k}">${EX[k].i} ${EX[k].n}</button>`).join("")}</div>`;
  $("goQ").onclick=()=>showTab("q",true);
  document.querySelectorAll("[data-qk]").forEach(b=>b.onclick=()=>{$("ex").value=b.dataset.qk;hint();$("amt").focus();$("amt").select&&$("amt").select();$("amt").scrollIntoView({behavior:"smooth",block:"center"})})}
+
+function quick(k,rem){if(!EX[k]||!(rem>=1))return"";const st=EX[k].u==="นาที"?[1,2]:[5,10];
+ return `<div class="qa">${st.filter(s=>s<rem).map(s=>`<button data-ql="${k}:${s}">+${s}</button>`).join("")}<button class="fin" data-ql="${k}:${rem}">ครบ +${rem}</button>${EX[k].u==="นาที"?`<button class="tmb" data-qt="${k}:${rem}">⏱ จับเวลา</button>`:""}</div>`}
+function qlog(k,n){if(!EX[k]||!(n>=1))return;const before=calc().lv;S.log.push({d:today(),k,n});save();render();const after=calc().lv;
+ if(after>before)fx("lv");toast(after>before?`เลเวลอัป! ตอนนี้เลเวล ${after}`:`+${n} ${EX[k].n} · +${Math.round(n*EX[k].r)} XP`)}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-ql]");if(b){const a=b.dataset.ql.split(":");qlog(a[0],+a[1]);return}
+ const t=e.target.closest&&e.target.closest("[data-ti]");if(t&&!t.disabled){S.ti=t.dataset.ti;save();render()}});
+const cntC=id=>Object.values(S.claimed||{}).filter(a=>a.indexOf(id)>=0).length,lvN=()=>calc().lv,stN=k=>Math.round(calc().st[k]),mn=(a,b)=>[Math.min(a,b),b];
+const TITLES=[
+{id:"awk",n:"ผู้ตื่นรู้",e:"Awakened",i:"🌟",t:"บันทึกท่าออกกำลังกายครั้งแรก",f:C=>S.log.length>=1,pg:()=>mn(S.log.length,1)},
+{id:"rkb",n:"ใบมีดหน้าใหม่",e:"Rookie Blade",i:"🗡️",t:"บันทึกท่าครบ 30 รายการ",f:C=>S.log.length>=30,pg:()=>mn(S.log.length,30)},
+{id:"fl7",n:"เปลวไฟไม่ดับ",e:"Undying Flame",i:"🔥",t:"สตรีคต่อเนื่อง 7 วัน",f:C=>C.sk>=7,pg:()=>mn(streak(),7)},
+{id:"fl30",n:"ผู้พิชิตกาลเวลา",e:"Time Breaker",i:"⏱",t:"สตรีคต่อเนื่อง 30 วัน",f:C=>C.sk>=30,pg:()=>mn(streak(),30)},
+{id:"lv10",n:"ปราการเหล็ก",e:"Iron Bastion",i:"🛡️",t:"ถึงเลเวล 10",f:C=>C.lv>=10,pg:()=>mn(lvN(),10)},
+{id:"lv20",n:"จอมพลังไร้พ่าย",e:"Unbroken",i:"💪",t:"ถึงเลเวล 20",f:C=>C.lv>=20,pg:()=>mn(lvN(),20)},
+{id:"lv30",n:"ราชันผู้ทรงพลัง",e:"Sovereign",i:"👑",t:"ถึงเลเวล 30",f:C=>C.lv>=30,pg:()=>mn(lvN(),30)},
+{id:"str",n:"หมัดสะท้านฟ้า",e:"Skyshaker",i:"🪓",t:"ค่า STR ถึง 3,000",f:C=>C.st.STR>=3000,pg:()=>mn(stN("STR"),3000)},
+{id:"end",n:"ลมหายใจมังกร",e:"Dragon Breath",i:"🐲",t:"ค่า END ถึง 3,000",f:C=>C.st.END>=3000,pg:()=>mn(stN("END"),3000)},
+{id:"agi",n:"เงาไร้รอย",e:"Shadowless",i:"🥷",t:"ค่า AGI ถึง 3,000",f:C=>C.st.AGI>=3000,pg:()=>mn(stN("AGI"),3000)},
+{id:"vit",n:"จิตผืนน้ำนิ่ง",e:"Still Water",i:"🧘",t:"ค่า VIT ถึง 3,000",f:C=>C.st.VIT>=3000,pg:()=>mn(stN("VIT"),3000)},
+{id:"hk10",n:"ผู้ล่าเงามืด",e:"Shadow Hunter",i:"💀",t:"ปราบมอนสเตอร์ 10 ตัว",f:()=>nKills()>=10,pg:()=>mn(nKills(),10)},
+{id:"hk8",n:"ผู้กวาดล้างถ้ำ",e:"Dungeon Cleaner",i:"🕷",t:"ปราบมอนสเตอร์ครบทั้ง 8 ชนิด",f:()=>MON.every(m=>(S.kd[m.id]||0)>=1),pg:()=>[MON.filter(m=>S.kd[m.id]).length,MON.length]},
+{id:"drg",n:"ผู้สังหารมังกรทมิฬ",e:"Dragonbane",i:"🐲",t:"ปราบมังกรทมิฬ",f:()=>(S.kd.m8||0)>=1,pg:()=>mn(S.kd.m8||0,1)},
+{id:"bos",n:"ผู้สยบอสูร",e:"Boss Slayer",i:"👹",t:"ปราบบอสประจำสัปดาห์ 4 ครั้ง",f:()=>Object.keys(S.boss).length>=4,pg:()=>mn(Object.keys(S.boss).length,4)},
+{id:"st4",n:"ผู้กล้าแห่งแคว้น",e:"Hero of the Realm",i:"📜",t:"จบเนื้อเรื่อง 4 บท",f:()=>S.story.done>=4,pg:()=>mn(S.story.done,4)},
+{id:"st8",n:"ผู้ปิดตำนาน",e:"Legend Closer",i:"🌠",t:"จบเนื้อเรื่องครบ 8 บท",f:()=>S.story.done>=8,pg:()=>mn(S.story.done,8)},
+{id:"cl1",n:"ผู้เปลี่ยนชะตา",e:"Fate Changer",i:"🔱",t:"ผ่านภารกิจเปลี่ยนไฮคลาสสำเร็จ 1 คลาส",f:()=>Object.keys(S.c2u||{}).length>=1,pg:()=>mn(Object.keys(S.c2u||{}).length,1)},
+{id:"cl3",n:"ปรมาจารย์ทุกสาย",e:"Grandmaster",i:"⚜️",t:"ปลดล็อกไฮคลาสครบ 3 คลาส",f:()=>Object.keys(S.c2u||{}).length>=3,pg:()=>mn(Object.keys(S.c2u||{}).length,3)},
+{id:"rk3",n:"ดาวรุ่งสีทอง",e:"Gold Ascendant",i:"🥇",t:"ไต่ถึงแรงก์โกลด์",f:C=>rankInfo(C.lv).t>=2,pg:()=>mn(rankInfo(lvN()).t,2)},
+{id:"rk5",n:"เพชรเจิดจรัส",e:"Radiant Diamond",i:"💎",t:"ไต่ถึงแรงก์ไดมอนด์",f:C=>rankInfo(C.lv).t>=4,pg:()=>mn(rankInfo(lvN()).t,4)},
+{id:"rk7",n:"ตำนานแห่งแสง",e:"Legend of Light",i:"🌠",t:"ไต่ถึงแรงก์เลเจนด์",f:C=>rankInfo(C.lv).t>=6,pg:()=>mn(rankInfo(lvN()).t,6)},
+{id:"aq",n:"ผู้พิทักษ์สายน้ำ",e:"Aqua Warden",i:"💧",t:"ดื่มน้ำครบเป้าและกดรับรางวัล 7 วัน",f:()=>cntC("w_water")>=7,pg:()=>mn(cntC("w_water"),7)},
+{id:"pr",n:"อัศวินโปรตีน",e:"Protein Knight",i:"🥩",t:"กินโปรตีนครบเป้าและกดรับรางวัล 7 วัน",f:()=>cntC("w_prot")>=7,pg:()=>mn(cntC("w_prot"),7)},
+{id:"arn",n:"ราชันสังเวียน",e:"Arena Champion",i:"🏅",t:"ถึงเป้าประลองประจำสัปดาห์ 3 สัปดาห์",f:()=>Object.keys(S.wcl||{}).length>=3,pg:()=>mn(Object.keys(S.wcl||{}).length,3)},
+{id:"rel",n:"นักล่าสมบัติ",e:"Relic Hunter",i:"🛍️",t:"สะสมไอเทมดรอปและเนื้อเรื่องรวม 8 ชิ้น",f:()=>ITEMS.filter(x=>x.d&&S.own[x.id]).length>=8,pg:()=>mn(ITEMS.filter(x=>x.d&&S.own[x.id]).length,8)},
+{id:"gl",n:"ผู้พิชิตเป้าหมาย",e:"Goal Crusher",i:"🎯",t:"น้ำหนักถึงเป้าหมายที่ตั้งไว้",f:C=>!!C.w.reached,pg:()=>[wInfo().reached?1:0,1]}];
+ACH.push(...TITLES.map(x=>({id:"ti_"+x.id,i:x.i,n:x.n,t:"ฉายา «"+x.n+"»: "+x.t,f:x.f})));
+function titles(){
+ const has=x=>!!S.ach["ti_"+x.id];
+ if(!S.ti||!TITLES.find(x=>x.id===S.ti&&has(x))){const f=TITLES.find(has);const v=f?f.id:null;if(S.ti!==v){S.ti=v;save()}}
+ const cur=TITLES.find(x=>x.id===S.ti);
+ $("ttlp").innerHTML=cur?`«${cur.n}» <small>${cur.e}</small>`:"";
+ $("tic").textContent=TITLES.filter(has).length+" / "+TITLES.length;
+ const L=TITLES.filter(has).concat(TITLES.filter(x=>!has(x)));
+ $("ti").className="car w1";
+ $("ti").innerHTML=L.map(x=>{const un=has(x),pg=un?null:x.pg(),on=S.ti===x.id;
+  return `<div class="cc ${un?"":"lock"}"><div class="ci">${x.i}</div><b>«${x.n}»</b><span class="sub">${x.e}</span><span class="sub">${x.t}</span>${pg?`<div class="rbar" style="--c:var(--ac);height:6px;margin-top:4px"><i style="width:${pg[0]/pg[1]*100}%"></i></div><span class="sub">${pg[0].toLocaleString("th-TH")} / ${pg[1].toLocaleString("th-TH")}</span>`:""}<button data-ti="${x.id}" ${un&&!on?"":"disabled"}>${on?"สวมอยู่":un?"สวมฉายา":"ล็อก"}</button></div>`}).join("")}
+
+function qtShow(){const bar=$("qtbar"),q=S.qt;
+ if(!q||!EX[q.k]){S.qt=null;bar.hidden=true;document.body.classList.remove("qtOn");return}
+ const x=EX[q.k];bar.hidden=false;document.body.classList.add("qtOn");
+ bar.innerHTML=`<div class="qti">${x.i}</div><div class="qtm"><b>${x.n}</b><span id="qtT">00:00</span><small id="qtS"></small></div><button class="claim" id="qtStop">หยุดและบันทึก</button><button class="ghost" id="qtX">ยกเลิก</button>`;qtTick()}
+function qtTick(){const q=S.qt;if(!q)return;const T=$("qtT");if(!T)return;
+ const s=Math.floor((Date.now()-q.t0)/1000);T.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+ const left=q.rem*60-s;$("qtS").textContent=left>0?`เหลืออีก ${Math.floor(left/60)}:${String(left%60).padStart(2,"0")} ถึงเป้า`:"ครบเป้าแล้ว กดหยุดเพื่อบันทึก";
+ $("qtbar").classList.toggle("done",left<=0);
+ if(left<=0&&!q.dn){q.dn=1;beep([[880,0],[1175,.2]]);try{navigator.vibrate&&navigator.vibrate(300)}catch(e){}}}
+setInterval(qtTick,500);
+document.addEventListener("click",e=>{const c=e.target.closest&&e.target.closest("[data-qt],#qtStop,#qtX");if(!c)return;
+ if(c.dataset.qt){if(S.qt){toast("กำลังจับเวลาอีกท่าอยู่ หยุดก่อนนะ");return}const a=c.dataset.qt.split(":");S.qt={k:a[0],t0:Date.now(),rem:Math.max(1,+a[1]||1)};save();qtShow();return}
+ const q=S.qt;if(!q)return;
+ if(c.id==="qtX"){S.qt=null;save();qtShow();toast("ยกเลิกการจับเวลา");return}
+ const ms=Date.now()-q.t0;S.qt=null;save();qtShow();
+ if(ms<30000){toast("จับเวลาสั้นกว่า 30 วินาที ไม่บันทึก");return}
+ qlog(q.k,Math.max(1,Math.round(ms/60000)))});
+
+let ACHF="all";
+document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-af]");if(f){ACHF=f.dataset.af;render();return}
+ const hd=e.target.closest&&e.target.closest("main section h2");if(hd){colToggle(hd)}});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches("main section h2")){e.preventDefault();colToggle(e.target)}});
+const DEFC=["ประวัติและแก้ไข","แผนแนะนำ","เป้าหมายถัดไป"];
+const colKey=h=>h.firstChild?h.firstChild.textContent.trim():"";
+function colState(k){return S.col&&k in S.col?!!S.col[k]:DEFC.indexOf(k)>=0}
+function colApply(){document.querySelectorAll("main section").forEach(s=>{const h=s.querySelector("h2");if(!h)return;const c=colState(colKey(h));s.classList.toggle("col",c);h.setAttribute("role","button");h.tabIndex=0;h.setAttribute("aria-expanded",String(!c))})}
+function colToggle(h){const k=colKey(h);S.col=S.col||{};S.col[k]=!colState(k);save();colApply()}
+colApply();
 let AC=null;
 function beep(seq){if(S.mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();seq.forEach(([f,t])=>{const o=AC.createOscillator(),g=AC.createGain(),T=AC.currentTime+t;o.type="square";o.frequency.value=f;g.gain.setValueAtTime(.05,T);g.gain.exponentialRampToValueAtTime(.001,T+.18);o.connect(g);g.connect(AC.destination);o.start(T);o.stop(T+.2)})}catch(e){}}
 function fx(k){
@@ -864,7 +1029,7 @@ $("lbJoin").onclick=()=>{const n=$("lbNick").value.trim().slice(0,16);if(!n){toa
 $("lbLeave").onclick=()=>{if(DB&&UID)DB.collection("board").doc(UID).delete().catch(()=>{});S.lb=null;lastK="";save();$("lbNick").value="";render();drawBoard();toast("ออกจากอันดับแล้ว")};
 $("wcAdd").onclick=()=>{const c=+$("wcm").value;if(!(c>=30&&c<=200)){toast("ใส่รอบเอว 30–200 ซม.");return}S.waist=S.waist.filter(e=>e.d!==today());S.waist.push({d:today(),c});save();$("wcm").value="";render();toast("บันทึกรอบเอว "+c+" ซม.")};
 $("mute").onclick=()=>{S.mute=!S.mute;save();render()};
-const TABS={"สรุปวันนี้":"t","เควสประจำวัน":"q","บันทึกการออกกำลังกาย":"t","บอสประจำสัปดาห์":"q","อาหารและน้ำวันนี้":"t",
+const TABS={"ฉายา":"c","สรุปวันนี้":"t","เควสประจำวัน":"q","บันทึกการออกกำลังกาย":"t","บอสประจำสัปดาห์":"q","อาหารและน้ำวันนี้":"t",
  "ค่าพลังตัวละคร":"c","ล่ามอนสเตอร์":"q","เควสเนื้อเรื่อง":"q","อาชีพ":"c","แรงก์":"c","ตัวละครและร้านค้า":"c","เหรียญความสำเร็จ":"c","อันดับเพื่อน":"c",
  "ร่างกายและเป้าหมาย":"b","แผนแนะนำ":"b","รอบเอวและสัดส่วน":"b",
  "ประวัติและแก้ไข":"s","โปรแกรม 4 สัปดาห์":"t","ความก้าวหน้าย้อนหลัง":"s","สรุปรายเดือน":"s","ปฏิทิน 28 วันและสถิติรายสัปดาห์":"s","เป้าหมายถัดไป":"s"};
@@ -1072,7 +1237,7 @@ function render(){
  const cl=S.claimed[today()]||[];let done=0;
  $("quests").innerHTML=QUESTS.map(q0=>{const q={...q0,t:qt(q0,lv)};
   const x=EX[q.k],a=amountToday(q.k),ok=a>=q.t,got=cl.includes(q.id);if(got)done++;
-  return `<div class="q"><div class="i">${x.i}</div><div class="m"><b>${x.n} ${q.t} ${x.u}</b><span>วันนี้ ${Math.min(a,q.t)} / ${q.t} · โบนัส +${q.b} XP</span><div class="p"><i style="width:${Math.min(100,a/q.t*100)}%"></i></div></div>
+  return `<div class="q"><div class="i">${x.i}</div><div class="m"><b>${x.n} ${q.t} ${x.u}</b><span>วันนี้ ${Math.min(a,q.t)} / ${q.t} · โบนัส +${q.b} XP</span><div class="p"><i style="width:${Math.min(100,a/q.t*100)}%"></i></div>${got?"":quick(q.k,q.t-a)}</div>
   <button class="claim" data-q="${q.id}" ${ok&&!got?"":"disabled"}>${got?"รับแล้ว":"รับรางวัล"}</button></div>`}).join("");
  $("qdone").textContent=done+"/"+QUESTS.length;
  document.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{
@@ -1226,7 +1391,7 @@ if(PWA_OK){
 }
 pwa();
 
-render();
+render();qtShow();
 </script>
 </body>
 </html>
