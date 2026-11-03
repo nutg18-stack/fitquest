@@ -235,6 +235,10 @@ button.rc{width:100%;margin-top:10px}
 .qk small{color:var(--mute);font-size:12.5px;width:100%}
 .qk button{clip-path:none;border-radius:99px;min-height:38px;padding:0 14px;background:transparent;border:1.5px solid var(--line);color:var(--ink);font-size:14px;font-weight:500}
 .qk button:hover:not(:disabled){border-color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
+/* กันมือถือซูมอัตโนมัติเวลาแตะช่องกรอก (iOS ซูมเมื่อฟอนต์เล็กกว่า 16px) */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+input,select,textarea{font-size:16px!important}
+button,input,select,textarea,summary,label{touch-action:manipulation}
 </style>
 </head>
 <body>
