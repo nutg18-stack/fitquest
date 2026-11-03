@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>FitQuest</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#0e0c22">
@@ -315,6 +315,33 @@ button{padding:8px 14px}
  .bar{margin:6px 0 2px}
  .emb{top:68px;width:32px;height:32px;font-size:17px}
 }
+
+.kt{margin-top:8px}.kt summary{cursor:pointer;font-weight:600;font-size:14px}
+.ktw{margin:6px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.kh,.kr{display:grid;grid-template-columns:1.6fr .8fr .9fr;gap:6px;padding:7px 10px;align-items:center;font-size:13px}
+.kh{background:var(--panel2);color:var(--mute);font-size:12px}
+.kr{border-top:1px solid var(--line)}.kr small{display:block;color:var(--mute);font-size:11px}
+.kr b{text-align:center;font-size:14px}.kh span:not(:first-child){text-align:center}
+
+.kb{margin:10px 0 4px}.kbt{font-size:13px;margin-bottom:4px;color:var(--c)}
+.kbb{position:relative;height:10px;border-radius:99px;background:var(--panel2);border:1px solid var(--line)}
+.kbb i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--c);transition:width .3s}
+.kbb u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.55;text-decoration:none}
+.kbl{display:flex;justify-content:space-between;font-size:11px;color:var(--mute);margin-top:3px}
+.kadj{margin-top:6px;padding:8px 10px;border:1px dashed var(--line);border-radius:8px;font-size:13px;line-height:1.5}
+.kadj.ok{border-style:solid}.kadj button{margin-left:8px;min-height:32px;padding:0 12px;font-size:13px}
+
+.wkr{margin-top:8px}.wkr label{display:block;font-size:13px;margin-bottom:4px}
+.wkr>div{display:flex;gap:8px}.wkr input{flex:1;min-width:0;font-size:16px}.wkr button{min-height:40px;white-space:nowrap}
+
+.fav{margin-top:10px}.favh{font-size:14px;font-weight:600;margin-bottom:6px}.favh small{font-weight:400;color:var(--mute);font-size:12px;margin-left:4px}
+.fvc{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.fvb{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-height:46px;padding:6px 12px;text-align:left;scroll-snap-align:start;max-width:170px}
+.fvb b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.fvb small{font-size:11.5px;opacity:.85}
+.fvm{margin-top:6px}.fvm summary{cursor:pointer;font-size:13px;color:var(--mute)}
+.fva{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.fva input:first-child{grid-column:1/-1}.fva button{grid-column:1/-1}
+.fvr{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;font-size:13px;border-top:1px solid var(--line)}.fvr button{min-height:32px;padding:0 12px}
+.ver{text-align:center;font-size:11px;color:var(--mute);padding:6px 0 0;opacity:.7}
 </style>
 </head>
 <body>
@@ -475,6 +502,7 @@ button{padding:8px 14px}
   <div id="lb"></div>
   <button class="ghost" id="lbLeave" hidden>ออกจากอันดับ</button>
  </section>
+<div class="ver" id="ver"></div>
 </main>
 <div class="qtbar" id="qtbar" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -929,7 +957,26 @@ document.addEventListener("click",e=>{const c=e.target.closest&&e.target.closest
  if(ms<30000){toast("จับเวลาสั้นกว่า 30 วินาที ไม่บันทึก");return}
  qlog(q.k,Math.max(1,Math.round(ms/60000)))});
 
-let ACHF="all";
+let ACHF="all",FVO=false;
+const APPV="v29";
+try{$("ver").textContent="FitQuest "+APPV}catch(e){}
+function favAdd(i){const f=(S.fav||[])[i];if(!f)return;const td=today(),fd=S.food[td]=S.food[td]||{w:0,p:0,k:0};S.fl=S.fl||{};const L=S.fl[td]=S.fl[td]||{w:[],p:[],k:[]};
+ [["k",f.k],["p",f.p]].forEach(([r,v])=>{if(v>0){fd[r]=(fd[r]||0)+v;(L[r]=L[r]||[]).push(v);if(L[r].length>30)L[r].shift()}});FVO=false;save();render();toast("+"+f.k+" kcal · "+f.n)}
+document.addEventListener("click",e=>{const t=e.target.closest?e.target:null;if(!t)return;
+ let b=t.closest("[data-fv]");if(b){favAdd(+b.dataset.fv);return}
+ b=t.closest("[data-fa]");if(b){const n=$("fvN").value.trim().slice(0,24),k=Math.floor(+$("fvK").value),pr=Math.floor(+$("fvP").value||0);
+  if(!n){toast("ใส่ชื่อเมนู");return}if(!(k>=1&&k<=3000)){toast("ใส่แคลอรี 1–3000");return}if(!(pr>=0&&pr<=200)){toast("โปรตีน 0–200 กรัม");return}
+  S.fav=S.fav||[];if(S.fav.length>=12){toast("เก็บได้สูงสุด 12 เมนู ลบอันเก่าก่อน");return}
+  S.fav.push({n,k,p:pr});FVO=true;save();render();toast("เพิ่มเมนูโปรดแล้ว");return}
+ b=t.closest("[data-fd]");if(b){(S.fav||[]).splice(+b.dataset.fd,1);FVO=true;save();render();return}
+ b=t.closest("[data-kr]");if(b){S.krng=+b.dataset.kr;save();render()}});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-wk]");if(!b)return;const td=today();S.wk=S.wk||{};
+ if(b.dataset.wk==="save"){const v=Math.floor(+$("wkIn").value);if(!(v>=1&&v<=3000)){toast("ใส่แคล 1–3000");return}S.wk[td]=v;const ks=Object.keys(S.wk).sort();while(ks.length>120)delete S.wk[ks.shift()];toast("บันทึกแคลจากนาฬิกาแล้ว")}
+ else{delete S.wk[td];toast("ล้างค่าแล้ว")}
+ save();render()});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-ka]");if(!b)return;
+ if(b.dataset.ka==="apply"){S.kadj=Math.max(-300,Math.min(300,(+S.kadj||0)+(+b.dataset.kv||0)));S.kadjD=today();save();render();toast("ปรับเป้าแคลอรีแล้ว")}
+ else{S.kadj=0;S.kadjD=today();save();render();toast("รีเซ็ตเป้าแคลอรีแล้ว")}});
 document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-af]");if(f){ACHF=f.dataset.af;render();return}
  const hd=e.target.closest&&e.target.closest("main section h2");if(hd){colToggle(hd)}});
 document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches("main section h2")){e.preventDefault();colToggle(e.target)}});
@@ -974,8 +1021,12 @@ function extra3(st,xp,lv,power){
   const FL=(S.fl=S.fl||{})[td]=(S.fl||{})[td]||{w:[],p:[],k:[]};
   const res=(r,ico,name,c,mx,unit,col,chips,cust)=>{const over=r==="k"&&c>mx,pc=Math.min(100,mx?c/mx*100:0),col2=over?"var(--hp)":col,done=r!=="k"&&c>=mx;
    return `<div class="res${done?" ok":""}" style="--c:${col2}"><div class="rh"><span class="rn">${ico} ${name}</span><span class="rv"><b>${c}</b><small>/${mx} ${unit}</small></span></div><div class="rbar"><i style="width:${pc}%"></i></div>${over?`<div class="rwarn">⚠️ เกินเป้าวันนี้ ${c-mx} กิโลแคลอรี</div>`:""}<div class="chips">${chips.map(v=>`<button data-res="${r}" data-v="${v}">+${v}</button>`).join("")}<button class="und" data-u="${r}" ${(FL[r]||[]).length?"":"disabled"} aria-label="ย้อนกลับ">↶ ย้อน</button></div>${cust||""}${done?(cl.includes("w_"+(r==="w"?"water":"prot"))?`<button class="claim rc" disabled>รับแล้ว</button>`:`<button class="claim rc" data-fc="w_${r==="w"?"water":"prot"}">${r==="w"?"ดื่มน้ำครบ":"โปรตีนครบ"} รับ +20 XP</button>`):""}</div>`};
+  const fv=S.fav||[];
+  const fav=`<div class="fav"><div class="favh">⭐ เมนูโปรด <small>แตะครั้งเดียวเพิ่มแคลและโปรตีน</small></div>${fv.length?`<div class="fvc">${fv.map((f,i)=>`<button class="fvb" data-fv="${i}"><b>${esc(f.n)}</b><small>${f.k} kcal${f.p?" · "+f.p+" ก.":""}</small></button>`).join("")}</div>`:`<div class="sub">ยังไม่มีเมนูโปรด เพิ่มได้ด้านล่าง</div>`}<details class="fvm" ${FVO?"open":""}><summary>เพิ่ม/ลบเมนูโปรด</summary><div class="fva"><input id="fvN" maxlength="24" placeholder="ชื่อเมนู เช่น ข้าวมันไก่" aria-label="ชื่อเมนู"><input id="fvK" type="number" inputmode="numeric" placeholder="แคลอรี" aria-label="แคลอรี"><input id="fvP" type="number" inputmode="numeric" placeholder="โปรตีน ก." aria-label="โปรตีน"><button data-fa="1">บันทึกเมนู</button></div>${fv.map((f,i)=>`<div class="fvr"><span>${esc(f.n)} · ${f.k} kcal / ${f.p||0} ก.</span><button class="und" data-fd="${i}" aria-label="ลบ ${esc(f.n)}">ลบ</button></div>`).join("")}</details></div>`;
+  const kk=fd.k||0,rem=n.cap-kk,kM=Math.max(n.cap*1.2,kk*1.02),kS=!kk?["var(--mute)","ยังไม่ได้บันทึกอาหารวันนี้"]:kk>n.cap?["var(--hp)",`เกินเพดานวันนี้ ${kk-n.cap} kcal`]:kk>=n.flo?["var(--teal)",`อยู่ในช่วงที่เหมาะ · เหลือได้อีก ${rem} kcal`]:["var(--gold)",`ยังต่ำกว่าช่วงขั้นต่ำ ${n.flo-kk} kcal · เหลือได้อีก ${rem} kcal`];
+  const kst=`<div class="kb" style="--c:${kS[0]}"><div class="kbt"><b>${kS[1]}</b></div><div class="kbb"><i style="width:${Math.min(100,kk/kM*100)}%"></i><u style="left:${n.flo/kM*100}%"></u><u style="left:${n.kcal/kM*100}%"></u><u style="left:${n.cap/kM*100}%"></u></div><div class="kbl"><span>ต่ำสุด ${n.flo}</span><span>เป้า ${n.kcal}</span><span>เพดาน ${n.cap}${n.bonus?` (+${n.bonus})`:""}</span></div></div>`;
   const cust=(r,id,def,mx)=>`<div class="cust"><input id="${id}" type="number" inputmode="numeric" value="${def}" min="1" max="${mx}" aria-label="จำนวนกำหนดเอง"><button data-cu="${r}">+ เพิ่มเอง</button></div>`;
-  $("food").innerHTML=`${n.html}${res("w","💧","น้ำดื่ม",fd.w||0,n.gl,"แก้ว","#38a8ff",[1,2])}${res("p","🥩","โปรตีน",fd.p||0,n.pr,"ก.","#ff5c7a",[10,20,30,40],cust("p","pgIn",25,200))}${res("k","🔥","พลังงานที่กิน",fd.k||0,n.cap,"กิโลแคลอรี","#38e0c4",[100,200,300,500],cust("k","kIn",300,3000))}<div class="sub" style="font-size:12px;margin-top:6px">เป็นค่าประมาณทั่วไป ไม่ใช่คำแนะนำทางการแพทย์</div>`;
+  $("food").innerHTML=`${n.html}${res("w","💧","น้ำดื่ม",fd.w||0,n.gl,"แก้ว","#38a8ff",[1,2])}${res("p","🥩","โปรตีน",fd.p||0,n.pr,"ก.","#ff5c7a",[10,20,30,40],cust("p","pgIn",25,200))}${kst}${res("k","🔥","พลังงานที่กิน",fd.k||0,n.cap,"กิโลแคลอรี","#38e0c4",[100,200,300,500],cust("k","kIn",300,3000))}${fav}<div class="sub" style="font-size:12px;margin-top:6px">เป็นค่าประมาณทั่วไป ไม่ใช่คำแนะนำทางการแพทย์</div>`;
   const add=(r,v)=>{const f=S.food[td]=S.food[td]||{w:0,p:0};f[r]=(f[r]||0)+v;S.fl=S.fl||{};const L=S.fl[td]=S.fl[td]||{w:[],p:[],k:[]};(L[r]=L[r]||[]).push(v);if(L[r].length>30)L[r].shift();save();render()};
   document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>add(b.dataset.res,+b.dataset.v));
   document.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{const r=b.dataset.u,L=(S.fl[td]||{})[r]||[];if(!L.length)return;const v=L.pop(),f=S.food[td]=S.food[td]||{w:0,p:0};f[r]=Math.max(0,(f[r]||0)-v);save();render()});
@@ -1080,6 +1131,8 @@ function extra4(){
  S.waist.slice(-5).forEach((e,j)=>{const i=cn-Math.min(5,cn)+j;el.appendChild(hrow(e.d.slice(5),e.c,30,200,0.1,v=>{S.waist[i].c=v},()=>{S.waist.splice(i,1)}))});
  if(!cn)note("ยังไม่มีข้อมูล");
 }
+const EXM={push:[3.8,3],squat:[5,3],lunge:[4,3.5],bridge:[3.5,3],burpee:[8,5],run:[7,60],jump:[10,60],stretch:[2.5,60],plank:[3,60],bike:[6.8,60],swim:[6,60],weights:[3.5,60],wallsit:[3.5,60],jack:[8,60],climb:[8,60],march:[3.5,60]};
+function exBurn(kg,d){let k=0;d=d||today();S.log.filter(e=>e.d===d).forEach(e=>{const m=EXM[e.k];if(m)k+=(m[0]-1)*3.5*kg/200*(e.n*m[1]/60)});return Math.min(800,k)}
 function needs2(){
  const p=S.prof,w=wInfo();
  if(!w.w0||!w.h||!p.a||p.a<18)return null;
@@ -1094,6 +1147,24 @@ function needs2(){
  }else if(mode==="gain"){cap=tdee*1.2;tgt=tdee*1.1;flo=tdee}
  else if(mode==="recomp"){cap=tdee;tgt=tdee;flo=tdee*0.9}
  else{cap=tdee*1.05;tgt=tdee;flo=tdee*0.95}
+ const kofs=Math.max(-300,Math.min(300,+S.kadj||0));
+ if(kofs){cap+=kofs;tgt+=kofs;flo=mode==="lose"?Math.max(flo+kofs,bmr,1200):flo+kofs;if(cap<flo)cap=flo;if(tgt<flo)tgt=flo;if(tgt>cap)tgt=cap}
+ const est=exBurn(w.cur),wv=+((S.wk||{})[today()])||0,burn=wv>0?Math.min(800,wv):est,bonus=Math.min(400,Math.round(burn*0.5/10)*10);
+ let ks="";
+ {const d0=S.kadjD||"",nowD=Date.now()/864e5,pts=S.wlog.filter(e=>e.d>=d0).slice(-12).map(e=>[Date.UTC(+e.d.slice(0,4),+e.d.slice(5,7)-1,+e.d.slice(8,10))/864e5,+e.w]).filter(a=>nowD-a[0]<=35&&a[1]>0);
+  if(pts.length>=3&&pts[pts.length-1][0]-pts[0][0]>=14){
+   const mx=pts.reduce((a,b)=>a+b[0],0)/pts.length,my=pts.reduce((a,b)=>a+b[1],0)/pts.length,den=pts.reduce((a,b)=>a+(b[0]-mx)**2,0),sl=den?pts.reduce((a,b)=>a+(b[0]-mx)*(b[1]-my),0)/den:0;
+   const act=sl*7,exp=(tgt-tdee)*7/7700,diff=(act-exp)*7700/7;
+   let step=Math.max(-200,Math.min(200,Math.round(-diff/50)*50));
+   if(mode==="lose"&&step<0&&tgt+step<Math.max(bmr,1200)){ks=`<div class="kadj">📊 น้ำหนักเปลี่ยน ${act>=0?"+":""}${act.toFixed(2)} กก./สัปดาห์ (คาดไว้ ${exp>=0?"+":""}${exp.toFixed(2)}) ลดช้ากว่าที่คาด แต่เป้าแคลอรีใกล้ค่าต่ำสุดที่ปลอดภัยแล้ว แนะนำเพิ่มการออกกำลังกายหรือเดินแทนการกินให้น้อยลง</div>`}
+   else if(Math.abs(step)>=100&&Math.abs(kofs+step)<=300)ks=`<div class="kadj">📊 น้ำหนักเปลี่ยน ${act>=0?"+":""}${act.toFixed(2)} กก./สัปดาห์ (แผนคาดไว้ ${exp>=0?"+":""}${exp.toFixed(2)}) → แนะนำปรับเป้า <b>${step>0?"+":""}${step} kcal/วัน</b><button data-ka="apply" data-kv="${step}">ใช้ค่าที่ปรับ</button></div>`;
+   else ks=`<div class="kadj ok">📊 น้ำหนักเปลี่ยน ${act>=0?"+":""}${act.toFixed(2)} กก./สัปดาห์ ใกล้กับที่แผนคาดไว้ (${exp>=0?"+":""}${exp.toFixed(2)}) เป้าแคลอรีเหมาะแล้ว</div>`}
+  else if(S.wlog.length<3||!pts.length)ks=`<div class="kadj">📊 บันทึกน้ำหนักให้ครบอย่างน้อย 3 ครั้งในช่วง 2 สัปดาห์ ระบบจะเทียบกับแผนและแนะนำการปรับเป้าแคลอรีให้</div>`}
+ if(kofs)ks+=`<div class="kadj ok">ตอนนี้ปรับเป้าไว้ ${kofs>0?"+":""}${kofs} kcal/วัน <button data-ka="reset">รีเซ็ต</button></div>`;
+ let cal="";
+ {const rs=Object.keys(S.wk||{}).filter(d=>S.wk[d]>0).map(d=>[S.wk[d],exBurn(w.cur,d)]).filter(a=>a[1]>=50);
+  if(rs.length>=5){const r=rs.reduce((a,b)=>a+b[0],0)/rs.reduce((a,b)=>a+b[1],0);cal=`<div class="sub" style="font-size:12px">📐 จาก ${rs.length} วันที่มีทั้งสองค่า นาฬิกาวัดได้เฉลี่ย ${r.toFixed(1)} เท่าของที่แอปประมาณ ${r>1.3?"(แอปประมาณต่ำไป วันที่ไม่ได้กรอกนาฬิกาอาจเผาผลาญจริงมากกว่าที่แสดง)":r<0.77?"(แอปประมาณสูงไป วันที่ไม่ได้กรอกนาฬิกาอาจเผาผลาญจริงน้อยกว่าที่แสดง)":"(ใกล้เคียงกัน)"}</div>`}}
+ const bl=(burn>=50?`<div class="sub">${wv>0?"⌚ นาฬิกาวัดได้":"🏃 ประมาณจากท่าที่บันทึก"} ${K(burn)} kcal → เพดานวันนี้ +${bonus} เป็น <b style="color:var(--ink)">${K(cap+bonus)}</b> kcal</div>`:"")+`<div class="wkr"><label for="wkIn">⌚ แคลจากนาฬิกา วันนี้ (เฉพาะส่วนออกกำลัง/เคลื่อนไหว)</label><div><input id="wkIn" type="number" inputmode="numeric" min="1" max="3000" placeholder="เช่น 350" value="${wv||""}"><button data-wk="save">บันทึก</button>${wv?`<button data-wk="clear" class="und">ล้าง</button>`:""}</div></div>`+cal;
  const PR={lose:[1.6,2.0,2.0],gain:[1.6,2.0,1.8],recomp:[1.6,2.0,2.0]},FP={endurance:[1.2,1.6,1.4],agility:[1.4,1.7,1.5]};
  const pr=PR[mode]||FP[f]||[1.2,1.6,1.4],rw=(mode==="lose"&&w.t&&w.t<w.cur&&bmi>=25)?w.t:w.cur;
  const P=R(rw*pr[2]),Pl=R(rw*pr[0]),Ph=R(rw*pr[1]),fat=R(tgt*0.25/9),Fl=R(tgt*0.2/9),Fh=R(tgt*0.35/9),C=Math.max(0,R((tgt-4*P-9*fat)/4));
@@ -1102,8 +1173,17 @@ function needs2(){
   gain:"ส่วนเกิน 10–20% เหนือระดับรักษาน้ำหนัก ผู้ฝึกมานานควรอยู่ช่วงล่าง (Iraki และคณะ 2019) ส่วนที่เกินกว่านี้มักกลายเป็นไขมันมากกว่ากล้ามเนื้อ",
   recomp:"ใกล้ระดับรักษาน้ำหนัก ร่วมกับโปรตีนสูงและเวทสม่ำเสมอ ส่วนนี้เป็นแนวปฏิบัติของเทรนเนอร์ ไม่มีตัวเลขมาตรฐานทางการเพียงค่าเดียว",
   keep:"ใกล้ระดับรักษาน้ำหนัก (ADA/DC/ACSM ระบุว่าควรกินพอรักษาน้ำหนักเพื่อให้ร่างกายใช้โปรตีนได้เต็มที่)"}[mode];
- const html=`<div class="sub"><b style="color:var(--ink)">${PLANS[f]?PLANS[f].n:"สุขภาพทั่วไป"}</b> · พลังงานที่ใช้ต่อวัน (TDEE) ≈ ${K(tdee)} kcal (BMR ${K(bmr)})</div><div class="pw"><div>กินได้ไม่เกิน<b>${K(cap)}</b>kcal/วัน</div><div>เป้าหมาย<b>${K(tgt)}</b>kcal</div><div>ไม่ควรต่ำกว่า<b>${K(flo)}</b>kcal</div></div><div class="pw"><div>โปรตีน<b>${P} ก.</b>ช่วง ${Pl}–${Ph}</div><div>ไขมัน<b>${fat} ก.</b>ช่วง ${Fl}–${Fh}</div><div>คาร์บ<b>${C} ก.</b>ส่วนที่เหลือ</div></div>${rt?`<div class="sub">${rt}</div>`:""}${warn?`<div class="warn">⚠️ ${warn}</div>`:""}<details><summary>ที่มาของตัวเลข</summary><div class="sub" style="font-size:12px;line-height:1.6">• พลังงานพื้นฐานคำนวณด้วยสมการ Mifflin–St Jeor คูณตัวคูณกิจกรรมมาตรฐาน เป็นเพียงค่าประมาณ ควรดูน้ำหนักจริงต่อเนื่อง 2–4 สัปดาห์ แล้วปรับเพิ่มลด<br>• ${src}<br>• โปรตีน: ผู้ออกกำลังกายควรได้ 1.4–2.0 ก./กก./วัน (ISSN 2017) ส่วน ADA/DC/ACSM ระบุ 1.2–2.0 สายอึดอยู่ช่วงล่าง สายเวทและช่วงลดน้ำหนักอยู่ช่วงบน${rw!==w.cur?" คิดจากน้ำหนักเป้าหมายเพื่อไม่ให้สูงเกินจำเป็น (แนวปฏิบัติของนักกำหนดอาหาร)":""}<br>• ไขมัน 20–35% ของพลังงาน (ADA/DC/ACSM) คาร์โบไฮเดรตคือส่วนที่เหลือ${f==="endurance"?` ซึ่ง ADA/DC/ACSM แนะนำคาร์บ ${cg} ก./กก./วันตามความหนักของการฝึก (ตอนนี้คุณได้ ${(C/w.cur).toFixed(1)})`:""}<br>• ปริมาณน้ำเป็นเกณฑ์คร่าว ๆ 35 มล./กก. ไม่ใช่ค่ามาตรฐานทางการ<br>• ไม่เหมาะกับผู้ตั้งครรภ์ ให้นมบุตร มีโรคประจำตัว หรือมีประวัติการกินผิดปกติ ควรปรึกษาแพทย์หรือนักกำหนดอาหาร</div></details>`;
- return{kcal:K(tgt),cap:K(cap),flo:K(flo),bmr:K(bmr),pr:P,gl:Math.ceil(w.cur*35/250),html};
+ const wk=e=>Math.abs(e*7/7700).toFixed(2),dl=r=>w.cur*r*1100,fl2=Math.max(tdee-dl(bmi&&bmi<23?0.005:0.01),bmr,1200),cp2=Math.max(tdee-dl(0.005),fl2),low=bmi&&bmi<18.5;
+ const rows=[
+  [low?null:"lose","📉 ลดน้ำหนักเร็ว",low?null:K(fl2),low?null:K(fl2),low?"":"ลดราว "+wk(tdee-fl2)+" กก./สัปดาห์ · ต่ำกว่านี้ไม่แนะนำ"],
+  [low?null:"lose","📉 ลดน้ำหนักช้า",low?null:K(cp2),low?null:K(cp2),low?"":"ลดราว "+wk(tdee-cp2)+" กก./สัปดาห์ · เกินนี้ลดช้ามาก"],
+  ["keep","⚖️ รักษาน้ำหนัก",K(tdee),K(tdee*1.05),"น้ำหนักนิ่ง"],
+  ["recomp","🔄 ลดไขมันสร้างกล้าม",K(tdee),K(tdee),"ไม่ควรต่ำกว่า "+K(tdee*0.9)],
+  ["gain","📈 เพิ่มกล้ามเนื้อ",K(tdee*1.1),K(tdee*1.2),"เพิ่มราว "+wk(tdee*0.1)+"–"+wk(tdee*0.2)+" กก./สัปดาห์"]
+ ].filter(r=>r[0]);
+ const kt=`<details class="kt" open><summary>ตารางแคลอรีต่อวัน แยกตามเป้าหมาย</summary><div class="ktw"><div class="kh"><span>เป้าหมาย</span><span>กินเป้า</span><span>ไม่ควรเกิน</span></div>${rows.map(r=>`<div class="kr"><span>${r[1]}<small>${r[4]}</small></span><b>${r[2]}</b><b>${r[3]}</b></div>`).join("")}</div><div class="sub" style="font-size:12px">หน่วย kcal/วัน · ค่าประมาณจากสมการ BMR × กิจกรรม ให้ดูน้ำหนักจริง 2–4 สัปดาห์แล้วปรับ</div></details>`;
+ const html=`<div class="sub"><b style="color:var(--ink)">${PLANS[f]?PLANS[f].n:"สุขภาพทั่วไป"}</b> · พลังงานที่ใช้ต่อวัน (TDEE) ≈ ${K(tdee)} kcal (BMR ${K(bmr)})</div><div class="pw"><div>กินได้ไม่เกิน<b>${K(cap)}</b>kcal/วัน</div><div>เป้าหมาย<b>${K(tgt)}</b>kcal</div><div>ไม่ควรต่ำกว่า<b>${K(flo)}</b>kcal</div></div><div class="pw"><div>โปรตีน<b>${P} ก.</b>ช่วง ${Pl}–${Ph}</div><div>ไขมัน<b>${fat} ก.</b>ช่วง ${Fl}–${Fh}</div><div>คาร์บ<b>${C} ก.</b>ส่วนที่เหลือ</div></div>${rt?`<div class="sub">${rt}</div>`:""}${bl}${ks}${kt}${warn?`<div class="warn">⚠️ ${warn}</div>`:""}<details><summary>ที่มาของตัวเลข</summary><div class="sub" style="font-size:12px;line-height:1.6">• พลังงานพื้นฐานคำนวณด้วยสมการ Mifflin–St Jeor คูณตัวคูณกิจกรรมมาตรฐาน เป็นเพียงค่าประมาณ ควรดูน้ำหนักจริงต่อเนื่อง 2–4 สัปดาห์ แล้วปรับเพิ่มลด<br>• ${src}<br>• โปรตีน: ผู้ออกกำลังกายควรได้ 1.4–2.0 ก./กก./วัน (ISSN 2017) ส่วน ADA/DC/ACSM ระบุ 1.2–2.0 สายอึดอยู่ช่วงล่าง สายเวทและช่วงลดน้ำหนักอยู่ช่วงบน${rw!==w.cur?" คิดจากน้ำหนักเป้าหมายเพื่อไม่ให้สูงเกินจำเป็น (แนวปฏิบัติของนักกำหนดอาหาร)":""}<br>• ไขมัน 20–35% ของพลังงาน (ADA/DC/ACSM) คาร์โบไฮเดรตคือส่วนที่เหลือ${f==="endurance"?` ซึ่ง ADA/DC/ACSM แนะนำคาร์บ ${cg} ก./กก./วันตามความหนักของการฝึก (ตอนนี้คุณได้ ${(C/w.cur).toFixed(1)})`:""}<br>• ถ้ากรอกแคลจากนาฬิกา ให้ใช้ค่า Active/Move calories (ไม่ใช่แคลรวมทั้งวันที่รวมพลังงานตอนพักแล้ว) แอปจะใช้ค่านี้แทนค่าประมาณ แต่ยังเพิ่มเพดานให้ครึ่งหนึ่งเท่าเดิม เพราะเป้าพื้นฐานรวมระดับกิจกรรมทั่วไปไว้แล้ว และนาฬิกาก็คลาดเคลื่อนได้<br>• พลังงานจากการออกกำลังกายประมาณด้วยค่า MET (Compendium of Physical Activities) ลบพลังงานตอนพักแล้วเพิ่มเพดานให้ครึ่งหนึ่งของส่วนที่เผาผลาญเพิ่ม (สูงสุด 400 kcal) เพราะค่าประมาณมักคลาดเคลื่อน สัดส่วนครึ่งหนึ่งเป็นค่าที่ตั้งเอง ไม่ใช่มาตรฐานทางการ<br>• การปรับเป้าจากน้ำหนักจริงเทียบอัตราเปลี่ยนน้ำหนักกับที่แผนคาด (1 กก. ≈ 7,700 kcal) ปรับทีละไม่เกิน 200 และรวมไม่เกิน ±300 kcal/วัน แนะนำเมื่อมีข้อมูลน้ำหนักครบ 2 สัปดาห์ขึ้นไป<br>• ปริมาณน้ำเป็นเกณฑ์คร่าว ๆ 35 มล./กก. ไม่ใช่ค่ามาตรฐานทางการ<br>• ไม่เหมาะกับผู้ตั้งครรภ์ ให้นมบุตร มีโรคประจำตัว หรือมีประวัติการกินผิดปกติ ควรปรึกษาแพทย์หรือนักกำหนดอาหาร</div></details>`;
+ return{kcal:K(tgt),cap:K(cap+bonus),capB:K(cap),bonus,flo:K(flo),bmr:K(bmr),pr:P,gl:Math.ceil(w.cur*35/250),html};
 }
 const PL={
  gen:[["เสริมแรงทั้งตัว",[["push",3,8],["squat",3,12],["plank",2]]],["คาร์ดิโอเบา",[["march",20]]],["ยืดเหยียด",[["stretch",15]]],["ขาและสะโพก",[["lunge",3,8],["bridge",3,12],["push",3,8]]],["คาร์ดิโอและแกนกลาง",[["march",15],["jack",5],["plank",2]]],["คาร์ดิโอสนุก",[["jack",8],["march",10],["stretch",10]]],["พักเต็มที่",[]]],
@@ -1176,6 +1256,20 @@ function lineChart(pts,o){
  g+=`<text x="${L}" y="${H-6}" font-size="10" fill="var(--mute)">${ds(pts[0].t)}</text><text x="${W-Rr}" y="${H-6}" text-anchor="end" font-size="10" fill="var(--mute)">${ds(e.t)}</text>`;
  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" role="img" aria-label="${o.label}">${g}</svg>`;
 }
+function kcalChart(n,days){
+ const W=340,H=150,L=36,Rr=6,T=10,B=22,pts=[];
+ for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");pts.push({d:k,v:((S.food||{})[k]||{}).k||0,dt:d})}
+ const mxv=Math.max(n.capB*1.15,...pts.map(p=>p.v)),Y=v=>T+(H-T-B)*(1-v/mxv),bw=(W-L-Rr)/days,f1=x=>Math.round(x*10)/10;
+ let g="";
+ [n.flo,n.capB].forEach((v,i)=>{g+=`<line x1="${L}" x2="${W-Rr}" y1="${f1(Y(v))}" y2="${f1(Y(v))}" stroke="${i?"var(--hp)":"var(--gold)"}" stroke-width="1.2" stroke-dasharray="4 3"/><text x="${L-4}" y="${f1(Y(v)+3)}" text-anchor="end" font-size="9" fill="${i?"var(--hp)":"var(--gold)"}">${v}</text>`});
+ pts.forEach((p,i)=>{const x=L+i*bw+bw*0.15,w2=bw*0.7;if(!p.v){g+=`<rect x="${f1(x)}" y="${f1(H-B-3)}" width="${f1(w2)}" height="3" rx="1.5" fill="var(--line)"/>`;return}
+  const col=p.v>n.capB?"var(--hp)":p.v>=n.flo?"var(--teal)":"var(--gold)";g+=`<rect x="${f1(x)}" y="${f1(Y(p.v))}" width="${f1(w2)}" height="${f1(H-B-Y(p.v))}" rx="2" fill="${col}"/>`});
+ const lb=i=>{const d=pts[i].dt;return d.getDate()+"/"+(d.getMonth()+1)};
+ g+=`<text x="${L}" y="${H-6}" font-size="10" fill="var(--mute)">${lb(0)}</text><text x="${W-Rr}" y="${H-6}" text-anchor="end" font-size="10" fill="var(--mute)">${lb(days-1)}</text>`;
+ const lg=pts.filter(p=>p.v>0),avg=lg.length?Math.round(lg.reduce((a,p)=>a+p.v,0)/lg.length):0;
+ let msg=!lg.length?"ยังไม่มีข้อมูลอาหารในช่วงนี้":`บันทึกอาหาร ${lg.length}/${days} วัน · เฉลี่ย <b style="color:var(--ink)">${avg}</b> kcal/วัน (ช่วงที่เหมาะ ${n.flo}–${n.capB}) `+(avg>n.capB?"· เฉลี่ยเกินเพดาน":avg<n.flo?"· ต่ำกว่าขั้นต่ำ อาจลืมบันทึกบางมื้อ":"· อยู่ในช่วง");
+ return `<div class="chd"><h3>แคลอรีที่กิน</h3><div class="rng">${[[7,"7 วัน"],[30,"30 วัน"]].map(([v,l])=>`<button class="ghost ${days===v?"on":""}" data-kr="${v}" aria-pressed="${days===v}">${l}</button>`).join("")}</div><svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" role="img" aria-label="กราฟแคลอรีที่กินรายวัน">${g}</svg><div class="sub">${msg}</div><div class="sub" style="font-size:11.5px">แท่งเขียว = อยู่ในช่วง · แดง = เกินเพดาน · เหลือง = ต่ำกว่าขั้นต่ำ · เส้นเทา = ไม่มีข้อมูล (ใช้เพดานพื้นฐาน ไม่รวมโบนัสออกกำลังกายของแต่ละวัน)</div></div>`;
+}
 function chartsUI(){
  const el=$("prg"),R=S.rng==null?90:+S.rng,cut=R?Date.now()-R*864e5:0,w=wInfo();
  const mk=(arr,key)=>arr.map(e=>({t:PDT(e.d).getTime(),v:+e[key]})).filter(p=>p.t>=cut).sort((a,b)=>a.t-b.t);
@@ -1185,7 +1279,7 @@ function chartsUI(){
  const arr=[];for(let i=11;i>=0;i--){const a=new Date();a.setDate(a.getDate()-7*i);const k=mon(a);arr.push([k,xw[k]||0])}
  const mx=Math.max(1,...arr.map(a=>a[1]));
  const bars=`<div class="chd"><h3>XP จากการออกกำลังกายรายสัปดาห์ (12 สัปดาห์)</h3><div class="wk" style="max-width:none;gap:4px">${arr.map((a,i)=>`<div style="font-size:10px"><span>${a[1]||""}</span><i style="height:${a[1]/mx*70}px"></i><span>${i%3===2||i===11?(+a[0].slice(8))+"/"+(+a[0].slice(5,7)):" "}</span></div>`).join("")}</div></div>`;
- el.innerHTML=`<div class="rng">${[[30,"30 วัน"],[90,"90 วัน"],[0,"ทั้งหมด"]].map(([v,l])=>`<button class="ghost ${R===v?"on":""}" data-r="${v}" aria-pressed="${R===v}">${l}</button>`).join("")}</div>`+box("น้ำหนัก (กก.)",mk(S.wlog,"w"),"กก.",w.t||0,"กราฟน้ำหนัก")+box("รอบเอว (ซม.)",mk(S.waist,"c"),"ซม.",0,"กราฟรอบเอว")+bars;
+ el.innerHTML=`<div class="rng">${[[30,"30 วัน"],[90,"90 วัน"],[0,"ทั้งหมด"]].map(([v,l])=>`<button class="ghost ${R===v?"on":""}" data-r="${v}" aria-pressed="${R===v}">${l}</button>`).join("")}</div>`+box("น้ำหนัก (กก.)",mk(S.wlog,"w"),"กก.",w.t||0,"กราฟน้ำหนัก")+box("รอบเอว (ซม.)",mk(S.waist,"c"),"ซม.",0,"กราฟรอบเอว")+(needs2()?kcalChart(needs2(),S.krng===30?30:7):"")+bars;
  document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{S.rng=+b.dataset.r;save();render()});
 }
 function monthUI(){
