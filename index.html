@@ -110,6 +110,31 @@ details summary{cursor:pointer;color:var(--mute);font-size:13px;margin-top:8px}
 .hr{display:grid;grid-template-columns:1fr 86px 40px;gap:8px;align-items:center;padding:5px 0;border-top:1px solid var(--line);font-size:14px}
 .hr input{padding:5px 7px}
 .hr button{padding:3px 8px}
+.pd{display:grid;grid-template-columns:44px 1fr 22px;gap:10px;align-items:center;padding:8px 6px;border-top:1px solid var(--line)}
+.pd b{text-align:center;line-height:1.2;font-size:13px}
+.pd .pt{font-weight:600}
+.pd.today{box-shadow:inset 0 0 0 1px var(--gold);background:rgba(255,185,56,.08)}
+.pd>span:last-child{color:var(--teal);font-weight:700}
+.rng{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+button.ghost.on{background:var(--ac);color:var(--acink);border-color:var(--ac)}
+button.ghost.on:hover:not(:disabled){color:var(--acink)}
+.chd{margin-top:16px}
+.chd h3{font-size:15px;margin-bottom:6px}
+.mrow{display:flex;flex-wrap:wrap;gap:2px 14px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
+.mrow b{flex-basis:100%;color:var(--ink);font-size:15px}
+.goal{margin-top:16px;width:100%}
+.gh{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;text-align:left;margin-bottom:6px}
+.gh b{font-family:var(--px);font-size:13px;font-weight:400;color:var(--teal)}
+.gbar{position:relative;height:18px;border-radius:3px;background:#0a0820;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.gbar i{display:block;height:100%;background:linear-gradient(90deg,#1fb89f,var(--teal));transition:width .6s}
+.gbar::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 2px),#0a0820 calc(10% - 2px) 10%)}
+.gm{position:relative;height:38px;margin-top:6px;font-size:12px;color:var(--mute)}
+.gm span{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;line-height:1.25;white-space:nowrap}
+.gm span.end{transform:translateX(-100%);align-items:flex-end}
+.gm span.ok{color:var(--teal)}
+.gm small{font-size:11px}
+.gt{margin-top:4px;text-align:left;font-size:13px}
+@media(max-width:720px){.gt,.gh{text-align:left}}
 </style>
 </head>
 <body>
@@ -123,6 +148,7 @@ details summary{cursor:pointer;color:var(--mute);font-size:13px;margin-top:8px}
    <div class="bar"><i id="xpbar"></i></div>
    <div class="sub" id="xptxt"></div>
    <div class="pw"><div>ค่าพลังรวม<b id="power">0</b></div><div>XP ทั้งหมด<b id="xp">0</b></div><div>เควสวันนี้<b id="qdone">0/4</b></div></div>
+   <div id="goalbar"></div>
   </div>
  </div>
 
@@ -148,6 +174,10 @@ details summary{cursor:pointer;color:var(--mute);font-size:13px;margin-top:8px}
    <div style="margin-top:8px"><button class="ghost" id="tBtn">⏱ จับเวลา</button><span class="tm" id="tm"></span></div>
    <details><summary>เพิ่มท่าออกกำลังกายของตัวเอง</summary><div class="form2" style="margin-top:8px"><input id="cN" placeholder="ชื่อท่า" aria-label="ชื่อท่า" maxlength="24"><select id="cS" aria-label="ค่าพลังที่เพิ่ม"><option value="STR">STR พลังกาย</option><option value="END">END ความอึด</option><option value="AGI">AGI ความคล่อง</option><option value="VIT">VIT ความยืดหยุ่น</option></select><select id="cU" aria-label="หน่วย"><option>นาที</option><option>ครั้ง</option></select><button id="cAdd">เพิ่มท่า</button></div></details>
    <div class="hist" id="hist"></div>
+  </section>
+  <section class="wide">
+   <h2>โปรแกรม 4 สัปดาห์</h2>
+   <div id="prog"></div>
   </section>
   <section>
    <h2>บอสประจำสัปดาห์</h2>
@@ -189,6 +219,14 @@ details summary{cursor:pointer;color:var(--mute);font-size:13px;margin-top:8px}
   <section>
    <h2>อาชีพ</h2>
    <div class="cls" id="cls"></div>
+  </section>
+  <section class="wide">
+   <h2>ความก้าวหน้าย้อนหลัง</h2>
+   <div id="prg"></div>
+  </section>
+  <section class="wide">
+   <h2>สรุปรายเดือน</h2>
+   <div id="mon"></div>
   </section>
   <section>
    <h2>ประวัติและแก้ไข</h2>
@@ -237,7 +275,14 @@ const EX={
  plank:{n:"แพลงก์",i:"🧱",u:"นาที",s:"STR",r:5},
  bike:{n:"ปั่นจักรยาน",i:"🚴",u:"นาที",s:"END",r:3},
  swim:{n:"ว่ายน้ำ",i:"🏊",u:"นาที",s:"END",r:4},
- weights:{n:"เล่นเวท",i:"🏋️",u:"นาที",s:"STR",r:3}
+ weights:{n:"เล่นเวท",i:"🏋️",u:"นาที",s:"STR",r:3},
+ lunge:{n:"ลันจ์",i:"🦿",u:"ครั้ง",s:"STR",r:1},
+ bridge:{n:"สะพานก้น",i:"🌉",u:"ครั้ง",s:"STR",r:1},
+ wallsit:{n:"นั่งพิงกำแพง",i:"🪑",u:"นาที",s:"STR",r:4},
+ jack:{n:"กระโดดตบ",i:"🤸",u:"นาที",s:"AGI",r:4},
+ climb:{n:"ปีนเขาอยู่กับที่",i:"🧗",u:"นาที",s:"END",r:4},
+ burpee:{n:"เบอร์พี",i:"🔥",u:"ครั้ง",s:"END",r:2},
+ march:{n:"เดินยกเข่าอยู่กับที่",i:"🚶",u:"นาที",s:"END",r:2}
 };
 const ST={STR:{n:"พลังกาย",c:"#ef476f"},END:{n:"ความอึด",c:"#2bb3a0"},AGI:{n:"ความคล่อง",c:"#e0a100"},VIT:{n:"ความยืดหยุ่น",c:"#7c6cff"}};
 let QUESTS=[{id:"q1",k:"push",t:20,b:30},{id:"q2",k:"squat",t:30,b:30},{id:"q3",k:"run",t:15,b:50},{id:"q4",k:"stretch",t:10,b:30}];
@@ -245,7 +290,7 @@ const RANKS=["มือใหม่หัดเดิน","นักสู้ฝ
 const KEY="fitquest-v1";
 let S={log:[],claimed:{},ach:{},wlog:[],prof:{}};let PEND=[];
 try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
-function norm(){S.ach=S.ach||{};S.wlog=S.wlog||[];S.prof=S.prof||{};S.custom=S.custom||[];S.rest=S.rest||{};S.boss=S.boss||{};S.bhp=S.bhp||{};S.food=S.food||{};S.waist=S.waist||[];S.spent=S.spent||0;S.own=S.own||{};S.eq=S.eq||{};S.custom.forEach(c=>EX[c.k]=c)}norm();
+function norm(){S.ach=S.ach||{};S.wlog=S.wlog||[];S.prof=S.prof||{};S.custom=S.custom||[];S.rest=S.rest||{};S.boss=S.boss||{};S.bhp=S.bhp||{};S.food=S.food||{};S.waist=S.waist||[];S.spent=S.spent||0;S.own=S.own||{};S.eq=S.eq||{};S.prog=S.prog||null;S.progDone=S.progDone||{};S.custom.forEach(c=>EX[c.k]=c)}norm();
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=id=>document.getElementById(id);
 const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
@@ -331,7 +376,7 @@ function extra(st,xp,lv,power){
  // achievements
  $("ach").innerHTML=ACH.map(a=>`<div class="ab ${S.ach[a.id]?"on":"lock"}"><div class="i">${a.i}</div><b>${a.n}</b><span>${a.t}</span></div>`).join("");
  $("achc").textContent=ACH.filter(a=>S.ach[a.id]).length+" / "+ACH.length;
- applyPlan();extra2(lv);extra3(st,xp,lv,power);extra4();setTimeout(()=>toast(""),0);
+ applyPlan();extra2(lv);extra3(st,xp,lv,power);extra4();extra5();setTimeout(()=>toast(""),0);
 }
 $("pSave").onclick=()=>{
  const h=+$("pH").value,w0=+$("pW0").value,g=$("pG").value,f=$("pF").value,t=+$("pT").value||(g==="keep"?w0:0);
@@ -502,7 +547,7 @@ $("mute").onclick=()=>{S.mute=!S.mute;save();render()};
 const TABS={"เควสประจำวัน":"t","บันทึกการออกกำลังกาย":"t","บอสประจำสัปดาห์":"t","อาหารและน้ำวันนี้":"t",
  "ค่าพลังตัวละคร":"c","อาชีพ":"c","ตัวละครและร้านค้า":"c","เหรียญความสำเร็จ":"c","อันดับเพื่อน":"c",
  "ร่างกายและเป้าหมาย":"b","แผนแนะนำ":"b","รอบเอวและสัดส่วน":"b",
- "ประวัติและแก้ไข":"s","ปฏิทิน 28 วันและสถิติรายสัปดาห์":"s","เป้าหมายถัดไป":"s"};
+ "ประวัติและแก้ไข":"s","โปรแกรม 4 สัปดาห์":"t","ความก้าวหน้าย้อนหลัง":"s","สรุปรายเดือน":"s","ปฏิทิน 28 วันและสถิติรายสัปดาห์":"s","เป้าหมายถัดไป":"s"};
 function showTab(t,scroll){
  if(!["t","c","b","s"].includes(t))t="t";
  S.tab=t;
@@ -574,6 +619,125 @@ function needs2(){
   keep:"ใกล้ระดับรักษาน้ำหนัก (ADA/DC/ACSM ระบุว่าควรกินพอรักษาน้ำหนักเพื่อให้ร่างกายใช้โปรตีนได้เต็มที่)"}[mode];
  const html=`<div class="sub"><b style="color:var(--ink)">${PLANS[f]?PLANS[f].n:"สุขภาพทั่วไป"}</b> · พลังงานที่ใช้ต่อวัน (TDEE) ≈ ${K(tdee)} kcal (BMR ${K(bmr)})</div><div class="pw"><div>กินได้ไม่เกิน<b>${K(cap)}</b>kcal/วัน</div><div>เป้าหมาย<b>${K(tgt)}</b>kcal</div><div>ไม่ควรต่ำกว่า<b>${K(flo)}</b>kcal</div></div><div class="pw"><div>โปรตีน<b>${P} ก.</b>ช่วง ${Pl}–${Ph}</div><div>ไขมัน<b>${fat} ก.</b>ช่วง ${Fl}–${Fh}</div><div>คาร์บ<b>${C} ก.</b>ส่วนที่เหลือ</div></div>${rt?`<div class="sub">${rt}</div>`:""}${warn?`<div class="warn">⚠️ ${warn}</div>`:""}<details><summary>ที่มาของตัวเลข</summary><div class="sub" style="font-size:12px;line-height:1.6">• พลังงานพื้นฐานคำนวณด้วยสมการ Mifflin–St Jeor คูณตัวคูณกิจกรรมมาตรฐาน เป็นเพียงค่าประมาณ ควรดูน้ำหนักจริงต่อเนื่อง 2–4 สัปดาห์ แล้วปรับเพิ่มลด<br>• ${src}<br>• โปรตีน: ผู้ออกกำลังกายควรได้ 1.4–2.0 ก./กก./วัน (ISSN 2017) ส่วน ADA/DC/ACSM ระบุ 1.2–2.0 สายอึดอยู่ช่วงล่าง สายเวทและช่วงลดน้ำหนักอยู่ช่วงบน${rw!==w.cur?" คิดจากน้ำหนักเป้าหมายเพื่อไม่ให้สูงเกินจำเป็น (แนวปฏิบัติของนักกำหนดอาหาร)":""}<br>• ไขมัน 20–35% ของพลังงาน (ADA/DC/ACSM) คาร์โบไฮเดรตคือส่วนที่เหลือ${f==="endurance"?` ซึ่ง ADA/DC/ACSM แนะนำคาร์บ ${cg} ก./กก./วันตามความหนักของการฝึก (ตอนนี้คุณได้ ${(C/w.cur).toFixed(1)})`:""}<br>• ปริมาณน้ำเป็นเกณฑ์คร่าว ๆ 35 มล./กก. ไม่ใช่ค่ามาตรฐานทางการ<br>• ไม่เหมาะกับผู้ตั้งครรภ์ ให้นมบุตร มีโรคประจำตัว หรือมีประวัติการกินผิดปกติ ควรปรึกษาแพทย์หรือนักกำหนดอาหาร</div></details>`;
  return{kcal:K(tgt),cap:K(cap),flo:K(flo),bmr:K(bmr),pr:P,gl:Math.ceil(w.cur*35/250),html};
+}
+const PL={
+ gen:[["เสริมแรงทั้งตัว",[["push",3,8],["squat",3,12],["plank",2]]],["คาร์ดิโอเบา",[["march",20]]],["ยืดเหยียด",[["stretch",15]]],["ขาและสะโพก",[["lunge",3,8],["bridge",3,12],["push",3,8]]],["คาร์ดิโอและแกนกลาง",[["march",15],["jack",5],["plank",2]]],["คาร์ดิโอสนุก",[["jack",8],["march",10],["stretch",10]]],["พักเต็มที่",[]]],
+ fat:[["คาร์ดิโอต่อเนื่อง",[["march",30],["jack",8]]],["เสริมแรงทั้งตัว",[["squat",3,12],["lunge",3,8],["push",3,8],["plank",2]]],["คาร์ดิโอสลับท่า",[["jack",10],["climb",6],["stretch",10]]],["คาร์ดิโอต่อเนื่อง",[["march",35]]],["เสริมแรงทั้งตัว",[["squat",3,12],["lunge",3,8],["push",3,8],["plank",2]]],["คาร์ดิโอหนัก",[["jack",10],["climb",6],["burpee",3,6]]],["ยืดเหยียดผ่อนคลาย",[["stretch",15]]]],
+ muscle:[["ส่วนบน",[["push",4,10],["plank",2],["climb",4]]],["ส่วนล่าง",[["squat",4,15],["lunge",3,10],["bridge",3,15]]],["พักและยืดเหยียด",[["stretch",15]]],["ส่วนบนและแกนกลาง",[["push",4,10],["plank",3],["climb",4]]],["ส่วนล่าง",[["wallsit",2],["squat",4,15],["bridge",3,15],["lunge",3,10]]],["เดินยกเข่าเบา ๆ",[["march",20]]],["พักเต็มที่",[]]],
+ recomp:[["ทั้งตัว",[["squat",3,15],["push",3,10],["plank",2]]],["คาร์ดิโอ",[["jack",10],["march",15]]],["ขาและสะโพก",[["lunge",3,10],["bridge",3,15],["wallsit",1]]],["ยืดเหยียด",[["stretch",15]]],["ทั้งตัวแบบหนัก",[["burpee",3,6],["push",3,10],["plank",2]]],["คาร์ดิโอต่อเนื่อง",[["march",25]]],["พักเต็มที่",[]]],
+ endurance:[["คาร์ดิโอต่อเนื่อง",[["march",25]]],["คาร์ดิโอสลับท่า",[["jack",10],["climb",6]]],["เสริมแรง",[["squat",3,12],["lunge",3,8],["plank",2]]],["คาร์ดิโอและแกนกลาง",[["march",20],["plank",2],["stretch",10]]],["คาร์ดิโอสลับท่า",[["jack",12],["climb",6],["march",10]]],["คาร์ดิโอยาว",[["march",35]]],["ยืดเหยียดผ่อนคลาย",[["stretch",15]]]],
+ agility:[["จังหวะและขา",[["jack",10],["lunge",3,8]]],["ท่าพลัง",[["climb",6],["burpee",3,6]]],["แกนกลางและแขน",[["plank",2],["push",3,10],["stretch",10]]],["จังหวะและขา",[["jack",12],["squat",3,12]]],["ท่าพลัง",[["burpee",3,8],["climb",6]]],["คาร์ดิโอเบา",[["march",20]]],["พักเต็มที่",[]]],
+ flex:[["ยืดเหยียดและแกนกลาง",[["stretch",20],["plank",2]]],["เดินยกเข่าเบา ๆ",[["march",15]]],["ยืดเหยียดยาว",[["stretch",25]]],["เสริมแรงเบา",[["squat",3,12],["push",3,8],["stretch",10]]],["ยืดเหยียดและแกนกลาง",[["stretch",20],["plank",2]]],["เดินยกเข่าเบา ๆ",[["march",20]]],["ยืดเหยียดผ่อนคลาย",[["stretch",15]]]]
+};
+const WK_M=[1,1.1,1.2,0.8],WK_T=["สัปดาห์ปรับตัว","เพิ่มภาระประมาณ 10%","เพิ่มภาระประมาณ 20%","สัปดาห์ลดภาระ (ลดลงประมาณ 20%)"];
+const PD=["จ.","อ.","พ.","พฤ.","ศ.","ส.","อา."],AERO=["run","bike","swim","jump","march","jack","climb"],STR=["push","squat","plank","weights","lunge","bridge","wallsit"],LV={b:0.75,m:1,h:1.25},LVN={b:"เริ่มต้น",m:"ปานกลาง",h:"ท้าทาย"};
+const PDT=s=>new Date(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10));
+ACH.push({id:"plan1",i:"📅",n:"ตามแผน",t:"บันทึกตามแผนวันแรก",f:()=>Object.keys(S.progDone).length>=1},{id:"plan12",i:"🗓️",n:"ยึดแผนมั่นคง",t:"ทำตามแผนครบ 12 วัน",f:()=>Object.keys(S.progDone).length>=12});
+function pday(f,w,d){
+ const D=PL[f][d],m=WK_M[w]*(LV[S.plv]||1);
+ return{t:D[0],it:D[1].map(x=>{
+  if(x.length===3){const r=Math.max(5,Math.round(x[2]*m));return{k:x[0],n:x[1]*r,txt:EX[x[0]].n+" "+x[1]+"×"+r+" ครั้ง"}}
+  const n=Math.max(1,Math.round(x[1]*m));return{k:x[0],n:n,txt:EX[x[0]].n+" "+n+" นาที"}})};
+}
+function progUI(){
+ const el=$("prog"),f=PLANS[S.prof.f]&&PL[S.prof.f]?S.prof.f:"gen",td=today(),now=new Date();
+ if(!S.prog){
+  el.innerHTML=`<div class="sub">แผนฝึก 4 สัปดาห์ตามเป้าหมายหลักของคุณ (<b style="color:var(--ink)">${PLANS[f].n}</b>) เพิ่มภาระทีละน้อยและลดลงในสัปดาห์สุดท้ายเพื่อให้ร่างกายฟื้นตัว นับจากวันจันทร์ของสัปดาห์นี้ แผนจะเปลี่ยนตามเป้าหมายหลักที่เลือกในแท็บร่างกาย</div><div class="wrow"><button id="pgStart">เริ่มโปรแกรม</button></div>`;
+  $("pgStart").onclick=()=>{S.prog={start:mon(now)};S.pw=null;save();render();toast("เริ่มโปรแกรมแล้ว")};
+  return;
+ }
+ const st=S.prog.start,cur=Math.floor(Math.round((PDT(td)-PDT(st))/864e5)/7);
+ if(cur>3){
+  el.innerHTML=`<div class="sub">จบโปรแกรม 4 สัปดาห์แล้ว เริ่มรอบใหม่เพื่อทำต่อโดยเพิ่มภาระจากสัปดาห์แรกอีกครั้ง</div><div class="wrow"><button id="pgStart">เริ่มรอบใหม่</button></div>`;
+  $("pgStart").onclick=()=>{S.prog={start:mon(now)};S.pw=null;save();render();toast("เริ่มรอบใหม่แล้ว")};
+  return;
+ }
+ const w=S.pw==null?Math.max(0,cur):Math.min(3,Math.max(0,+S.pw));
+ const days=[0,1,2,3,4,5,6].map(i=>{const d=PDT(st);d.setDate(d.getDate()+w*7+i);const ds=fmt(d);return Object.assign({ds:ds},pday(f,w,i))});
+ let aero=0,sd=0;
+ days.forEach(d=>{let s=false;d.it.forEach(x=>{if(AERO.includes(x.k))aero+=x.n;if(STR.includes(x.k))s=true});if(s)sd++});
+ const ti=w===cur?days.findIndex(d=>d.ds===td):-1,tod=ti>=0?days[ti]:null;
+ let act="";
+ if(tod){
+  if(!tod.it.length)act=`<div class="sub" style="margin-top:10px">วันนี้เป็นวันพัก ร่างกายสร้างกล้ามเนื้อตอนพัก</div>`;
+  else if(S.progDone[td])act=`<div class="sub" style="margin-top:10px;color:var(--teal)">✓ บันทึกตามแผนวันนี้แล้ว</div>`;
+  else{const xp=tod.it.reduce((a,x)=>a+x.n*EX[x.k].r,0);act=`<div class="wrow"><button id="pgDo">บันทึกตามแผนวันนี้ (+${xp} XP)</button></div><div class="sub" style="font-size:12px;margin-top:4px">กดครั้งเดียวจะบันทึกทุกท่าของวันนี้ ถ้าบันทึกบางท่าเองไปแล้ว ไม่ต้องกด</div>`}
+ }
+ el.innerHTML=`<div class="sub" style="margin-bottom:6px">แผนทำที่บ้านได้เลย ไม่ต้องใช้อุปกรณ์ เลือกระดับให้เหมาะกับตัวเอง</div><div class="rng">${["b","m","h"].map(k=>`<button class="ghost ${(S.plv||"m")===k?"on":""}" data-lv="${k}" aria-pressed="${(S.plv||"m")===k}">${LVN[k]}</button>`).join("")}</div><div class="rng">${[0,1,2,3].map(i=>`<button class="ghost ${i===w?"on":""}" data-w="${i}" aria-pressed="${i===w}">สัปดาห์ ${i+1}${i===cur?" (ตอนนี้)":""}</button>`).join("")}</div>
+ <div class="sub">${WK_T[w]} · คาร์ดิโอรวม <b style="color:var(--ink)">${aero}</b> นาที · ฝึกแรงต้าน <b style="color:var(--ink)">${sd}</b> วัน</div>
+ <div class="sub" style="font-size:12px">แนวทาง WHO สำหรับผู้ใหญ่: คาร์ดิโอระดับปานกลาง 150–300 นาที/สัปดาห์ (หรือระดับหนัก 75–150 นาที) และฝึกแรงต้าน 2 วันขึ้นไป${aero<150?" แผนนี้ต่ำกว่า 150 นาที ถ้ามีเวลาให้เดินเร็วเพิ่มในวันพัก":""}</div>
+ <div style="margin-top:8px">${days.map((d,i)=>`<div class="pd ${d.ds===td?"today":""}"><b>${PD[i]}<br><span class="sub">${+d.ds.slice(8)}</span></b><div><span class="pt">${d.t}</span><br><span class="sub">${d.it.length?d.it.map(x=>x.txt).join(" · "):"พักเต็มที่"}</span></div><span>${S.progDone[d.ds]?"✓":""}</span></div>`).join("")}</div>${act}
+ <div class="sub" style="font-size:12px;margin-top:10px">ท่าไหนไม่ไหว: วิดพื้นให้พิงผนังหรือคุกเข่า ถ้าเข่าไม่ดีให้ย่อสควอตตื้นลงและใช้เดินยกเข่าแทนท่ากระโดด ไม่มีน้ำหนักถ่วง: ลงช้า ๆ 3 วินาที หรือถือขวดน้ำหรือเป้ใส่ของ ถ้าเพิ่งเริ่มให้เลือกระดับเริ่มต้นและหยุดเมื่อมีอาการเจ็บ</div>
+ <div style="margin-top:6px"><button class="ghost" id="pgReset">เริ่มโปรแกรมใหม่</button></div>`;
+ document.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>{S.plv=b.dataset.lv;save();render()});
+ document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{const i=+b.dataset.w;S.pw=i===cur?null:i;save();render()});
+ const b=$("pgDo");
+ if(b)b.onclick=()=>{const before=calc().lv;tod.it.forEach(x=>S.log.push({d:td,k:x.k,n:x.n}));S.progDone[td]=1;save();render();if(calc().lv>before)fx("lv");toast("บันทึกตามแผนวันนี้แล้ว")};
+ $("pgReset").onclick=()=>{if(armed($("pgReset"))){S.prog=null;S.pw=null;save();render()}};
+}
+function lineChart(pts,o){
+ const W=320,H=150,L=40,Rr=12,T=14,B=24,f1=n=>n.toFixed(1);
+ let vs=pts.map(p=>p.v);if(o.target)vs.push(o.target);
+ let mn=Math.min.apply(null,vs),mx=Math.max.apply(null,vs);const sp=(mx-mn)||1;mn-=sp*.15;mx+=sp*.15;
+ let t0=pts[0].t,t1=pts[pts.length-1].t;if(t0===t1){t0-=3*864e5;t1+=3*864e5}
+ const X=t=>L+(t-t0)/(t1-t0)*(W-L-Rr),Y=v=>T+(1-(v-mn)/(mx-mn))*(H-T-B),ds=t=>{const d=new Date(t);return d.getDate()+"/"+(d.getMonth()+1)};
+ let g="";
+ [mn,(mn+mx)/2,mx].forEach(v=>{g+=`<line x1="${L}" x2="${W-Rr}" y1="${f1(Y(v))}" y2="${f1(Y(v))}" stroke="var(--line)" stroke-width="1"/><text x="${L-5}" y="${f1(Y(v)+3)}" text-anchor="end" font-size="10" fill="var(--mute)">${f1(v)}</text>`});
+ if(o.target)g+=`<line x1="${L}" x2="${W-Rr}" y1="${f1(Y(o.target))}" y2="${f1(Y(o.target))}" stroke="var(--teal)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="${W-Rr}" y="${f1(Y(o.target)-4)}" text-anchor="end" font-size="10" fill="var(--teal)">เป้า ${o.target}</text>`;
+ g+=`<polyline points="${pts.map(p=>f1(X(p.t))+","+f1(Y(p.v))).join(" ")}" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+ pts.forEach((p,i)=>{const l=i===pts.length-1;g+=`<circle cx="${f1(X(p.t))}" cy="${f1(Y(p.v))}" r="${l?5:2.5}" fill="${l?"var(--gold)":"var(--ac)"}"/>`});
+ const e=pts[pts.length-1];
+ g+=`<text x="${f1(Math.min(X(e.t)+4,W-Rr))}" y="${f1(Y(e.v)-9)}" text-anchor="end" font-size="11" font-weight="700" fill="var(--ink)">${e.v}</text>`;
+ g+=`<text x="${L}" y="${H-6}" font-size="10" fill="var(--mute)">${ds(pts[0].t)}</text><text x="${W-Rr}" y="${H-6}" text-anchor="end" font-size="10" fill="var(--mute)">${ds(e.t)}</text>`;
+ return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block" role="img" aria-label="${o.label}">${g}</svg>`;
+}
+function chartsUI(){
+ const el=$("prg"),R=S.rng==null?90:+S.rng,cut=R?Date.now()-R*864e5:0,w=wInfo();
+ const mk=(arr,key)=>arr.map(e=>({t:PDT(e.d).getTime(),v:+e[key]})).filter(p=>p.t>=cut).sort((a,b)=>a.t-b.t);
+ const sm=(p,u)=>{if(p.length<2)return "มีข้อมูล 1 จุด บันทึกเพิ่มเพื่อดูแนวโน้ม";const a=p[0],b=p[p.length-1],d=b.v-a.v,dy=(b.t-a.t)/864e5,pw=dy>=7?d/dy*7:null;return "เปลี่ยน "+(d>0?"+":"")+d.toFixed(1)+" "+u+" ใน "+Math.round(dy)+" วัน"+(pw!==null?" (เฉลี่ย "+(pw>0?"+":"")+pw.toFixed(2)+" "+u+"/สัปดาห์)":"")};
+ const box=(ti,p,u,tg,lab)=>`<div class="chd"><h3>${ti}</h3>${p.length?lineChart(p,{target:tg,label:lab})+`<div class="sub">${sm(p,u)}</div>`:`<div class="sub">ยังไม่มีข้อมูลในช่วงนี้ บันทึกที่แท็บร่างกายเพื่อดูกราฟ</div>`}</div>`;
+ const xw={};S.log.forEach(e=>{const x=EX[e.k];if(x){const k=mon(e.d);xw[k]=(xw[k]||0)+e.n*x.r}});
+ const arr=[];for(let i=11;i>=0;i--){const a=new Date();a.setDate(a.getDate()-7*i);const k=mon(a);arr.push([k,xw[k]||0])}
+ const mx=Math.max(1,...arr.map(a=>a[1]));
+ const bars=`<div class="chd"><h3>XP จากการออกกำลังกายรายสัปดาห์ (12 สัปดาห์)</h3><div class="wk" style="max-width:none;gap:4px">${arr.map((a,i)=>`<div style="font-size:10px"><span>${a[1]||""}</span><i style="height:${a[1]/mx*70}px"></i><span>${i%3===2||i===11?(+a[0].slice(8))+"/"+(+a[0].slice(5,7)):" "}</span></div>`).join("")}</div></div>`;
+ el.innerHTML=`<div class="rng">${[[30,"30 วัน"],[90,"90 วัน"],[0,"ทั้งหมด"]].map(([v,l])=>`<button class="ghost ${R===v?"on":""}" data-r="${v}" aria-pressed="${R===v}">${l}</button>`).join("")}</div>`+box("น้ำหนัก (กก.)",mk(S.wlog,"w"),"กก.",w.t||0,"กราฟน้ำหนัก")+box("รอบเอว (ซม.)",mk(S.waist,"c"),"ซม.",0,"กราฟรอบเอว")+bars;
+ document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{S.rng=+b.dataset.r;save();render()});
+}
+function monthUI(){
+ const el=$("mon"),MN=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."],now=new Date(),w0=+S.prof.w0||0;
+ const so=a=>a.slice().sort((x,y)=>x.d<y.d?-1:1),wl=so(S.wlog),wc=so(S.waist);
+ const chg=(arr,key,mk,base)=>{const inM=arr.filter(e=>e.d.slice(0,7)===mk),bef=arr.filter(e=>e.d.slice(0,7)<mk);if(!inM.length)return null;if(!bef.length&&!base&&inM.length<2)return null;const end=+inM[inM.length-1][key],s=bef.length?+bef[bef.length-1][key]:(base||+inM[0][key]);return end-s};
+ const fc=(v,u)=>v==null?"–":(v>0?"+":"")+v.toFixed(1)+" "+u;
+ const rows=[];
+ for(let i=0;i<6;i++){
+  const d=new Date(now.getFullYear(),now.getMonth()-i,1),mk=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+  const lg=S.log.filter(e=>e.d.slice(0,7)===mk&&EX[e.k]),days=new Set(lg.map(e=>e.d)).size,xp=lg.reduce((a,e)=>a+e.n*EX[e.k].r,0);
+  const ac=Object.values(S.ach).filter(x=>typeof x==="string"&&x.slice(0,7)===mk).length;
+  rows.push({t:MN[d.getMonth()]+" "+(d.getFullYear()+543),days,xp,w:chg(wl,"w",mk,w0),c:chg(wc,"c",mk,0),ac});
+ }
+ const cm=rows[0],pm=rows[1];
+ let top=`<div class="sub">เดือนนี้ออกกำลังกาย <b style="color:var(--ink)">${cm.days}</b> วัน`+(pm.days?` (เดือนก่อน ${pm.days} วัน)`:"")+`</div>`;
+ const vis=rows.filter((r,i)=>i===0||r.days||r.w!=null||r.c!=null||r.ac);
+ el.innerHTML=top+vis.map(r=>`<div class="mrow"><b>${r.t}</b><span>ออกกำลังกาย ${r.days} วัน</span><span>${r.xp} XP</span><span>น้ำหนัก ${fc(r.w,"กก.")}</span><span>รอบเอว ${fc(r.c,"ซม.")}</span><span>เหรียญใหม่ ${r.ac}</span></div>`).join("");
+}
+function extra5(){
+ try{goalUI()}catch(e){$("goalbar").textContent=""}
+ try{progUI()}catch(e){$("prog").textContent="โหลดโปรแกรมไม่ได้ ลองรีเฟรชหน้า"}
+ try{chartsUI()}catch(e){$("prg").textContent="โหลดกราฟไม่ได้ ลองรีเฟรชหน้า"}
+ try{monthUI()}catch(e){$("mon").textContent="โหลดสรุปไม่ได้ ลองรีเฟรชหน้า"}
+}
+ACH.push({id:"half",i:"⛰️",n:"ครึ่งทาง",t:"น้ำหนักเดินทางถึง 50% ของเป้าหมาย",f:()=>{const w=wInfo();return !!(w.w0&&w.t&&w.g!=="keep"&&S.wlog.length&&w.prog>=0.5)}});
+function goalUI(){
+ const el=$("goalbar"),w=wInfo();
+ if(!w.w0||!w.t){el.innerHTML=`<div class="sub" style="margin-top:12px;font-size:12px">ตั้งน้ำหนักเริ่มต้นและเป้าหมายในแท็บร่างกาย เพื่อดูแถบความคืบหน้าสู่เป้าหมาย</div>`;return}
+ const keep=w.g==="keep",pct=Math.round(w.prog*100),left=Math.abs(w.cur-w.t);
+ const verb=w.g==="lose"?"ลด":w.g==="gain"?"เพิ่ม":"รักษา";
+ const mil=[25,50,75,100].map(k=>({k:k,v:w.w0+(w.t-w.w0)*k/100,ok:pct>=k}));
+ let txt;
+ if(keep)txt=left<=0.5?"✓ น้ำหนักอยู่ในช่วงเป้าหมาย (±0.5 กก.)":`ตอนนี้ ${w.cur} กก. ห่างจากเป้า ${left.toFixed(1)} กก.`;
+ else if(w.reached)txt="🏆 ถึงเป้าหมายแล้ว ยอดเยี่ยมมาก";
+ else{const nx=mil.find(m=>!m.ok);txt=`ตอนนี้ ${w.cur} กก. เหลืออีก ${left.toFixed(1)} กก. ถึงเป้าหมาย`+(nx&&nx.k<100?` · เป้าหมายย่อยถัดไปที่ ${nx.v.toFixed(1)} กก.`:"")}
+ el.innerHTML=`<div class="goal"><div class="gh"><span>🎯 เป้าหมาย${verb}น้ำหนัก ${w.w0} → ${w.t} กก.</span><b>${pct}%</b></div><div class="gbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" aria-label="ความคืบหน้าสู่เป้าหมายน้ำหนัก"><i style="width:${pct}%"></i></div>`+(keep?"":`<div class="gm">${mil.map(m=>`<span class="${m.ok?"ok":""}${m.k===100?" end":""}" style="left:${m.k}%">${m.ok?"✓":"○"} ${m.k}%<small>${m.v.toFixed(1)}</small></span>`).join("")}</div>`)+`<div class="sub gt">${txt}</div></div>`;
 }
 function render(){
  const{st,xp,lv,power}=calc();extra(st,xp,lv,power);
