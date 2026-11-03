@@ -342,6 +342,35 @@ button{padding:8px 14px}
 .fva{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.fva input:first-child{grid-column:1/-1}.fva button{grid-column:1/-1}
 .fvr{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;font-size:13px;border-top:1px solid var(--line)}.fvr button{min-height:32px;padding:0 12px}
 .ver{text-align:center;font-size:11px;color:var(--mute);padding:6px 0 0;opacity:.7}
+
+/* ===== clarity pass ===== */
+body:not(.on-t) .hero{display:none}
+body:not(.on-t) .mini{display:flex}
+.mini{display:none;align-items:center;gap:12px;padding:10px 14px;margin-bottom:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.mini[hidden]{display:none!important}
+.mini .mlv{flex:none;text-align:center;font-size:11px;color:var(--mute);line-height:1.1;padding:6px 10px;border:1.5px solid var(--ac);border-radius:10px}
+.mini .mlv b{display:block;font-size:20px;color:var(--ink)}
+.mini .mtx{min-width:0;flex:1}.mini .mtx>b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini .mtx small{font-size:11.5px;color:var(--mute)}
+.mini .bar{margin:4px 0 2px;height:8px}
+.sub{line-height:1.55}
+/* quest rows as cards */
+.q{padding:10px 12px;margin-bottom:8px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.q:last-child{margin-bottom:0}
+/* nutrition: stat tiles + note boxes */
+#food .pw{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+#food .pw>div{border:1px solid var(--line);background:var(--panel2);border-radius:10px;padding:8px 4px;text-align:center;font-size:12px;color:var(--mute);line-height:1.35;min-width:0}
+#food .pw>div b{display:block;font-size:17px;color:var(--ink);margin:2px 0}
+#food>.sub:not(:first-child):not(:last-child){padding:8px 10px;margin:8px 0;border-left:3px solid var(--ac);background:var(--panel2);border-radius:0 8px 8px 0;font-size:13px}
+#food>.sub:first-child{font-size:13px;margin-bottom:2px}
+.wkr{border:1px solid var(--line);background:var(--panel2);border-radius:10px;padding:10px}
+.kt>summary,.fvm>summary,details>summary{padding:6px 0}
+.kadj{background:var(--panel2)}
+.kb{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+.fav{padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+/* plain explanatory paragraphs in sections */
+section>.sub{font-size:13.5px}
+section>p{font-size:14px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -361,6 +390,7 @@ button{padding:8px 14px}
   </div>
  </div>
 
+ <div class="mini" id="mini"></div>
  <div id="alerts"></div>
  <nav class="tabs" id="tabs" role="tablist" aria-label="หมวดหน้า">
   <button role="tab" data-t="t"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>วันนี้</span></button>
@@ -958,7 +988,7 @@ document.addEventListener("click",e=>{const c=e.target.closest&&e.target.closest
  qlog(q.k,Math.max(1,Math.round(ms/60000)))});
 
 let ACHF="all",FVO=false;
-const APPV="v29";
+const APPV="v30";
 try{$("ver").textContent="FitQuest "+APPV}catch(e){}
 function favAdd(i){const f=(S.fav||[])[i];if(!f)return;const td=today(),fd=S.food[td]=S.food[td]||{w:0,p:0,k:0};S.fl=S.fl||{};const L=S.fl[td]=S.fl[td]||{w:[],p:[],k:[]};
  [["k",f.k],["p",f.p]].forEach(([r,v])=>{if(v>0){fd[r]=(fd[r]||0)+v;(L[r]=L[r]||[]).push(v);if(L[r].length>30)L[r].shift()}});FVO=false;save();render();toast("+"+f.k+" kcal · "+f.n)}
@@ -1084,15 +1114,18 @@ const TABS={"ฉายา":"c","สรุปวันนี้":"t","เคว�
  "ค่าพลังตัวละคร":"c","ล่ามอนสเตอร์":"q","เควสเนื้อเรื่อง":"q","อาชีพ":"c","แรงก์":"c","ตัวละครและร้านค้า":"c","เหรียญความสำเร็จ":"c","อันดับเพื่อน":"c",
  "ร่างกายและเป้าหมาย":"b","แผนแนะนำ":"b","รอบเอวและสัดส่วน":"b",
  "ประวัติและแก้ไข":"s","โปรแกรม 4 สัปดาห์":"t","ความก้าวหน้าย้อนหลัง":"s","สรุปรายเดือน":"s","ปฏิทิน 28 วันและสถิติรายสัปดาห์":"s","เป้าหมายถัดไป":"s"};
+function miniUp(){const m=$("mini");if(!m)return;const lv=$("lv")?$("lv").textContent:"",rk=$("rank")?$("rank").textContent:"",xb=$("xpbar")?$("xpbar").style.width:"0%",xt=$("xptxt")?$("xptxt").textContent:"";
+ m.innerHTML=`<div class="mlv">Lv <b>${esc(lv)}</b></div><div class="mtx"><b>${esc(rk)}</b><div class="bar"><i style="width:${esc(xb)}"></i></div><small>${esc(xt)}</small></div>`}
 function showTab(t,scroll){
  if(!["t","q","c","b","s"].includes(t))t="t";
- S.tab=t;
+ S.tab=t;document.body.classList.toggle("on-t",t==="t");miniUp();
  document.querySelectorAll("main section").forEach(s=>{const h=s.querySelector("h2"),k=h&&h.firstChild?h.firstChild.textContent.trim():"";s.hidden=(TABS[k]||"t")!==t});
  document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.t===t)));
  if(scroll)window.scrollTo({top:0});
 }
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{showTab(b.dataset.t,true);save()});
 showTab(S.tab||"t",false);
+try{const mo=new MutationObserver(()=>miniUp());["lv","rank","xptxt","xpbar"].forEach(i=>{const e=$(i);if(e)mo.observe(e,{childList:true,characterData:true,subtree:true,attributes:true})})}catch(e){}
 function armed(b){
  if(b.dataset.arm){clearTimeout(+b.dataset.arm);b.textContent=b.dataset.old;delete b.dataset.arm;return true}
  b.dataset.old=b.textContent;b.textContent="กดอีกครั้งเพื่อยืนยัน";
