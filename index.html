@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>FitQuest</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#0e0c22">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FitQuest">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 /* Layout: HUD-style panels with cut corners, one hero badge, bottom tab bar.
@@ -24,7 +29,7 @@ section{padding:18px}
 section h2{font-size:17px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
 section h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
 .hero{--c:22px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;padding:22px;background:linear-gradient(var(--gold),var(--gold)) top right/30px 3px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/3px 30px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/30px 3px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/3px 30px no-repeat,linear-gradient(135deg,#2b2266,var(--panel) 60%)}
-.lv{width:112px;height:126px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:linear-gradient(160deg,var(--gold),var(--ember));color:#2a1200;display:grid;place-items:center;text-align:center;line-height:1}
+.lv{width:112px;height:126px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:linear-gradient(160deg,var(--tg1,var(--gold)),var(--tg2,var(--ember)));color:#1a0c00;display:grid;place-items:center;text-align:center;line-height:1}
 .lv small{font-size:12px;font-weight:600}
 .lv b{display:block;margin-top:8px;font-family:var(--px);font-size:30px;font-weight:400}
 .title{font-size:24px;font-weight:800;line-height:1.2;text-wrap:balance}
@@ -135,14 +140,110 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
 .gm small{font-size:11px}
 .gt{margin-top:4px;text-align:left;font-size:13px}
 @media(max-width:720px){.gt,.gh{text-align:left}}
+
+.res{--c:var(--teal);background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-left:4px solid var(--c);border-radius:4px;padding:10px 12px 12px;margin:12px 0}
+.res.ok{box-shadow:0 0 14px -4px var(--c)}
+.rh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px;white-space:nowrap}
+.rn{font-weight:700;font-size:15px}
+.rv{font-size:13px;color:var(--mute)}.rv b{font-family:var(--px);font-size:14px;font-weight:400;color:var(--c);margin-right:2px}
+.rbar{height:14px;background:#0a0820;box-shadow:inset 0 0 0 1px var(--line);border-radius:2px;overflow:hidden}
+.rbar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--c) 0 9px,transparent 9px 11px);transition:width .5s;filter:drop-shadow(0 0 4px var(--c))}
+.rwarn{font-size:12.5px;color:var(--hp);margin-top:6px}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(54px,1fr));gap:8px;margin-top:10px}
+.chips button,.cust button,button.rc{clip-path:none;border-radius:8px;min-height:42px;padding:0 8px;white-space:nowrap;font-size:15px}
+.chips button:not(.und){background:transparent;border:1.5px solid var(--c);color:var(--c);font-weight:700}
+.chips button:not(.und):hover:not(:disabled){background:var(--c);color:var(--acink)}
+.chips .und{background:transparent;border:1.5px dashed var(--line);color:var(--mute);font-size:13px;font-weight:500}
+.chips .und:disabled{opacity:.45}
+.cust{display:flex;gap:8px;margin-top:8px}
+.cust input{flex:0 0 90px;min-width:0;min-height:42px;border-radius:8px;border:1.5px solid var(--line);background:#0a0820;padding:0 10px;font-size:16px}
+.cust button{flex:1;background:var(--c);color:var(--acink)}
+button.rc{width:100%;margin-top:10px}
+/* game icon skin */
+.gi{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.22em;line-height:0;color:var(--g,#fff);filter:drop-shadow(0 1px 0 #0a0820) drop-shadow(0 0 3px color-mix(in srgb,var(--g,#fff) 55%,transparent))}
+.gi svg{width:100%;height:100%;display:block;overflow:visible}
+
+.lvw{--tc:var(--gold);position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;margin:0 24px;filter:drop-shadow(0 0 12px color-mix(in srgb,var(--tc) 60%,transparent))}
+.lvw::before,.lvw::after{content:"";position:absolute;top:14px;width:30px;height:76px;background:linear-gradient(180deg,var(--tc),transparent 120%);opacity:0;clip-path:polygon(100% 0,0 22%,18% 42%,0 62%,100% 100%)}
+.lvw::before{left:-30px}.lvw::after{right:-30px;transform:scaleX(-1)}
+.hero[data-t="3"] .lvw::before,.hero[data-t="3"] .lvw::after,.hero[data-t="4"] .lvw::before,.hero[data-t="4"] .lvw::after,.hero[data-t="5"] .lvw::before,.hero[data-t="5"] .lvw::after,.hero[data-t="6"] .lvw::before,.hero[data-t="6"] .lvw::after{opacity:.9}
+.hero[data-t="5"] .lvw::before,.hero[data-t="5"] .lvw::after,.hero[data-t="6"] .lvw::before,.hero[data-t="6"] .lvw::after{width:40px;height:100px;top:6px}
+.hero[data-t="5"] .lvw::before,.hero[data-t="6"] .lvw::before{left:-40px}.hero[data-t="5"] .lvw::after,.hero[data-t="6"] .lvw::after{right:-40px}
+.hero[data-t]{box-shadow:inset 0 0 0 1px var(--tc),inset 0 0 36px -14px var(--tc)}
+.emb{position:absolute;right:-12px;top:88px;width:36px;height:36px;border-radius:50%;background:var(--bg);border:2px solid var(--ec,var(--tc));display:grid;place-items:center;font-size:19px;line-height:1;box-shadow:0 0 10px -2px var(--ec,var(--tc))}
+.emb:empty{display:none}
+.pips{display:flex;gap:6px;height:12px;align-items:center}
+.pips i{width:9px;height:9px;transform:rotate(45deg);background:#0a0820;box-shadow:inset 0 0 0 1px var(--line)}
+.pips i.on{background:var(--tc);box-shadow:0 0 6px var(--tc)}
+.tierpill{display:inline-flex;align-items:center;gap:6px;margin:4px 0 6px;padding:3px 12px;border:1px solid var(--tc,var(--gold));color:var(--tc,var(--gold));border-radius:99px;font-size:13px;font-weight:700}
+.tierpill:empty{display:none}
+.rkc{--tc:var(--gold);display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:12px;border:1px solid var(--tc);border-radius:6px;background:linear-gradient(135deg,color-mix(in srgb,var(--tc) 16%,var(--panel)),var(--panel));margin-bottom:10px}
+.rkc .big{font-size:46px;line-height:1;filter:drop-shadow(0 0 8px var(--tc))}
+.rkc b.n{font-size:20px;color:var(--tc)}
+.rkc .bar i{background:var(--tc)}
+.lad{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:6px;margin:10px 0}
+.lad div{--tc:var(--line);text-align:center;padding:6px 2px;border:1px solid var(--line);border-radius:6px;font-size:12px;color:var(--mute)}
+.lad div b{display:block;font-size:12px;font-weight:700}
+.lad div.on{border-color:var(--tc);color:var(--tc);background:color-mix(in srgb,var(--tc) 14%,transparent)}
+.lad div.cur{box-shadow:0 0 12px -2px var(--tc)}
+.brk{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.brk>div{background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);padding:8px 10px;border-radius:6px;font-size:13px;color:var(--mute)}
+.brk b{display:block;font-family:var(--px);font-size:13px;font-weight:400;color:var(--ink);margin-top:3px}
+.c2g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:6px}
+.c2g button{background:var(--bg);color:var(--ink);text-align:left;line-height:1.3;box-shadow:inset 0 0 0 1px var(--line);clip-path:none;border-radius:8px}
+.c2g button.on{background:var(--ec);color:#140f33}
+.c2g small{display:block;font-weight:400;opacity:.85}
+.lock2{padding:12px;border:1px dashed var(--line);border-radius:6px;color:var(--mute);font-size:14px}
+
+.mon{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.mon .mi{font-size:34px;width:42px;text-align:center;flex:none}
+.mon .mm{flex:1;min-width:0}.mon .mm .sub{font-size:12.5px;margin-top:2px}
+.mon button{flex:none;min-width:76px;min-height:40px;padding:0 10px;clip-path:none;border-radius:8px;font-size:14px}
+.mon.lock{opacity:.5}
+.mon.on{border-top:0;padding-top:0}.mon.on .mi{font-size:54px;width:64px;filter:drop-shadow(0 0 10px var(--hp))}
+.drop{padding:10px 12px;margin:0 0 10px;border:1px solid var(--gold);border-radius:6px;background:color-mix(in srgb,var(--gold) 12%,transparent);font-size:14px}
+.clspill{display:inline-flex;align-items:center;gap:6px;margin:4px 0 6px;padding:3px 12px;border-left:3px solid var(--pc,var(--ac));background:color-mix(in srgb,var(--pc,var(--ac)) 16%,transparent);font-weight:700;font-size:14px}
+.clspill small{font-weight:500;font-size:12px;opacity:.85}
+.clspill:empty{display:none}
+
+.al{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:6px;background:color-mix(in srgb,var(--gold) 9%,var(--panel));font-size:14px}
+.al.hot{border-left-color:var(--hp);background:color-mix(in srgb,var(--hp) 11%,var(--panel))}
+.al>span{flex:1;min-width:180px}
+.al button{clip-path:none;border-radius:8px;min-height:38px;padding:0 12px;font-size:13.5px}
+.dr{margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dr button{min-height:34px;min-width:38px;padding:0 10px}
+.chap{padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.chap.done{color:var(--mute)}
+.wcr{display:flex;justify-content:space-between;gap:8px;padding:5px 8px;border-radius:6px;font-size:14px}
+.wcr.me{background:color-mix(in srgb,var(--ac) 18%,transparent)}
+
+.tdh{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.tdh b{font-size:18px}
+.tdx{font-family:var(--px);font-size:12px;color:var(--gold)}
+.rings{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 6px}
+.rg{text-align:center;font-size:12.5px;color:var(--mute);min-width:0}
+.rg .r{position:relative;width:64px;height:64px;margin:0 auto 4px}
+.rg svg{width:64px;height:64px;transform:rotate(-90deg);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--c) 45%,transparent))}
+.rg circle{fill:none;stroke-width:6}
+.rg .tr{stroke:var(--line)}
+.rg .fg{stroke:var(--c);stroke-linecap:round;transition:stroke-dashoffset .6s}
+.rg .v{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--px);font-size:10px;color:var(--ink)}
+.nx{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border-radius:6px;background:color-mix(in srgb,var(--ac) 12%,var(--panel2));border-left:4px solid var(--ac);font-size:14px}
+.nx>span{flex:1;min-width:170px}
+.nx button{clip-path:none;border-radius:8px;min-height:36px;padding:0 12px;font-size:13.5px}
+.qk{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.qk small{color:var(--mute);font-size:12.5px;width:100%}
+.qk button{clip-path:none;border-radius:99px;min-height:38px;padding:0 14px;background:transparent;border:1.5px solid var(--line);color:var(--ink);font-size:14px;font-weight:500}
+.qk button:hover:not(:disabled){border-color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
 </style>
 </head>
 <body>
 <main>
  <div class="hero">
-  <div class="lv"><div><small>เลเวล</small><br><b id="lv">1</b></div></div>
+  <div class="lvw" id="lvw"><div class="lv"><div><small>เลเวล</small><br><b id="lv">1</b></div></div><div class="emb" id="emb"></div><div class="pips" id="pips"></div></div>
   <div>
    <h1 class="title" id="rank">มือใหม่หัดเดิน</h1>
+   <div class="clspill" id="clspill"></div> <div class="tierpill" id="tierpill"></div>
    <div class="sub" id="streak"></div>
    <button class="ghost" id="restBtn" style="margin-top:4px">😴 วันนี้ขอพัก</button>
    <div class="bar"><i id="xpbar"></i></div>
@@ -152,16 +253,23 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
   </div>
  </div>
 
+ <div id="alerts"></div>
  <nav class="tabs" id="tabs" role="tablist" aria-label="หมวดหน้า">
   <button role="tab" data-t="t"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>วันนี้</span></button>
+  <button role="tab" data-t="q"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h10a2 2 0 0 1 2 2v10a4 4 0 0 1-4 4H7a3 3 0 0 1-3-3v-1h3"/><path d="M8 4a2 2 0 0 0-2 2v10"/><path d="M11 9h6M11 13h6"/></svg><span>เควส</span></button>
   <button role="tab" data-t="c"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg><span>ตัวละคร</span></button>
   <button role="tab" data-t="b"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg><span>ร่างกาย</span></button>
   <button role="tab" data-t="s"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg><span>สถิติ</span></button>
  </nav>
  <div class="grid">
+  <section class="wide">
+   <h2>สรุปวันนี้</h2>
+   <div id="tds"></div>
+  </section>
   <section>
    <h2>เควสประจำวัน</h2>
    <div id="quests"></div>
+   <div id="dif"></div>
   </section>
   <section>
    <h2>บันทึกการออกกำลังกาย</h2>
@@ -175,6 +283,10 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
    <details><summary>เพิ่มท่าออกกำลังกายของตัวเอง</summary><div class="form2" style="margin-top:8px"><input id="cN" placeholder="ชื่อท่า" aria-label="ชื่อท่า" maxlength="24"><select id="cS" aria-label="ค่าพลังที่เพิ่ม"><option value="STR">STR พลังกาย</option><option value="END">END ความอึด</option><option value="AGI">AGI ความคล่อง</option><option value="VIT">VIT ความยืดหยุ่น</option></select><select id="cU" aria-label="หน่วย"><option>นาที</option><option>ครั้ง</option></select><button id="cAdd">เพิ่มท่า</button></div></details>
    <div class="hist" id="hist"></div>
   </section>
+  <section>
+   <h2>อาหารและน้ำวันนี้</h2>
+   <div id="food"></div>
+  </section>
   <section class="wide">
    <h2>โปรแกรม 4 สัปดาห์</h2>
    <div id="prog"></div>
@@ -182,6 +294,14 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
   <section>
    <h2>บอสประจำสัปดาห์</h2>
    <div id="boss"></div>
+  </section>
+  <section>
+   <h2>ล่ามอนสเตอร์</h2>
+   <div id="hunt"></div>
+  </section>
+  <section>
+   <h2>เควสเนื้อเรื่อง</h2>
+   <div id="story"></div>
   </section>
   <section id="profile">
    <h2>ร่างกายและเป้าหมาย</h2>
@@ -204,10 +324,6 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
    <div id="plan"></div>
   </section>
   <section>
-   <h2>อาหารและน้ำวันนี้</h2>
-   <div id="food"></div>
-  </section>
-  <section>
    <h2>รอบเอวและสัดส่วน</h2>
    <div id="body"></div>
    <div class="wrow"><input id="wcm" type="number" step="0.1" inputmode="decimal" placeholder="รอบเอววันนี้ (ซม.)" aria-label="รอบเอว"><button id="wcAdd">บันทึก</button></div>
@@ -216,9 +332,14 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
    <h2>ตัวละครและร้านค้า</h2>
    <div id="shop"></div>
   </section>
+  <section class="wide">
+   <h2>แรงก์</h2>
+   <div id="rk"></div>
+  </section>
   <section>
    <h2>อาชีพ</h2>
    <div class="cls" id="cls"></div>
+   <div id="c2"></div>
   </section>
   <section class="wide">
    <h2>ความก้าวหน้าย้อนหลัง</h2>
@@ -242,7 +363,9 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
    <div id="next" class="sub"></div>
    <p class="sub" style="margin-top:14px">STR มาจากวิดพื้นและสควอต, END มาจากวิ่งหรือเดิน, AGI มาจากกระโดดเชือก, VIT มาจากยืดเหยียดและโยคะ ยิ่งทำสม่ำเสมอ ค่าพลังยิ่งสูง</p>
    <button class="ghost" id="reset">เริ่มเกมใหม่</button>
-   <div style="margin-top:12px"><button class="ghost" id="mute">🔊 เสียงเปิด</button> <button class="ghost" id="exp">คัดลอกข้อมูลสำรอง</button> <button class="ghost" id="imp">นำเข้าข้อมูล</button><textarea id="bk" rows="3" aria-label="ข้อมูลสำรอง" placeholder="วางข้อมูลสำรองที่นี่เพื่อนำเข้า" style="width:100%;margin-top:8px;border:2px solid var(--ink);border-radius:10px;padding:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:12px"></textarea></div>
+   <div style="margin-top:12px"><button class="ghost" id="mute">🔊 เสียงเปิด</button> <button class="ghost" id="exp">คัดลอกข้อมูลสำรอง</button> <button class="ghost" id="imp">นำเข้าข้อมูล</button> <button class="ghost" id="dl">ดาวน์โหลดไฟล์สำรอง</button> <button class="ghost" id="upl">นำเข้าจากไฟล์</button><input type="file" id="upf" accept=".json,application/json" hidden>
+   <div class="sub" style="margin-top:10px">เตือนให้ออกกำลังกายหลังเวลา <select id="rh" aria-label="เวลาเตือน"></select> <button class="ghost" id="rn">แจ้งเตือนเบราว์เซอร์: ปิด</button></div>
+   <div class="sub" id="pwa" style="margin-top:10px"></div><textarea id="bk" rows="3" aria-label="ข้อมูลสำรอง" placeholder="วางข้อมูลสำรองที่นี่เพื่อนำเข้า" style="width:100%;margin-top:8px;border:2px solid var(--ink);border-radius:10px;padding:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:12px"></textarea></div>
   </section>
  </div>
 <section class="wide" style="margin-top:16px">
@@ -259,6 +382,7 @@ button.ghost.on:hover:not(:disabled){color:var(--acink)}
   <div class="sub" id="lbMsg">กำลังเชื่อมต่อ...</div>
   <div class="form" style="margin:8px 0;max-width:420px"><input id="lbNick" maxlength="16" placeholder="ชื่อเล่นของคุณ" aria-label="ชื่อเล่น"><button id="lbJoin" style="grid-column:auto">เข้าร่วม</button></div>
   <div class="sub" style="font-size:12px;margin-bottom:6px">เมื่อเข้าร่วม ชื่อเล่น เลเวล และค่าพลังรวมของคุณจะแสดงให้ทุกคนที่เปิดหน้านี้เห็น ข้อมูลอื่นยังอยู่ในเครื่องคุณ</div>
+  <div id="wch"></div>
   <div id="lb"></div>
   <button class="ghost" id="lbLeave" hidden>ออกจากอันดับ</button>
  </section>
@@ -290,7 +414,7 @@ const RANKS=["มือใหม่หัดเดิน","นักสู้ฝ
 const KEY="fitquest-v1";
 let S={log:[],claimed:{},ach:{},wlog:[],prof:{}};let PEND=[];
 try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
-function norm(){S.ach=S.ach||{};S.wlog=S.wlog||[];S.prof=S.prof||{};S.custom=S.custom||[];S.rest=S.rest||{};S.boss=S.boss||{};S.bhp=S.bhp||{};S.food=S.food||{};S.waist=S.waist||[];S.spent=S.spent||0;S.own=S.own||{};S.eq=S.eq||{};S.prog=S.prog||null;S.progDone=S.progDone||{};S.custom.forEach(c=>EX[c.k]=c)}norm();
+function norm(){S.ach=S.ach||{};S.wlog=S.wlog||[];S.prof=S.prof||{};S.custom=S.custom||[];S.rest=S.rest||{};S.boss=S.boss||{};S.kd=S.kd||{};if(S.dm==null)S.dm=100;if(S.rh==null)S.rh=18;S.wcl=S.wcl||{};S.story=S.story||{done:0,cur:null};S.c2u=S.c2u||{};if(S.cls2)S.c2u[S.cls2]=1;S.trial=S.trial||null;S.hdone=S.hdone||{};S.bxp=S.bxp||0;S.bhp=S.bhp||{};S.food=S.food||{};S.waist=S.waist||[];S.spent=S.spent||0;S.own=S.own||{};S.eq=S.eq||{};S.prog=S.prog||null;S.progDone=S.progDone||{};S.custom.forEach(c=>EX[c.k]=c)}norm();
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=id=>document.getElementById(id);
 const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
@@ -298,9 +422,9 @@ const lvOf=xp=>Math.floor(Math.sqrt(xp/50))+1;
 const needFor=l=>50*(l-1)*(l-1);
 function calc(){
  const st={STR:0,END:0,AGI:0,VIT:0};let xp=0;
- S.log.forEach(e=>{const x=EX[e.k];if(!x)return;const v=e.n*x.r;xp+=v*(S.cls&&CL[S.cls]&&CL[S.cls].s===x.s?1.25:1);st[x.s]+=v});
+ S.log.forEach(e=>{const x=EX[e.k];if(!x)return;const v=e.n*x.r;xp+=v*(S.cls&&CL[S.cls]&&CL[S.cls].s===x.s?(c2f()?1.4:1.25):1);st[x.s]+=v});
  let bonus=0;Object.values(S.claimed).forEach(a=>a.forEach(id=>{bonus+=qb(id)}));
- xp=Math.round(xp+bonus+Object.values(S.boss||{}).reduce((a,b)=>a+b,0));
+ xp=Math.round(xp+bonus+Object.values(S.boss||{}).reduce((a,b)=>a+b,0)+(S.bxp||0));
  const lv=lvOf(xp);
  const power=Math.round(Object.values(st).reduce((a,b)=>a+b,0)*(1+lv*0.1));
  return{st,xp,lv,power};
@@ -324,6 +448,23 @@ function radar(st,max){
  $("radar").innerHTML=h;
 }
 const CL={war:{n:"นักรบ",i:"⚔️",s:"STR",d:"โบนัส XP +25% จากวิดพื้นและสควอต"},ran:{n:"เรนเจอร์",i:"🏹",s:"END",d:"โบนัส XP +25% จากวิ่งหรือเดินเร็ว"},nin:{n:"นินจา",i:"🥷",s:"AGI",d:"โบนัส XP +25% จากกระโดดเชือก"},mon:{n:"จอมยุทธ์",i:"🧘",s:"VIT",d:"โบนัส XP +25% จากยืดเหยียดและโยคะ"}};
+const CL2={
+champ:{b:"war",n:"อัศวินพิทักษ์",e:"Knight",i:"🏰",c:"#5aa8ff",p:"xp",d:"เกราะหนาไม่ยอมล้ม"},
+crus:{b:"war",n:"ครูเสดศักดิ์สิทธิ์",e:"Crusader",i:"⚜️",c:"#ffd23d",p:"drop",d:"โล่แสงนำชัย"},
+bers:{b:"war",n:"เบอร์เซิร์กเกอร์",e:"Berserker",i:"🪓",c:"#ff5c7a",p:"crit",d:"คลั่งศึกพลังระเบิด"},
+hunt:{b:"ran",n:"พรานพงไพร",e:"Hunter",i:"🦌",c:"#5be07a",p:"drop",d:"ตามรอยเหยื่อไม่พลาด"},
+expl:{b:"ran",n:"พลซุ่มยิงขอบฟ้า",e:"Sniper",i:"🔭",c:"#38e0c4",p:"crit",d:"แม่นไกลเกินสายตา"},
+bard:{b:"ran",n:"นักร้องสมรภูมิ",e:"Bard",i:"🎵",c:"#ff7ad9",p:"xp",d:"เพลงปลุกใจให้ไปต่อ"},
+storm:{b:"nin",n:"เงาสายฟ้า",e:"Stormblade",i:"⚡",c:"#ffd23d",p:"xp",d:"ว่องไวดั่งสายฟ้า"},
+shad:{b:"nin",n:"โจรเงามืด",e:"Rogue",i:"😈",c:"#a48dff",p:"drop",d:"ปล้นของดีจากมอนสเตอร์"},
+assn:{b:"nin",n:"นักลอบสังหาร",e:"Assassin",i:"🔪",c:"#c9c4ff",p:"crit",d:"ฟันเดียวจบ"},
+sage:{b:"mon",n:"เซียนสวรรค์",e:"Sage",i:"🌟",c:"#ffb938",p:"xp",d:"ร่างกายและจิตกลมกลืน"},
+iron:{b:"mon",n:"ราชันจิตเหล็ก",e:"Iron Monk",i:"🫀",c:"#ff5c7a",p:"drop",d:"หัวใจไม่เคยสั่นคลอน"},
+prst:{b:"mon",n:"นักบวชผู้รักษา",e:"Priest",i:"🪄",c:"#7fd4ff",p:"crit",d:"ไม้เท้าแสงฟื้นพลัง"}};
+const MPERK={xp:"XP ล่ามอน +25%",drop:"ดรอปไอเทม +10%",crit:"โบนัส XP ใหญ่ +15%"};
+const c2f=()=>S.cls&&S.cls2&&CL2[S.cls2]&&CL2[S.cls2].b===S.cls?CL2[S.cls2]:null;
+const RT=[{n:"บรอนซ์",i:"🥉",c:"#c98a4a",min:0},{n:"ซิลเวอร์",i:"🥈",c:"#c9d1e6",min:12},{n:"โกลด์",i:"🥇",c:"#ffb938",min:28},{n:"แพลทินัม",i:"💠",c:"#38e0c4",min:48},{n:"ไดมอนด์",i:"💎",c:"#7fd4ff",min:70},{n:"มาสเตอร์",i:"🔱",c:"#ff7ad9",min:95},{n:"เลเจนด์",i:"🌠",c:"#ff5c7a",min:120}];
+function rankInfo(lv){const a=ACH.filter(x=>S.ach[x.id]).length,sc=lv+a*3;let t=0;RT.forEach((r,i)=>{if(sc>=r.min)t=i});const nx=RT[t+1];return{a,sc,t,r:RT[t],nx}}
 const ACH=[
 {id:"first",i:"🥾",n:"ก้าวแรก",t:"บันทึกการออกกำลังกายครั้งแรก",f:c=>c.n>=1},
 {id:"push",i:"💪",n:"นักดันพื้น",t:"วิดพื้นสะสม 100 ครั้ง",f:c=>c.tot("push")>=100},
@@ -338,6 +479,7 @@ const ACH=[
 {id:"p500",i:"💥",n:"พลังล้น",t:"ค่าพลังรวมถึง 500",f:c=>c.power>=500},
 {id:"q4",i:"📜",n:"ภารกิจครบ",t:"ทำเควสครบ 4 ข้อในวันเดียว",f:c=>Object.values(S.claimed).some(a=>a.filter(x=>x[0]==="q").length>=4)},
 {id:"cls",i:"🧭",n:"เลือกเส้นทาง",t:"เลือกอาชีพ",f:()=>!!S.cls},
+{id:"cls2",i:"👑",n:"เหนือกว่าเดิม",t:"เลือกอาชีพขั้นสอง (เลเวล 30)",f:()=>!!c2f()},
 {id:"wt",i:"⚖️",n:"รู้จักตัวเอง",t:"ตั้งค่าน้ำหนักและส่วนสูง",f:c=>!!(c.w.w0&&c.w.h)},
 {id:"goal",i:"🏆",n:"ถึงเป้าหมาย",t:"น้ำหนักถึงเป้าที่ตั้งไว้",f:c=>c.w.reached}
 ];
@@ -359,6 +501,7 @@ function extra(st,xp,lv,power){
  const tot=k=>S.log.filter(e=>e.k===k).reduce((a,e)=>a+e.n,0);
  const w=wInfo(),C={tot,lv,power,sk:streak(),w,n:S.log.length};
  ACH.forEach(a=>{if(!S.ach[a.id]&&a.f(C)){S.ach[a.id]=today();PEND.push(a.n)}});
+ {const R0=rankInfo(lv);if(S.rk==null)S.rk=R0.t;else if(R0.t>S.rk){S.rk=R0.t;PEND.push("แรงก์ "+R0.r.n)}else if(R0.t<S.rk)S.rk=R0.t}
  if(PEND.length){save();fx("ach")}
  // profile
  if(!w.w0){$("pInfo").innerHTML='<div class="sub" style="margin-top:8px">กรอกส่วนสูง น้ำหนักเริ่มต้น และเป้าหมาย แล้วกดบันทึก</div>'}
@@ -373,6 +516,21 @@ function extra(st,xp,lv,power){
  const rec=S.prof.f&&S.prof.f!=="gen"&&PLANS[S.prof.f]?"เป้าหมาย"+PLANS[S.prof.f].n+" แนะนำอาชีพ"+CL[PLANS[S.prof.f].c].n:!w.w0?"เลือกตามสไตล์ที่ชอบ เปลี่ยนได้ตลอด":w.g==="lose"?"เป้าหมายลดน้ำหนัก แนะนำเรนเจอร์หรือนินจา เน้นคาร์ดิโอ":w.g==="gain"?"เป้าหมายเพิ่มน้ำหนัก แนะนำนักรบ เน้นสร้างกล้ามเนื้อ":"เป้าหมายรักษาน้ำหนัก แนะนำจอมยุทธ์ เน้นสมดุลร่างกาย";
  $("cls").innerHTML=Object.entries(CL).map(([k,c])=>`<button data-c="${k}" class="${S.cls===k?"on":""}" aria-pressed="${S.cls===k}"><span style="font-size:22px">${c.i}</span> ${c.n}<small>${c.d}</small></button>`).join("")+`<div class="sub" style="grid-column:1/-1">${rec}</div>`;
  document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{S.cls=b.dataset.c;save();render();toast("เลือกอาชีพ "+CL[S.cls].n+" แล้ว")});
+
+ // rank + class 2
+ {const R=rankInfo(lv),c2=c2f(),hero=document.querySelector(".hero"),r=R.r;
+  hero.dataset.t=R.t;const lw=$("lvw");lw.style.setProperty("--tc",r.c);hero.style.setProperty("--tc",r.c);hero.style.setProperty("--tg1",r.c);hero.style.setProperty("--tg2","color-mix(in srgb,"+r.c+" 50%,#1a0c00)");
+  lw.style.setProperty("--ec",c2?c2.c:r.c);$("emb").textContent=c2?c2.i:"";
+  $("pips").innerHTML=RT.map((x,i)=>`<i class="${i<=R.t?"on":""}"></i>`).join("");
+  $("tierpill").innerHTML=`${r.i} แรงก์ ${r.n}`;
+  {const cp=$("clspill");cp.style.setProperty("--pc",c2?c2.c:"var(--ac)");cp.innerHTML=c2?`${c2.i} ${c2.n} <small>${c2.e} · คลาส 2</small>`:S.cls&&CL[S.cls]?`${CL[S.cls].i} ${CL[S.cls].n} <small>คลาส 1</small>`:""}
+  const lp=lv,ap=R.a*3,need=R.nx?R.nx.min-R.sc:0,pc=R.nx?Math.round((R.sc-r.min)/(R.nx.min-r.min)*100):100,lr=Math.min(1,lv/40),ar=ACH.length?R.a/ACH.length:0;
+  const adv=ar-lr>.2?"ความสำเร็จนำเลเวล ออกกำลังกายสะสม XP เพิ่มเพื่อดันเลเวล":lr-ar>.2?"เลเวลนำความสำเร็จ ลองไล่เก็บเหรียญความสำเร็จที่ยังล็อกอยู่":"เลเวลและความสำเร็จเดินไปพร้อมกัน ดีมาก";
+  $("rk").innerHTML=`<div class="rkc" style="--tc:${r.c}"><div class="big">${r.i}</div><div><b class="n">แรงก์ ${r.n}</b>${c2?` <span class="sub">· ${c2.i} ${c2.n}</span>`:""}<div class="sub">คะแนนแรงก์ ${R.sc} = เลเวล ${lp} + ความสำเร็จ ${R.a}×3</div><div class="bar"><i style="width:${pc}%"></i></div><div class="sub">${R.nx?`อีก ${need} คะแนนถึง ${R.nx.i} ${R.nx.n} (เลเวล +${need} หรือความสำเร็จ +${Math.ceil(need/3)})`:"สูงสุดแล้ว เป็นตำนานของจริง"}</div></div></div>
+  <div class="brk"><div>จากเลเวล<b>${lp} / ${R.sc} แต้ม</b></div><div>จากความสำเร็จ (${R.a}/${ACH.length})<b>${ap} / ${R.sc} แต้ม</b></div></div>
+  <div class="sub" style="margin-bottom:6px">${adv}</div>
+  <div class="lad">${RT.map((x,i)=>`<div class="${i<=R.t?"on":""} ${i===R.t?"cur":""}" style="--tc:${x.c}">${x.i}<b>${x.n}</b>${x.min}+</div>`).join("")}</div>`;
+  hunt(lv);hiclass(lv);story(lv);dif(lv);wch();alerts();todaySum(lv)}
  // achievements
  $("ach").innerHTML=ACH.map(a=>`<div class="ab ${S.ach[a.id]?"on":"lock"}"><div class="i">${a.i}</div><b>${a.n}</b><span>${a.t}</span></div>`).join("");
  $("achc").textContent=ACH.filter(a=>S.ach[a.id]).length+" / "+ACH.length;
@@ -400,7 +558,7 @@ function qt(q,lv){
  const w=wInfo();let m=1+(lv-1)*0.08;
  if(w.g==="lose"&&q.k==="run")m*=1.3;
  if(w.g==="gain"&&(q.k==="push"||q.k==="squat"))m*=1.2;
- const s=q.t<10?1:5;return Math.max(q.t,Math.round(q.t*m/s)*s);
+ m*=(S.dm||100)/100;const s=q.t<10?1:5;return Math.max((S.dm||100)<100?1:q.t,Math.round(q.t*m/s)*s);
 }
 function extra2(lv){
  const now=new Date(),wk=mon(now);
@@ -434,7 +592,7 @@ $("cAdd").onclick=()=>{
  const u=$("cU").value,k="c"+Date.now(),c={k,n,i:"🏅",u,s:$("cS").value,r:u==="นาที"?3:1};
  S.custom.push(c);EX[k]=c;save();$("cN").value="";fillEx();$("ex").value=k;hint();render();toast("เพิ่มท่า "+n+" แล้ว");
 };
-$("exp").onclick=async()=>{const j=JSON.stringify(S);$("bk").value=j;try{await navigator.clipboard.writeText(j);toast("คัดลอกแล้ว เก็บไว้ในที่ปลอดภัย")}catch(e){$("bk").select();toast("คัดลอกข้อความในช่องด้วยตัวเอง")}};
+$("exp").onclick=async()=>{const j=JSON.stringify(S);$("bk").value=j;S.bkAt=Date.now();save();try{await navigator.clipboard.writeText(j);toast("คัดลอกแล้ว เก็บไว้ในที่ปลอดภัย")}catch(e){$("bk").select();toast("คัดลอกข้อความในช่องด้วยตัวเอง")}};
 $("imp").onclick=()=>{
  try{const d=JSON.parse($("bk").value);if(!d||!Array.isArray(d.log))throw 0;
   if(!armed($("imp")))return;
@@ -461,6 +619,157 @@ function applyPlan(){
 $("pF").onchange=()=>{$("pG").value=PLANS[$("pF").value].g};
 ACH.push({id:"wa2",i:"📏",n:"รู้จักรอบเอว",t:"บันทึกรอบเอวอย่างน้อย 2 ครั้ง",f:()=>S.waist.length>=2},{id:"wa5",i:"🪡",n:"เอวเอสสวย",t:"รอบเอวลดลง 5 ซม.",f:()=>S.waist.length>=2&&S.waist[0].c-S.waist[S.waist.length-1].c>=5},{id:"shop",i:"🛍️",n:"นักช้อป",t:"ซื้อไอเท็มชิ้นแรก",f:()=>Object.keys(S.own).length>=1},{id:"food",i:"🥗",n:"กินดีมีวินัย",t:"ทำเป้าน้ำหรือโปรตีนครบ",f:()=>Object.values(S.claimed).some(a=>a.some(x=>x[0]==="w"))},{id:"lb",i:"🏁",n:"ขึ้นกระดาน",t:"เข้าร่วมอันดับเพื่อน",f:()=>!!S.lb});
 const ITEMS=[{id:"cap",s:"h",i:"🧢",n:"หมวกแก๊ป",p:40},{id:"helm",s:"h",i:"⛑️",n:"หมวกกู้ภัย",p:90},{id:"crown",s:"h",i:"👑",n:"มงกุฎ",p:250},{id:"sword",s:"r",i:"🗡️",n:"ดาบ",p:80},{id:"shield",s:"r",i:"🛡️",n:"โล่",p:120},{id:"trophy",s:"r",i:"🏆",n:"ถ้วยรางวัล",p:300},{id:"fire",s:"a",i:"🔥",n:"ออร่าไฟ",p:150,c:"#ff7a45"},{id:"ice",s:"a",i:"❄️",n:"ออร่าน้ำแข็ง",p:150,c:"#5cc8ff"},{id:"leaf",s:"a",i:"🍃",n:"ออร่าป่า",p:150,c:"#4fd16b"}];
+
+const MON=[
+{id:"m1",n:"สไลม์เด้งดึ๋ง",i:"🟢",lv:1,xp:20,req:[["push",15],["squat",15]],item:"d_slime"},
+{id:"m2",n:"ค้างคาวถ้ำ",i:"🦇",lv:2,xp:30,req:[["jack",2],["march",3]],item:"d_bat"},
+{id:"m3",n:"โครงกระดูกสุสาน",i:"💀",lv:4,xp:45,req:[["plank",1],["lunge",20],["bridge",20]],item:"d_skull"},
+{id:"m4",n:"แมงมุมยักษ์",i:"🕷",lv:6,xp:60,req:[["climb",3],["wallsit",1],["jack",2]],item:"d_web"},
+{id:"m5",n:"ผีขี้เกียจ",i:"👻",lv:9,xp:80,req:[["burpee",15],["stretch",5],["squat",30]],item:"d_ghost"},
+{id:"m6",n:"โกเลมหิน",i:"🗿",lv:12,xp:110,req:[["push",40],["wallsit",2],["plank",2],["lunge",30]],item:"d_golem"},
+{id:"m7",n:"ออร์คจอมโหด",i:"👹",lv:16,xp:150,req:[["burpee",30],["jack",4],["squat",50],["climb",5]],item:"d_orc"},
+{id:"m8",n:"มังกรทมิฬ",i:"🐲",lv:20,xp:220,req:[["burpee",50],["push",60],["plank",4],["march",8],["lunge",50]],item:"d_drag"}];
+ITEMS.push({id:"d_slime",s:"r",i:"🟢",n:"ตุ้มสไลม์",d:1},{id:"d_bat",s:"a",i:"🦇",n:"ออร่าค้างคาว",c:"#8a6bff",d:1},{id:"d_skull",s:"h",i:"💀",n:"หมวกกะโหลก",d:1},{id:"d_web",s:"r",i:"🕷",n:"แมงมุมเวท",d:1},{id:"d_ghost",s:"a",i:"👻",n:"ออร่าวิญญาณ",c:"#b9a8ff",d:1},{id:"d_golem",s:"r",i:"🗿",n:"รูปหินโกเลม",d:1},{id:"d_orc",s:"h",i:"👹",n:"หน้ากากออร์ค",d:1},{id:"d_drag",s:"a",i:"🐲",n:"ออร่ามังกรทมิฬ",c:"#ff5c7a",d:1});
+const nKills=()=>Object.values(S.kd||{}).reduce((a,b)=>a+b,0);
+ACH.push({id:"hk1",i:"💀",n:"นักล่าฝึกหัด",t:"ปราบมอนสเตอร์ 1 ตัว",f:()=>nKills()>=1},{id:"hk10",i:"🐲",n:"นักล่ามืออาชีพ",t:"ปราบมอนสเตอร์ 10 ตัว",f:()=>nKills()>=10},{id:"hdr",i:"🛍️",n:"นักสะสมดรอป",t:"มีไอเทมดรอป 3 ชิ้น",f:()=>ITEMS.filter(x=>x.d&&S.own[x.id]).length>=3});
+function huntProg(){const hh=S.hunt;if(!hh)return null;const m=MON.find(x=>x.id===hh.id);if(!m)return null;
+ const part=S.log.slice(Math.min(hh.idx||0,S.log.length));
+ const rows=m.req.map(([k,n])=>({k,n,a:Math.min(n,part.filter(e=>e.k===k).reduce((s,e)=>s+(+e.n||0),0))}));
+ return{m,rows,pc:rows.reduce((s,r)=>s+r.a/r.n,0)/rows.length,ok:rows.every(r=>r.a>=r.n)}}
+function hunt(lv){
+ const td=today(),done=S.hdone[td]||{},P=huntProg();let t="";
+ if(S.hunt&&!P)S.hunt=null;
+ if(P){const m=P.m,left=Math.round((1-P.pc)*100);
+  t=`<div class="mon on"><div class="mi">${m.i}</div><div class="mm"><b>${m.n}</b><div class="rbar" style="--c:var(--hp);margin:6px 0 2px"><i style="width:${left}%"></i></div><span class="sub">HP เหลือ ${left}%</span></div></div>`
+  +P.rows.map(r=>{const x=EX[r.k];return `<div class="q"><div class="i">${x.i}</div><div class="m"><b>${x.n}</b><span>${r.a} / ${r.n} ${x.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div></div></div>`}).join("")
+  +`<div class="sub" style="margin:8px 0">บันทึกท่าในส่วน "บันทึกการออกกำลังกาย" ระบบจะนับให้ตั้งแต่ตอนกดท้าสู้</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="hKill" ${P.ok?"":"disabled"}>ปราบ! รับดรอป</button><button class="ghost" id="hFlee">ถอยทัพ</button></div>`}
+ else t=(S.ld&&S.ld.d===td?`<div class="drop">${S.ld.t}</div>`:"")+`<div class="sub">เลือกมอนสเตอร์ ทำท่าตามที่กำหนดเพื่อปราบ แล้วลุ้นดรอปไอเทมหรือ XP · ปราบได้วันละครั้งต่อตัว · ปราบแล้วทั้งหมด ${nKills()} ตัว</div>`+MON.map(m=>{const lk=lv<m.lv,dn=done[m.id],it=ITEMS.find(x=>x.id===m.item);return `<div class="mon ${lk?"lock":""}"><div class="mi">${m.i}</div><div class="mm"><b>${m.n}</b> <span class="sub">เลเวล ${m.lv}+ · ปราบแล้ว ${S.kd[m.id]||0}</span><div class="sub">${m.req.map(([k,n])=>EX[k].n+" "+n+" "+EX[k].u).join(" · ")}</div><div class="sub">XP +${m.xp} · ดรอป ${it.i} ${it.n}${S.own[it.id]?" (มีแล้ว)":""}</div></div><button data-h="${m.id}" ${lk||dn?"disabled":""}>${lk?"ล็อก":dn?"ปราบแล้ว":"ท้าสู้"}</button></div>`}).join("");
+ $("hunt").innerHTML=t;
+ document.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{S.hunt={id:b.dataset.h,idx:S.log.length};save();render()});
+ const fl=$("hFlee");if(fl)fl.onclick=()=>{if(armed(fl)){S.hunt=null;save();render()}};
+ const kb=$("hKill");if(kb)kb.onclick=()=>{const Q=huntProg();if(!Q||!Q.ok)return;const m=Q.m,c2=c2f(),pk=c2?c2.p:"",td2=today();
+  const bx=Math.round(m.xp*(pk==="xp"?1.25:1));S.bxp=(S.bxp||0)+bx;
+  const it=ITEMS.find(x=>x.id===m.item),r=Math.random()*100,ic=18+(pk==="drop"?10:0),cc=30+(pk==="crit"?15:0);
+  let msg=`ปราบ ${m.n} แล้ว +${bx} XP`;
+  if(r<ic){if(S.own[it.id]){S.spent-=40;msg+=` · ดรอปซ้ำ ${it.i} ${it.n} แปลงเป็นเหรียญ 40`}else{S.own[it.id]=1;msg+=` · ได้ไอเทมใหม่ ${it.i} ${it.n}!`}}
+  else if(r<ic+cc){const e=Math.round(m.xp*1.5);S.bxp+=e;msg+=` · โบนัสใหญ่ +${e} XP`}
+  else{const co=Math.round(m.xp/2);S.spent-=co;msg+=` · ได้เหรียญ ${co}`}
+  S.kd[m.id]=(S.kd[m.id]||0)+1;(S.hdone[td2]=S.hdone[td2]||{})[m.id]=1;S.hunt=null;S.ld={d:td2,t:msg};save();render();fx(r<ic?"boss":"ach");toast(msg)}}
+
+const CQ={champ:[["plank",5],["wallsit",4],["squat",100]],crus:[["stretch",10],["push",60],["lunge",60],["plank",3]],bers:[["burpee",60],["push",80],["jack",6]],
+hunt:[["march",15],["climb",8],["lunge",60]],expl:[["plank",4],["wallsit",4],["bridge",60],["stretch",8]],bard:[["jack",10],["climb",6],["burpee",30]],
+storm:[["jack",8],["burpee",40],["climb",6]],shad:[["lunge",80],["bridge",60],["jack",6],["plank",3]],assn:[["burpee",50],["push",60],["plank",4],["jack",5]],
+sage:[["stretch",20],["plank",4],["bridge",80]],iron:[["wallsit",5],["plank",5],["push",60],["stretch",10]],prst:[["stretch",20],["march",15],["squat",80],["bridge",60]]};
+const reqTxt=a=>a.map(([k,n])=>EX[k].n+" "+n+" "+EX[k].u).join(" · ");
+function trialProg(){const t=S.trial;if(!t||!CQ[t.id])return null;const part=S.log.slice(Math.min(t.idx||0,S.log.length));
+ const rows=CQ[t.id].map(([k,n])=>({k,n,a:Math.min(n,part.filter(e=>e.k===k).reduce((s,e)=>s+(+e.n||0),0))}));return{id:t.id,rows,ok:rows.every(r=>r.a>=r.n)}}
+function hiclass(lv){
+ const base=S.cls&&CL[S.cls]?S.cls:null,u=S.c2u||{},T=trialProg();let t="";
+ if(S.trial&&!T)S.trial=null;
+ if(!base)t=`<div class="lock2" style="margin-top:12px">เลือกอาชีพหลักด้านบนก่อน แล้วที่เลเวล 30 จะเปลี่ยนเป็นไฮคลาสได้</div>`;
+ else{
+  const lk=lv<30,opts=Object.entries(CL2).filter(([k,x])=>x.b===base);
+  t=`<h3 style="font-size:15px;margin:16px 0 4px">ไฮคลาส (อาชีพขั้นสอง)</h3>`+(lk?`<div class="lock2">ล็อกอยู่ ปลดล็อกที่เลเวล 30 · อีก ${30-lv} เลเวล<br>เมื่อถึงแล้วต้องทำภารกิจเปลี่ยนคลาสของไฮคลาสนั้นให้สำเร็จก่อน จึงจะเปลี่ยนได้ ได้โบนัส XP สาย ${CL[base].s} เพิ่มเป็น +40%</div>`:`<div class="sub">เลือกไฮคลาส ต้องทำภารกิจเปลี่ยนคลาสให้ผ่านก่อน ผ่านแล้วสลับไปมาได้ตลอด ได้โบนัส XP สาย ${CL[base].s} +40%</div>`);
+  if(T&&!lk){const x=CL2[T.id];
+   t+=`<div class="drop" style="margin-top:10px;border-color:${x.c}"><b>ภารกิจเปลี่ยนคลาส: ${x.i} ${x.n} (${x.e})</b>`+T.rows.map(r=>{const e=EX[r.k];return `<div class="q" style="padding:8px 0"><div class="i">${e.i}</div><div class="m"><b>${e.n}</b><span>${r.a} / ${r.n} ${e.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div></div></div>`}).join("")+`<div class="sub" style="margin:6px 0">บันทึกท่าในส่วน "บันทึกการออกกำลังกาย" ระบบนับให้ตั้งแต่ตอนกดเริ่มภารกิจ</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="tDone" ${T.ok?"":"disabled"}>ผ่านภารกิจ! เปลี่ยนคลาส</button><button class="ghost" id="tCancel">ยกเลิกภารกิจ</button></div></div>`}
+  t+=opts.map(([k,x])=>{const cur=S.cls2===k,un=u[k],run=T&&T.id===k;
+   const btn=lk?`<button disabled>ล็อก</button>`:cur?`<button disabled>ใช้อยู่</button>`:un?`<button data-cw="${k}">เปลี่ยนคลาส</button>`:run?`<button disabled>กำลังทำ</button>`:`<button data-cs="${k}" ${T?"disabled":""}>เริ่มภารกิจ</button>`;
+   return `<div class="mon ${lk&&!un?"lock":""}" style="--hc:${x.c}"><div class="mi">${x.i}</div><div class="mm"><b>${x.n}</b> <span class="sub">${x.e}${cur?" · ใช้อยู่":un?" · ปลดล็อกแล้ว":""}</span><div class="sub">${x.d} · ★ ${MPERK[x.p]}</div>${un?"":`<div class="sub">ภารกิจ: ${reqTxt(CQ[k])}</div>`}</div>${btn}</div>`}).join("")}
+ $("c2").innerHTML=t;
+ document.querySelectorAll("[data-cs]").forEach(b=>b.onclick=()=>{if(lv<30||S.trial)return;S.trial={id:b.dataset.cs,idx:S.log.length};save();render()});
+ document.querySelectorAll("[data-cw]").forEach(b=>b.onclick=()=>{const k=b.dataset.cw;if(lv<30||!(S.c2u||{})[k])return;S.cls2=k;save();render();fx("ach");toast("เปลี่ยนเป็นไฮคลาส "+CL2[k].n+" แล้ว")});
+ const tc=$("tCancel");if(tc)tc.onclick=()=>{if(armed(tc)){S.trial=null;save();render()}};
+ const td=$("tDone");if(td)td.onclick=()=>{const Q=trialProg();if(!Q||!Q.ok||lv<30)return;S.c2u=S.c2u||{};S.c2u[Q.id]=1;S.cls2=Q.id;S.trial=null;save();render();fx("boss");toast("ผ่านภารกิจ! เปลี่ยนเป็นไฮคลาส "+CL2[Q.id].n)}}
+
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function backupNow(){const j=JSON.stringify(S);$("bk").value=j;S.bkAt=Date.now();save();
+ try{const b=new Blob([j],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="fitquest-backup-"+today()+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}catch(e){}
+ try{navigator.clipboard.writeText(j).catch(()=>{})}catch(e){}
+ render();toast("สำรองข้อมูลแล้ว ถ้าไม่เห็นไฟล์ ให้คัดลอกข้อความในช่องสำรองข้อมูลเก็บไว้แทน")}
+function alerts(){
+ const td=today(),worked=S.log.some(e=>e.d===td),rested=!!S.rest[td],now=new Date(),hrs=now.getHours(),left=(new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now)/6e4,sk=streak(),late=S.rh>=0&&hrs>=S.rh;let t="";
+ if(!worked&&!rested&&(sk>0||late)){const hh=Math.floor(left/60),mm=Math.round(left%60);
+  t+=`<div class="al ${left<240?"hot":""}"><span>${sk>0?`🔥 สตรีค ${sk} วันกำลังจะขาด เหลือเวลาอีก ${hh} ชม. ${mm} นาทีของวันนี้ บันทึกท่าสักท่าหรือกด "วันนี้ขอพัก"`:`ถึงเวลาออกกำลังกายแล้ว วันนี้ยังไม่ได้บันทึกท่าใดเลย`}</span></div>`}
+ if(S.log.length>=3&&(!S.bkAt||Date.now()-S.bkAt>7*864e5)&&(!S.bkSnz||Date.now()-S.bkSnz>2*864e5))
+  t+=`<div class="al"><span>${S.bkAt?"ครบ 7 วันแล้วที่ยังไม่ได้สำรองข้อมูล":"ยังไม่เคยสำรองข้อมูล"} ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ความก้าวหน้าจะหายหมด</span><button class="claim" id="aBk">สำรองเลย</button><button class="ghost" id="aBs">ไว้ทีหลัง</button></div>`;
+ $("alerts").innerHTML=t;
+ const a=$("aBk");if(a)a.onclick=backupNow;const b=$("aBs");if(b)b.onclick=()=>{S.bkSnz=Date.now();save();alerts()}}
+function remTick(){try{if(!S.rn||typeof Notification==="undefined"||Notification.permission!=="granted"||S.rh<0)return;const td=today();
+ if(new Date().getHours()>=S.rh&&!S.log.some(e=>e.d===td)&&!S.rest[td]&&S.nt!==td){S.nt=td;save();new Notification("FitQuest",{body:"วันนี้ยังไม่ได้ออกกำลังกาย ลองบันทึกสักท่านะ"})}}catch(e){}}
+setInterval(()=>{alerts();remTick()},60000);
+$("dl").onclick=backupNow;
+$("upl").onclick=()=>$("upf").click();
+$("upf").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$("bk").value=String(r.result);toast("โหลดไฟล์แล้ว กด นำเข้าข้อมูล เพื่อยืนยัน")};r.readAsText(f);e.target.value=""};
+{const o=[`<option value="-1">ปิด</option>`];for(let i=6;i<=22;i++)o.push(`<option value="${i}">${String(i).padStart(2,"0")}:00</option>`);$("rh").innerHTML=o.join("");$("rh").value=String(S.rh);
+ const rl=()=>{$("rn").textContent="แจ้งเตือนเบราว์เซอร์: "+(S.rn?"เปิด":"ปิด")};rl();
+ $("rh").onchange=()=>{S.rh=+$("rh").value;save();alerts()};
+ $("rn").onclick=async()=>{if(S.rn){S.rn=false;save();rl();return}try{const r=await Notification.requestPermission();if(r==="granted"){S.rn=true;save();rl();toast("เปิดแล้ว ใช้ได้เมื่อเปิดแอปค้างไว้ในเบราว์เซอร์")}else toast("เบราว์เซอร์ไม่อนุญาตการแจ้งเตือน")}catch(e){toast("เบราว์เซอร์นี้แจ้งเตือนไม่ได้ จะใช้แถบเตือนในแอปแทน")}}}
+
+function dif(lv){
+ const td=today(),ids=QUESTS.map(q=>q.id),full=d=>ids.length>0&&ids.every(id=>(S.claimed[d]||[]).includes(id)),base=S.difAt||"",off=n=>{const d=new Date();d.setDate(d.getDate()-n);return fmt(d)};
+ let sug=null,run=0;const st=full(td)?0:1;
+ for(let i=st;i<st+7;i++){const d=off(i);if(d>base&&full(d))run++;else break}
+ if(run>=7&&S.dm<200)sug={up:1,t:`ทำเควสครบ ${run} วันติดกันแล้ว ลองเพิ่มความยากอีก 10% ไหม`};
+ else if(S.dm>50&&S.log.some(e=>e.d<off(7))){let ok=true,miss=0;for(let i=1;i<=7;i++){const d=off(i);if(!(d>base)){ok=false;break}if(!S.log.some(e=>e.d===d)&&!S.rest[d])miss++}
+  if(ok&&miss>=4)sug={up:0,t:`7 วันที่ผ่านมาพลาดไป ${miss} วัน ลดความยากลง 10% เพื่อกลับมาทำสม่ำเสมอไหม`}}
+ $("dif").innerHTML=(sug?`<div class="al" style="margin-top:12px"><span>${sug.t}</span><button class="claim" data-dm="${sug.up?10:-10}">${sug.up?"เพิ่ม 10%":"ลด 10%"}</button><button class="ghost" id="dNo">ยังก่อน</button></div>`:"")+`<div class="sub dr">ความยากเควส ${S.dm}% <button class="ghost" data-dm="-10" aria-label="ลดความยาก">−</button><button class="ghost" data-dm="10" aria-label="เพิ่มความยาก">+</button></div>`;
+ document.querySelectorAll("[data-dm]").forEach(b=>b.onclick=()=>{S.dm=Math.max(50,Math.min(200,S.dm+(+b.dataset.dm)));S.difAt=td;save();render();toast("ความยากเควส "+S.dm+"%")});
+ const n=$("dNo");if(n)n.onclick=()=>{S.difAt=td;save();render()}}
+
+const STORY=[
+{n:"ก้าวแรกออกจากหมู่บ้าน",lv:1,t:"ผู้เฒ่าบอกว่าหมอกมืดกำลังกลืนแคว้น เจ้าต้องมีแรงพอก่อนออกเดินทาง",req:[["push",20],["squat",20],["march",3]],xp:60,item:"s1"},
+{n:"ป่าหมอกทึบ",lv:2,t:"ทางเดินในป่าลื่นและยาวไกล เท้าและขาของเจ้าต้องไม่ล้า",req:[["march",8],["lunge",30],["jack",3]],xp:90,item:"s2"},
+{n:"ด่านถ้ำค้างคาว",lv:4,t:"ผนังถ้ำชันและเสียงปีกดังรอบตัว ปีนและลุยผ่านไปให้ได้",req:[["climb",4],["burpee",15],["bridge",30]],xp:120,item:"s3"},
+{n:"สะพานแห่งความอึด",lv:6,t:"สะพานหินเก่าแก่รอคนที่ยืนหยัดได้นานพอจะข้าม",req:[["wallsit",2],["plank",2],["squat",60],["push",30]],xp:160,item:"s4"},
+{n:"เมืองเงามืด",lv:9,t:"เงาเคลื่อนไหวเร็วกว่าตา เจ้าต้องว่องไวกว่าพวกมัน",req:[["jack",6],["lunge",60],["burpee",25]],xp:210,item:"s5"},
+{n:"ภูเขาไฟคำราม",lv:12,t:"ความร้อนแผดเผา ทุกก้าวต้องใช้ใจและลมหายใจ",req:[["climb",8],["plank",3],["push",60],["burpee",40]],xp:270,item:"s6"},
+{n:"ปราสาทราชันมาร",lv:16,t:"ประตูสุดท้ายใกล้แล้ว ด่านนี้ทดสอบทั้งกำลังและความอึด",req:[["burpee",60],["squat",100],["plank",4],["jack",8]],xp:340,item:"s7"},
+{n:"ศึกสุดท้าย",lv:20,t:"ราชันมารรออยู่ รวบรวมทุกอย่างที่ฝึกมาแล้วปิดตำนานนี้",req:[["push",100],["squat",150],["plank",5],["burpee",80],["stretch",10]],xp:500,item:"s8"}];
+ITEMS.push({id:"s1",s:"r",i:"🧭",n:"เข็มทิศนักผจญภัย",d:1},{id:"s2",s:"r",i:"📜",n:"ม้วนคำสาบาน",d:1},{id:"s3",s:"r",i:"⚔️",n:"ดาบคู่ผู้กล้า",d:1},{id:"s4",s:"r",i:"🛡️",n:"โล่ผู้พิทักษ์",d:1},{id:"s5",s:"a",i:"🌟",n:"ออร่าดารา",c:"#ffd23d",d:1},{id:"s6",s:"h",i:"🔱",n:"มงกุฎตรีศูล",d:1},{id:"s7",s:"a",i:"🌠",n:"ออร่าดาวตก",c:"#ff5c7a",d:1},{id:"s8",s:"h",i:"💎",n:"มงกุฎเพชรราชัน",d:1});
+ACH.push({id:"st1",i:"📜",n:"ก้าวแรกของตำนาน",t:"จบเนื้อเรื่องบทที่ 1",f:()=>S.story.done>=1},{id:"st4",i:"🛡️",n:"ผู้กล้าครึ่งทาง",t:"จบเนื้อเรื่องบทที่ 4",f:()=>S.story.done>=4},{id:"st8",i:"👑",n:"ราชันฟิตเนส",t:"จบเนื้อเรื่องครบ 8 บท",f:()=>S.story.done>=8});
+function storyProg(){const st=S.story,ch=STORY[st.done];if(!ch||!st.cur)return null;const part=S.log.slice(Math.min(st.cur.idx||0,S.log.length));
+ const rows=ch.req.map(([k,n])=>({k,n,a:Math.min(n,part.filter(e=>e.k===k).reduce((s,e)=>s+(+e.n||0),0))}));return{ch,rows,ok:rows.every(r=>r.a>=r.n)}}
+function story(lv){
+ const st=S.story,d=st.done,ch=STORY[d],P=storyProg();let t=`<div class="sub">บทที่ผ่านแล้ว ${d}/${STORY.length} · ทำทีละบท ปลดล็อกตามเลเวล ได้ XP และไอเทมเฉพาะเนื้อเรื่อง</div>`;
+ if(st.cur&&!P)st.cur=null;
+ STORY.slice(0,d).forEach((c,i)=>{const it=ITEMS.find(x=>x.id===c.item);t+=`<div class="chap done">✓ บทที่ ${i+1} ${c.n} · ${it.i} ${it.n}</div>`});
+ if(!ch)t+=`<div class="drop" style="margin-top:10px">จบเนื้อเรื่องครบทุกบทแล้ว เจ้าคือราชันฟิตเนส</div>`;
+ else{const it=ITEMS.find(x=>x.id===ch.item);
+  t+=`<div class="chap"><b>บทที่ ${d+1} ${ch.n}</b><div class="sub" style="margin:4px 0">${ch.t}</div><div class="sub">รางวัล XP +${ch.xp} · ${it.i} ${it.n}</div>`;
+  if(P)t+=P.rows.map(r=>{const e=EX[r.k];return `<div class="q" style="padding:8px 0"><div class="i">${e.i}</div><div class="m"><b>${e.n}</b><span>${r.a} / ${r.n} ${e.u}</span><div class="p"><i style="width:${r.a/r.n*100}%"></i></div></div></div>`}).join("")+`<div class="sub" style="margin:6px 0">บันทึกท่าตามปกติ ระบบนับตั้งแต่ตอนกดเริ่มบท</div><div class="wrow" style="flex-wrap:wrap"><button class="claim" id="sDone" ${P.ok?"":"disabled"}>จบบท รับรางวัล</button><button class="ghost" id="sCancel">ยกเลิกบทนี้</button></div>`;
+  else t+=`<div class="sub" style="margin:6px 0">ภารกิจ: ${reqTxt(ch.req)}</div>`+(lv<ch.lv?`<button disabled>ล็อก ปลดล็อกที่เลเวล ${ch.lv}</button>`:`<button id="sStart">เริ่มบทที่ ${d+1}</button>`);
+  t+=`</div>`}
+ $("story").innerHTML=t;
+ const s1=$("sStart");if(s1)s1.onclick=()=>{S.story.cur={idx:S.log.length};save();render()};
+ const sc=$("sCancel");if(sc)sc.onclick=()=>{if(armed(sc)){S.story.cur=null;save();render()}};
+ const sd=$("sDone");if(sd)sd.onclick=()=>{const Q=storyProg();if(!Q||!Q.ok)return;const c=Q.ch,it=ITEMS.find(x=>x.id===c.item);S.bxp=(S.bxp||0)+c.xp;S.own[it.id]=1;S.story.done++;S.story.cur=null;save();render();fx("boss");toast(`จบบทที่ ${S.story.done}! +${c.xp} XP · ได้ ${it.i} ${it.n}`)}}
+
+const WCK=["push","squat","plank","jack","burpee","lunge","climb","march"],WCB={push:100,squat:150,plank:10,jack:15,burpee:50,lunge:100,climb:15,march:25};
+function wcInfo(){const wk=mon(new Date()),k=WCK[Math.floor(Date.parse(wk)/6048e5)%WCK.length],n=S.log.filter(e=>e.k===k&&e.d>=wk).reduce((s,e)=>s+(+e.n||0),0);return{wk,k,n,tg:Math.max(1,Math.round(WCB[k]*(S.dm||100)/100))}}
+function wch(){
+ const W=wcInfo(),x=EX[W.k],ok=W.n>=W.tg,got=S.wcl[W.wk];
+ const rows=WB.filter(r=>r.wk===W.wk&&+r.wn>0).sort((a,b)=>b.wn-a.wn).slice(0,10);
+ $("wch").innerHTML=`<div class="drop"><b>ประลองประจำสัปดาห์: ${x.i} ${x.n}</b><div class="sub" style="margin:4px 0">ทุกคนได้ท่าเดียวกันสัปดาห์นี้ นับยอดรวมจันทร์–อาทิตย์ · ของคุณ ${W.n} ${x.u} (เป้า ${W.tg})</div><div class="bar"><i style="width:${Math.min(100,W.n/W.tg*100)}%;background:var(--gold)"></i></div>${ok?(got?`<button class="claim" disabled>รับรางวัลแล้ว</button>`:`<button class="claim" id="wcC">ถึงเป้า รับ +40 XP</button>`):""}</div>`
+  +(rows.length?`<div style="margin:8px 0">`+rows.map((r,i)=>`<div class="wcr${r.id===UID?" me":""}"><span>${["🥇","🥈","🥉"][i]||(i+1)+"."} ${esc(String(r.nick||"นักสู้").slice(0,16))}${r.id===UID?" (คุณ)":""}</span><b>${+r.wn||0} ${x.u}</b></div>`).join("")+`</div>`:`<div class="sub" style="margin:6px 0">${DB&&S.lb?"ยังไม่มีใครมียอดในสัปดาห์นี้":"เข้าร่วมอันดับเพื่อนเพื่อส่งยอดและดูอันดับประลอง (ใช้ได้เมื่อเปิดผ่านหน้า Artifact)"}</div>`);
+ const c=$("wcC");if(c)c.onclick=()=>{S.wcl[W.wk]=1;S.bxp=(S.bxp||0)+40;save();render();fx("ach");toast("ประลองสัปดาห์ถึงเป้า +40 XP")}}
+
+function todaySum(lv){
+ const td=today(),cl=S.claimed[td]||[],qs=QUESTS.map(q0=>({...q0,t:qt(q0,lv)}));
+ let xpT=0;S.log.filter(e=>e.d===td).forEach(e=>{const x=EX[e.k];if(x)xpT+=e.n*x.r*(S.cls&&CL[S.cls]&&CL[S.cls].s===x.s?(c2f()?1.4:1.25):1)});
+ const done=qs.filter(q=>cl.includes(q.id)).length,ready=qs.filter(q=>!cl.includes(q.id)&&amountToday(q.k)>=q.t).length,fd=S.food[td]||{w:0,p:0,k:0},n=needs2();
+ const ring=(v,mx,col,txt,lab)=>{const C=2*Math.PI*26,pc=mx>0?Math.min(1,v/mx):0;return `<div class="rg" style="--c:${col}"><div class="r"><svg viewBox="0 0 64 64"><circle class="tr" cx="32" cy="32" r="26"/><circle class="fg" cx="32" cy="32" r="26" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-pc)).toFixed(1)}"/></svg><div class="v">${txt}</div></div>${lab}</div>`};
+ const rings=ring(done,qs.length,"var(--gold)",done+"/"+qs.length,"เควส")+(n?ring(fd.w||0,n.gl,"#38a8ff",(fd.w||0)+"/"+n.gl,"น้ำ (แก้ว)")+ring(fd.p||0,n.pr,"var(--hp)",String(fd.p||0),"โปรตีน (ก.)")+ring(fd.k||0,n.cap,(fd.k||0)>n.cap?"var(--hp)":"var(--teal)",String(fd.k||0),"แคลอรี"):ring(0,1,"#38a8ff","-","น้ำ")+ring(0,1,"var(--hp)","-","โปรตีน")+ring(0,1,"var(--teal)","-","แคลอรี"));
+ let nx;const q1=qs.find(q=>!cl.includes(q.id)&&amountToday(q.k)<q.t);
+ if(ready)nx=`มีเควสรอรับรางวัล ${ready} อัน`;
+ else if(q1){const x=EX[q1.k];nx=`ต่อไป: ${x.n} อีก ${q1.t-amountToday(q1.k)} ${x.u} เพื่อจบเควส`}
+ else nx=`เควสวันนี้ครบแล้ว ไปล่ามอนสเตอร์หรือทำเนื้อเรื่องต่อได้`;
+ if(S.hunt&&huntProg())nx+=` · กำลังล่า ${huntProg().m.n}`;
+ const cnt={};S.log.forEach(e=>{if(EX[e.k])cnt[e.k]=(cnt[e.k]||0)+1});
+ const top=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).concat(["push","squat","run","stretch","plank"]).filter((k,i,a)=>a.indexOf(k)===i&&EX[k]).slice(0,5);
+ const dt=new Date().toLocaleDateString("th-TH",{weekday:"long",day:"numeric",month:"long"}),sk=streak();
+ $("tds").innerHTML=`<div class="tdh"><div><b>${dt}</b><div class="sub">${sk>0?"🔥 สตรีค "+sk+" วัน":"ยังไม่มีสตรีค เริ่มวันนี้ได้เลย"}</div></div><div class="tdx">+${Math.round(xpT)} XP วันนี้</div></div><div class="rings">${rings}</div><div class="nx"><span>${nx}</span><button class="ghost" id="goQ">ไปแท็บเควส</button></div><div class="qk"><small>บันทึกด่วน แตะเพื่อเลือกท่า</small>${top.map(k=>`<button data-qk="${k}">${EX[k].i} ${EX[k].n}</button>`).join("")}</div>`;
+ $("goQ").onclick=()=>showTab("q",true);
+ document.querySelectorAll("[data-qk]").forEach(b=>b.onclick=()=>{$("ex").value=b.dataset.qk;hint();$("amt").focus();$("amt").select&&$("amt").select();$("amt").scrollIntoView({behavior:"smooth",block:"center"})})}
 let AC=null;
 function beep(seq){if(S.mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();seq.forEach(([f,t])=>{const o=AC.createOscillator(),g=AC.createGain(),T=AC.currentTime+t;o.type="square";o.frequency.value=f;g.gain.setValueAtTime(.05,T);g.gain.exponentialRampToValueAtTime(.001,T+.18);o.connect(g);g.connect(AC.destination);o.start(T);o.stop(T+.2)})}catch(e){}}
 function fx(k){
@@ -493,10 +802,15 @@ function extra3(st,xp,lv,power){
  // food
  if(!n)$("food").innerHTML=`<div class="sub">ใส่อายุ เพศ ส่วนสูง และน้ำหนักในส่วนร่างกายและเป้าหมาย แล้วกดบันทึกโปรไฟล์ เพื่อคำนวณเป้าอาหารและน้ำ (รองรับอายุ 18 ปีขึ้นไป ผู้ที่อายุน้อยกว่านี้ควรปรึกษานักกำหนดอาหาร)</div>`;
  else{
-  const row=(l,c,mx,col,t)=>`<div class="stat" style="grid-template-columns:70px 1fr 92px"><span>${l}</span><div class="t"><i style="width:${Math.min(100,c/mx*100)}%;background:${col}"></i></div><b>${t}</b></div>`;
-  const cb=(id,ok,txt)=>ok?`<button class="claim" data-fc="${id}" ${cl.includes(id)?"disabled":""}>${cl.includes(id)?"รับแล้ว":txt}</button>`:"";
-  $("food").innerHTML=`${n.html}${row("🔥 แคลอรี",fd.k||0,n.cap,(fd.k||0)>n.cap?"var(--hp)":"var(--teal)",(fd.k||0)+"/"+n.cap)}${row("💧 น้ำ",fd.w,n.gl,"#2b8cf0",fd.w+"/"+n.gl+" แก้ว")}${row("🥩 โปรตีน",fd.p,n.pr,"var(--hp)",fd.p+"/"+n.pr+" ก.")}<div class="wrow" style="flex-wrap:wrap"><button data-f="w">💧 +1 แก้ว</button><input id="pgIn" type="number" value="25" min="1" max="200" style="width:80px" aria-label="กรัมโปรตีน"><button data-f="p">🥩 เพิ่มโปรตีน</button></div><div class="wrow"><input id="kIn" type="number" value="300" min="1" max="3000" style="width:90px" aria-label="แคลอรี"><button data-f="k">🍽 เพิ่มแคลอรี</button></div><div class="wrow" style="flex-wrap:wrap">${cb("w_water",fd.w>=n.gl,"ดื่มน้ำครบ รับ +20 XP")}${cb("w_prot",fd.p>=n.pr,"โปรตีนครบ รับ +20 XP")}</div><div class="sub" style="font-size:12px;margin-top:6px">เป็นค่าประมาณทั่วไป ไม่ใช่คำแนะนำทางการแพทย์</div>`;
-  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{const f=S.food[td]=S.food[td]||{w:0,p:0};if(b.dataset.f==="w")f.w++;else if(b.dataset.f==="k"){const k=Math.floor(+$("kIn").value);if(!(k>=1&&k<=3000)){toast("ใส่แคลอรี 1–3000");return}f.k=(f.k||0)+k}else{const g=Math.floor(+$("pgIn").value);if(!(g>=1&&g<=200)){toast("ใส่โปรตีน 1–200 กรัม");return}f.p+=g}save();render()});
+  const FL=(S.fl=S.fl||{})[td]=(S.fl||{})[td]||{w:[],p:[],k:[]};
+  const res=(r,ico,name,c,mx,unit,col,chips,cust)=>{const over=r==="k"&&c>mx,pc=Math.min(100,mx?c/mx*100:0),col2=over?"var(--hp)":col,done=r!=="k"&&c>=mx;
+   return `<div class="res${done?" ok":""}" style="--c:${col2}"><div class="rh"><span class="rn">${ico} ${name}</span><span class="rv"><b>${c}</b><small>/${mx} ${unit}</small></span></div><div class="rbar"><i style="width:${pc}%"></i></div>${over?`<div class="rwarn">⚠️ เกินเป้าวันนี้ ${c-mx} กิโลแคลอรี</div>`:""}<div class="chips">${chips.map(v=>`<button data-res="${r}" data-v="${v}">+${v}</button>`).join("")}<button class="und" data-u="${r}" ${(FL[r]||[]).length?"":"disabled"} aria-label="ย้อนกลับ">↶ ย้อน</button></div>${cust||""}${done?(cl.includes("w_"+(r==="w"?"water":"prot"))?`<button class="claim rc" disabled>รับแล้ว</button>`:`<button class="claim rc" data-fc="w_${r==="w"?"water":"prot"}">${r==="w"?"ดื่มน้ำครบ":"โปรตีนครบ"} รับ +20 XP</button>`):""}</div>`};
+  const cust=(r,id,def,mx)=>`<div class="cust"><input id="${id}" type="number" inputmode="numeric" value="${def}" min="1" max="${mx}" aria-label="จำนวนกำหนดเอง"><button data-cu="${r}">+ เพิ่มเอง</button></div>`;
+  $("food").innerHTML=`${n.html}${res("w","💧","น้ำดื่ม",fd.w||0,n.gl,"แก้ว","#38a8ff",[1,2])}${res("p","🥩","โปรตีน",fd.p||0,n.pr,"ก.","#ff5c7a",[10,20,30,40],cust("p","pgIn",25,200))}${res("k","🔥","พลังงานที่กิน",fd.k||0,n.cap,"กิโลแคลอรี","#38e0c4",[100,200,300,500],cust("k","kIn",300,3000))}<div class="sub" style="font-size:12px;margin-top:6px">เป็นค่าประมาณทั่วไป ไม่ใช่คำแนะนำทางการแพทย์</div>`;
+  const add=(r,v)=>{const f=S.food[td]=S.food[td]||{w:0,p:0};f[r]=(f[r]||0)+v;S.fl=S.fl||{};const L=S.fl[td]=S.fl[td]||{w:[],p:[],k:[]};(L[r]=L[r]||[]).push(v);if(L[r].length>30)L[r].shift();save();render()};
+  document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>add(b.dataset.res,+b.dataset.v));
+  document.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{const r=b.dataset.u,L=(S.fl[td]||{})[r]||[];if(!L.length)return;const v=L.pop(),f=S.food[td]=S.food[td]||{w:0,p:0};f[r]=Math.max(0,(f[r]||0)-v);save();render()});
+  document.querySelectorAll("[data-cu]").forEach(b=>b.onclick=()=>{const r=b.dataset.cu,mx=r==="k"?3000:200,v=Math.floor(+$(r==="k"?"kIn":"pgIn").value);if(!(v>=1&&v<=mx)){toast(r==="k"?"ใส่แคลอรี 1–3000":"ใส่โปรตีน 1–200 กรัม");return}add(r,v)});
   document.querySelectorAll("[data-fc]").forEach(b=>b.onclick=()=>{(S.claimed[td]=S.claimed[td]||[]).push(b.dataset.fc);save();render();fx("ach");toast("+20 XP")});
  }
  // waist
@@ -505,8 +819,8 @@ function extra3(st,xp,lv,power){
  else{const a=wl[0].c,b=wl[wl.length-1].c,d=b-a,r=w.h?b/w.h:0;
   $("body").innerHTML=`<div class="pw"><div>รอบเอวตอนนี้<b>${b}</b></div><div>เปลี่ยนไป<b>${d>0?"+":""}${d.toFixed(1)}</b></div>${r?`<div>เอวต่อส่วนสูง<b>${r.toFixed(2)}</b></div>`:""}</div>${r?`<div class="sub">${r<0.5?"✅ ต่ำกว่า 0.5 อยู่ในเกณฑ์ดี":"ควรให้ต่ำกว่า 0.5 (รอบเอวไม่เกินครึ่งหนึ่งของส่วนสูง)"}</div>`:""}`}
  // shop
- const coins=Math.floor(xp/5)-S.spent,eq=S.eq,it=id=>ITEMS.find(x=>x.id===id),au=eq.a?it(eq.a):null,ci=S.cls&&CL[S.cls]?CL[S.cls].i:"🙂";
- $("shop").innerHTML=`<div class="av" style="box-shadow:${au?`0 0 0 4px ${au.c},0 0 26px ${au.c}`:"none"}">${eq.h?`<span class="h">${it(eq.h).i}</span>`:""}${ci}${eq.r?`<span class="r">${it(eq.r).i}</span>`:""}</div><div class="sub" style="text-align:center">🪙 เหรียญ <b style="color:var(--ink)">${coins}</b> (ได้ 1 เหรียญต่อ 5 XP)</div><div class="shop">${ITEMS.map(x=>{const o=S.own[x.id],on=eq[x.s]===x.id;return `<button data-i="${x.id}" class="${on?"on":""}"><div style="font-size:26px">${x.i}</div>${x.n}<br>${o?(on?"สวมอยู่":"สวมใส่"):"🪙 "+x.p}</button>`}).join("")}</div>`;
+ const coins=Math.floor(xp/5)-S.spent,eq=S.eq,it=id=>ITEMS.find(x=>x.id===id),au=eq.a?it(eq.a):null,ci=c2f()?c2f().i:S.cls&&CL[S.cls]?CL[S.cls].i:"🙂";
+ $("shop").innerHTML=`<div class="av" style="box-shadow:${au?`0 0 0 4px ${au.c},0 0 26px ${au.c}`:"none"}">${eq.h?`<span class="h">${it(eq.h).i}</span>`:""}${ci}${eq.r?`<span class="r">${it(eq.r).i}</span>`:""}</div><div class="sub" style="text-align:center">🪙 เหรียญ <b style="color:var(--ink)">${coins}</b> (ได้ 1 เหรียญต่อ 5 XP)</div><div class="shop">${ITEMS.filter(x=>!x.d||S.own[x.id]).map(x=>{const o=S.own[x.id],on=eq[x.s]===x.id;return `<button data-i="${x.id}" class="${on?"on":""}"><div style="font-size:26px">${x.i}</div>${x.n}<br>${o?(on?"สวมอยู่":"สวมใส่"):"🪙 "+x.p}</button>`}).join("")}</div>`;
  document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{const x=it(b.dataset.i);
   if(!S.own[x.id]){if(coins<x.p){toast("เหรียญไม่พอ ออกกำลังกายเพิ่มอีกนิด");return}S.own[x.id]=1;S.spent+=x.p;S.eq[x.s]=x.id;save();render();fx("ach");toast("ซื้อ "+x.n+" แล้ว")}
   else{S.eq[x.s]=S.eq[x.s]===x.id?null:x.id;save();render()}});
@@ -515,11 +829,12 @@ function extra3(st,xp,lv,power){
  $("lbJoin").textContent=S.lb?"เปลี่ยนชื่อ":"เข้าร่วม";
  syncBoard();
 }
-let DB=null,UID=null,BOARD=[],lastK="";
+let DB=null,UID=null,BOARD=[],WB=[],lastK="";
 function syncBoard(){
  if(!DB||!UID||!S.lb)return;
- const c=calc(),k=S.lb.nick+"|"+c.lv+"|"+c.power+"|"+c.xp;if(k===lastK)return;lastK=k;
- DB.collection("board").doc(UID).set({nick:S.lb.nick,lv:c.lv,power:c.power,xp:c.xp,t:Date.now()}).catch(()=>{lastK="";$("lbMsg").textContent="ส่งคะแนนไม่ได้ (บัญชีของคุณอาจมีสิทธิ์ดูอย่างเดียว)"});
+ const c=calc(),W=wcInfo(),k=S.lb.nick+"|"+c.lv+"|"+c.power+"|"+c.xp+"|"+W.wk+"|"+W.n;if(k===lastK)return;lastK=k;
+ const base={nick:S.lb.nick,lv:c.lv,power:c.power,xp:c.xp,t:Date.now()};
+ DB.collection("board").doc(UID).set(Object.assign({wk:W.wk,wk_k:W.k,wn:W.n},base)).catch(()=>DB.collection("board").doc(UID).set(base)).catch(()=>{lastK="";$("lbMsg").textContent="ส่งคะแนนไม่ได้ (บัญชีของคุณอาจมีสิทธิ์ดูอย่างเดียว)"});
 }
 function drawBoard(){
  const el=$("lb");el.textContent="";
@@ -537,6 +852,7 @@ function drawBoard(){
   if(!DB||!UID)throw 0;
   $("lbMsg").textContent="เชื่อมต่อแล้ว";
   DB.collection("board").orderBy("power","desc").limit(20).onSnapshot(s=>{BOARD=s.docs.map(d=>Object.assign({id:d.id},d.data()));drawBoard()},()=>{$("lbMsg").textContent="โหลดอันดับไม่ได้ในตอนนี้"});
+  DB.collection("board").orderBy("wn","desc").limit(30).onSnapshot(s=>{WB=s.docs.map(d=>Object.assign({id:d.id},d.data()));wch()},()=>{});
   syncBoard();
  }catch(e){$("lbMsg").textContent="อันดับใช้ได้เมื่อเปิดหน้านี้ผ่านบัญชีที่มีสิทธิ์เข้าถึง";$("lbJoin").disabled=true}
 })();
@@ -544,12 +860,12 @@ $("lbJoin").onclick=()=>{const n=$("lbNick").value.trim().slice(0,16);if(!n){toa
 $("lbLeave").onclick=()=>{if(DB&&UID)DB.collection("board").doc(UID).delete().catch(()=>{});S.lb=null;lastK="";save();$("lbNick").value="";render();drawBoard();toast("ออกจากอันดับแล้ว")};
 $("wcAdd").onclick=()=>{const c=+$("wcm").value;if(!(c>=30&&c<=200)){toast("ใส่รอบเอว 30–200 ซม.");return}S.waist=S.waist.filter(e=>e.d!==today());S.waist.push({d:today(),c});save();$("wcm").value="";render();toast("บันทึกรอบเอว "+c+" ซม.")};
 $("mute").onclick=()=>{S.mute=!S.mute;save();render()};
-const TABS={"เควสประจำวัน":"t","บันทึกการออกกำลังกาย":"t","บอสประจำสัปดาห์":"t","อาหารและน้ำวันนี้":"t",
- "ค่าพลังตัวละคร":"c","อาชีพ":"c","ตัวละครและร้านค้า":"c","เหรียญความสำเร็จ":"c","อันดับเพื่อน":"c",
+const TABS={"สรุปวันนี้":"t","เควสประจำวัน":"q","บันทึกการออกกำลังกาย":"t","บอสประจำสัปดาห์":"q","อาหารและน้ำวันนี้":"t",
+ "ค่าพลังตัวละคร":"c","ล่ามอนสเตอร์":"q","เควสเนื้อเรื่อง":"q","อาชีพ":"c","แรงก์":"c","ตัวละครและร้านค้า":"c","เหรียญความสำเร็จ":"c","อันดับเพื่อน":"c",
  "ร่างกายและเป้าหมาย":"b","แผนแนะนำ":"b","รอบเอวและสัดส่วน":"b",
  "ประวัติและแก้ไข":"s","โปรแกรม 4 สัปดาห์":"t","ความก้าวหน้าย้อนหลัง":"s","สรุปรายเดือน":"s","ปฏิทิน 28 วันและสถิติรายสัปดาห์":"s","เป้าหมายถัดไป":"s"};
 function showTab(t,scroll){
- if(!["t","c","b","s"].includes(t))t="t";
+ if(!["t","q","c","b","s"].includes(t))t="t";
  S.tab=t;
  document.querySelectorAll("main section").forEach(s=>{const h=s.querySelector("h2"),k=h&&h.firstChild?h.firstChild.textContent.trim():"";s.hidden=(TABS[k]||"t")!==t});
  document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.t===t)));
@@ -742,7 +1058,7 @@ function goalUI(){
 function render(){
  const{st,xp,lv,power}=calc();extra(st,xp,lv,power);
  $("lv").textContent=lv;
- $("rank").textContent=(S.cls&&CL[S.cls]?CL[S.cls].i+" "+CL[S.cls].n+" · ":"")+RANKS[Math.min(RANKS.length-1,Math.floor((lv-1)/2))];
+ $("rank").textContent=RANKS[Math.min(RANKS.length-1,Math.floor((lv-1)/2))];
  const lo=needFor(lv),hi=needFor(lv+1);
  $("xpbar").style.width=Math.round((xp-lo)/(hi-lo)*100)+"%";
  $("xptxt").textContent=`${xp-lo} / ${hi-lo} XP เพื่อขึ้นเลเวล ${lv+1}`;
@@ -778,6 +1094,134 @@ $("add").onclick=()=>{
  if(after>before)fx("lv");toast(after>before?`🎉 เลเวลอัป! ตอนนี้เลเวล ${after}`:`+${n*EX[k].r} XP`);
 };
 $("reset").onclick=()=>{if(armed($("reset"))){S={log:[],claimed:{}};norm();Object.keys(EX).forEach(k=>{if(k[0]==="c")delete EX[k]});PEND=[];save();fillProfile();fillEx();render()}};
+
+/* ===== game icon skin: emoji -> SVG runes ===== */
+(function(){
+const F='fill="currentColor"',K='fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"';
+const D='fill="#140f33" opacity=".75"';
+const G={
+flame:`<path ${F} d="M12 1.5c.8 4.2 5.8 6.200 5.800 11.500a5.800 5.800 0 0 1-11.600 0c0-2.300 1-3.700 2.300-4.800.1 2 .9 3 2 3.300C9.700 8 10 4.500 12 1.500z"/><path ${D} d="M12 22a3 3 0 0 1-3-3c0-1.800 1.300-2.800 2-4 .5 1 2 1.800 2 3.800A2 2 0 0 1 12 22z"/>`,
+bolt:`<path ${F} d="M14 1L4 13.500h6.500L9 23l11-13h-6.800z"/>`,
+sword:`<path ${F} d="M21 2l.5 6L11 18.500 5.500 13 16 2.500z"/><path ${F} d="M3.500 14.500l6 6-1.800 1.800-6-6zM6 12l6 6-1.500 1.500-6-6z"/>`,
+swords:`<path ${K} d="M4 4l11 11M20 4L9 15M14 17l3 3M10 17l-3 3M3 21l3-3M21 21l-3-3"/>`,
+shield:`<path ${F} d="M12 1.500l9 3.500v6.500c0 5.500-3.800 9.500-9 11.500C6.800 21 3 17 3 11.500V5z"/><path ${D} d="M12 5v14c3.500-1.800 5.500-4.800 5.500-8V7z"/>`,
+crown:`<path ${F} d="M2 19.500L3 6.500l5 4.500 4-7.500 4 7.500 5-4.500 1 13z"/><path ${D} d="M5 17h14v1.500H5z"/>`,
+trophy:`<path ${F} d="M7 2h10v6.500a5 5 0 0 1-10 0zM10.500 14h3v3.500h3.500V21H7v-3.500h3.500z"/><path ${K} d="M7 4.500H3.500v2A3.500 3.500 0 0 0 7 10M17 4.500h3.500v2A3.500 3.500 0 0 1 17 10"/>`,
+medal:`<path ${F} d="M7 1.500h3.500l1.500 6-3.500 1.500zM17 1.500h-3.500L12 7.500l3.500 1.500z"/><circle ${F} cx="12" cy="15" r="7"/><path ${D} d="M12 10.500l1.300 2.700 3 .4-2.200 2 .6 3-2.700-1.500-2.700 1.500.6-3-2.200-2 3-.4z"/>`,
+drop:`<path ${F} d="M12 1.500C8 7.500 4.500 11 4.500 15.500a7.500 7.500 0 0 0 15 0C19.500 11 16 7.500 12 1.500z"/><path d="M8.500 15a3.500 3.500 0 0 0 3 3.500" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.800" stroke-linecap="round"/>`,
+meat:`<path ${F} d="M16 2.500a6.500 6.500 0 0 1 4.500 11.200c-1.500 1.400-3.300 1.800-5 1.300l-3.800 3.800c.6 1.600-.4 3.200-2 3.600-1.500.4-3-.4-3.500-1.800-1.400-.5-2.200-2-1.800-3.500.4-1.600 2-2.600 3.600-2l3.800-3.800c-.5-1.700-.1-3.500 1.300-5A6.500 6.500 0 0 1 16 2.500z"/>`,
+fork:`<path ${F} d="M5 2h1.800v7h1V2h1.800v7h1V2H12v8a3 3 0 0 1-2.500 3V22h-2.200v-9A3 3 0 0 1 5 10zM17.500 2C15 4 14 7 14 11h3v11h2.500V2z"/>`,
+coin:`<circle ${F} cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6.500" fill="none" stroke="#140f33" stroke-opacity=".7" stroke-width="1.800"/><path ${D} d="M12 7.500l1.200 3 3.200.3-2.400 2.100.8 3.100-2.800-1.700-2.800 1.700.8-3.100-2.400-2.100 3.200-.3z"/>`,
+timer:`<path ${F} d="M9 1.500h6V4h-2.200v1.300A8.500 8.500 0 1 1 11.200 5.300V4H9z"/><path d="M12 9v4.500l3 2" fill="none" stroke="#140f33" stroke-width="2" stroke-linecap="round"/>`,
+stop:`<rect ${F} x="5" y="5" width="14" height="14" rx="2"/>`,
+spk:`<path ${F} d="M3 9h4l5.500-4.500v15L7 15H3z"/><path ${K} d="M15.500 8.500a5 5 0 0 1 0 7M18 5.500a9 9 0 0 1 0 13"/>`,
+mute:`<path ${F} d="M3 9h4l5.500-4.500v15L7 15H3z"/><path ${K} d="M16 9l5 6M21 9l-5 6"/>`,
+dumb:`<path ${F} d="M1.500 9h2v6h-2zM3.500 7h3v10h-3zM6.500 11h11v2h-11zM17.500 7h3v10h-3zM20.500 9h2v6h-2z"/>`,
+boot:`<path ${F} d="M2.500 15.500V11l4-1.200 2-4.300 3 2 3.200 1.300 5.300 2.700v4a2.500 2.500 0 0 1-2.500 2.500H5a2.500 2.500 0 0 1-2.500-2.500z"/><path ${D} d="M2.500 16.500h19v1.500a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2z"/>`,
+run:`<circle ${F} cx="15" cy="4" r="2.300"/><path ${K} d="M13 8.500l-3.500 4 3.500 3-1 6M9.500 12.500L5.500 14M13 8.500l4 3 3-1.500M13 15.500l4.500 2"/>`,
+walk:`<circle ${F} cx="13" cy="4" r="2.300"/><path ${K} d="M13 8l-1 5-3 2-1 5M12 13l3 3 1 5M13 8l4 3M13 8L9 10"/>`,
+zen:`<circle ${F} cx="12" cy="5" r="2.600"/><path ${F} d="M12 9c-3 0-5.500 2-5.500 5L2 18.500V21h20v-2.500L17.500 14c0-3-2.500-5-5.500-5z"/>`,
+moon:`<path ${F} d="M20.500 14.500A9 9 0 1 1 9.500 3.500a7 7 0 0 0 11 11z"/><path d="M15 3.500h4l-4 4.500h4" fill="none" stroke="currentColor" stroke-width="1.700" stroke-linecap="round" stroke-linejoin="round"/>`,
+heart:`<path ${F} d="M12 21.500C5 15.500 2 12.500 2 8.500a5 5 0 0 1 10-1.500 5 5 0 0 1 10 1.500c0 4-3 7-10 13z"/>`,
+leaf:`<path ${F} d="M3.500 20.500C3 10 9 3.500 21 2.500c.5 11.500-5.500 18-14.500 18z"/><path d="M3.500 20.500L14 10" fill="none" stroke="#140f33" stroke-opacity=".7" stroke-width="1.600" stroke-linecap="round"/>`,
+star:`<path ${F} d="M12 1.500l3 6.900 7.500.7-5.700 5 1.800 7.400L12 17.700l-6.600 3.800 1.800-7.400-5.700-5 7.500-.7z"/>`,
+spark:`<path ${F} d="M12 1.500c.9 5.800 3.700 8.600 9.500 9.500-5.800.9-8.600 3.700-9.500 9.500-.9-5.800-3.700-8.600-9.500-9.500 5.800-.9 8.600-3.700 9.500-9.500z"/><path ${F} d="M19 17.500l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/>`,
+boom:`<path ${F} d="M12 1l2.600 6.200L21 4l-2.200 6.800L23 13l-6.400 2 1 6.800-5.600-4-5.600 4 1-6.800L1 13l4.200-2.200L3 4l6.400 3.200z"/>`,
+demon:`<path ${F} d="M3.500 2.500c1 3.200 2.300 4.800 4.500 5.800h8c2.200-1 3.500-2.600 4.500-5.800 1.200 5-.5 8.300-2.500 9.700v3.300l-3.300 5.700H9.300L6 15.500v-3.300C4 10.800 2.300 7.500 3.500 2.500z"/><path d="M7.500 12l3 1.200M16.500 12l-3 1.200M9.500 17.500h5" fill="none" stroke="#140f33" stroke-width="1.900" stroke-linecap="round"/>`,
+slime:`<path ${F} d="M12 4c4.500 0 8.500 4.500 8.500 10.500 0 3-2 5-4.500 5H8c-2.500 0-4.500-2-4.500-5C3.500 8.500 7.500 4 12 4z"/><circle cx="9" cy="13" r="1.600" fill="#140f33"/><circle cx="15" cy="13" r="1.600" fill="#140f33"/><path d="M9.500 16.500q2.500 1.500 5 0" fill="none" stroke="#140f33" stroke-width="1.500" stroke-linecap="round"/>`,
+donut:`<path ${F} fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6.500a3.500 3.500 0 1 1 0 7 3.500 3.500 0 0 1 0-7z"/><path d="M6 8l1.500 1M16.500 6l.5 1.800M18 14l-1.500.8M8 18l1-1.600M13 19l.2-1.800" stroke="#fff" stroke-opacity=".75" stroke-width="1.600" stroke-linecap="round"/>`,
+couch:`<path ${F} d="M4 9a2.500 2.500 0 0 1 2.500-2.500h11A2.500 2.500 0 0 1 20 9v2.500a2.500 2.500 0 0 1 2.500 2.500v4.500h-21V14A2.500 2.500 0 0 1 4 11.500z"/><path ${D} d="M3.500 18.500h17v2h-17z"/>`,
+scroll:`<path ${F} d="M7 2.500h11a2 2 0 0 1 2 2V18a3.500 3.500 0 0 1-3.500 3.500h-10A3.500 3.500 0 0 1 3 18v-2.500h3.500V4.500a2 2 0 0 1 .5-2z"/><path d="M10 7.500h6M10 11h6M10 14.500h4" stroke="#140f33" stroke-opacity=".7" stroke-width="1.700" stroke-linecap="round"/>`,
+compass:`<circle ${K} cx="12" cy="12" r="9.500"/><path ${F} d="M16.500 7.500l-2.200 6.800-6.800 2.200 2.200-6.800z"/>`,
+wrench:`<path ${F} d="M21 6.500a5.500 5.500 0 0 1-7.200 5.200L5.200 20.300a2 2 0 0 1-2.800-2.800l8.600-8.600A5.500 5.500 0 0 1 16.200 1.800l-3.200 3.200 1.500 3.500 3.500 1.500z"/>`,
+scale:`<path ${K} d="M12 3v18M7 21h10M4 6.500h16"/><path ${F} d="M4 7.500l-3 6.500a3.500 3.500 0 0 0 6 0zM20 7.500l-3 6.500a3.500 3.500 0 0 0 6 0z"/>`,
+ruler:`<path ${F} d="M16.500 1.500l6 6-15 15-6-6z"/><path d="M7.500 12l2.500 2.500M10.500 9l1.800 1.800M13.500 6l2.500 2.500M4.500 15l1.800 1.800" stroke="#140f33" stroke-opacity=".75" stroke-width="1.800" stroke-linecap="round"/>`,
+needle:`<path ${K} d="M20.500 3.500L4.500 19.500"/><path ${F} d="M17 5.500l1.500-1.500 1.500 1.500-1.500 1.500z"/><path d="M3.500 20.500c-1-2 0-4 1.500-3" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/>`,
+bag:`<path ${F} d="M4.500 7.500h15l-1.200 14H5.700z"/><path ${K} d="M8.500 9.500V7a3.500 3.500 0 0 1 7 0v2.500" stroke="currentColor"/>`,
+salad:`<path ${F} d="M2 12h20a10 10 0 0 1-20 0z"/><path ${F} d="M6.500 11C6 6.500 9 3.500 12.500 3.500c.5 4-1 7.500-6 7.500zM13.500 11c0-3.500 2.500-6 6-6 .3 3.500-1.500 6-6 6z"/>`,
+flag:`<path ${K} d="M5 22V2.500"/><path ${F} d="M6.500 3.500h14l-2.500 4.500 2.500 4.500h-14z"/><path ${D} d="M6.500 3.500h4v4.500h-4zM14.500 8h3.500v4.500h-3.500z"/>`,
+cal:`<rect ${F} x="2.500" y="4.500" width="19" height="17" rx="2.500"/><path ${D} d="M2.500 9.500h19"/><path d="M7.500 2v5M16.500 2v5" stroke="currentColor" stroke-width="2.400" stroke-linecap="round"/><path d="M6.500 12.500h3v3h-3zM11 12.500h3v3h-3z" fill="#140f33" opacity=".7"/>`,
+mount:`<path ${F} d="M1 21L9 5.500l4 7 2.500-3.500L23 21z"/><path d="M9 5.500l1.800 3.200L9 9.500 7.300 8.700z" fill="#fff" opacity=".85"/>`,
+volc:`<path ${F} d="M2 21.500l6-12h8l6 12z"/><path d="M9.500 9.500c0-3 1.500-3.500 1.500-6 2 1.500 3.500 3 3.500 6z" fill="#ff5c7a"/>`,
+bridge:`<path ${K} d="M2 18h20M4 18V9M20 18V9M4 9q8 8 16 0M8 12.500V18M12 14V18M16 12.500V18"/>`,
+wall:`<path ${F} d="M2 4h20v16H2z"/><path d="M2 9.300h20M2 14.700h20M9 4v5.300M16 9.300v5.400M7 14.700V20" stroke="#140f33" stroke-opacity=".7" stroke-width="1.500"/>`,
+bike:`<circle ${K} cx="5.500" cy="16" r="3.800"/><circle ${K} cx="18.500" cy="16" r="3.800"/><path ${K} d="M5.500 16L9.500 8h6l3 8M9.500 8L12 16h6.500M8 8h-2"/>`,
+swim:`<circle ${F} cx="16.500" cy="6" r="2.300"/><path ${K} d="M7 11l5-2.500 3 2.500M1.500 17c2.500-2.500 4.500 2.500 7 0s4.500 2.500 7 0 4.500 2.500 7 0"/>`,
+jack:`<circle ${F} cx="12" cy="4" r="2.300"/><path ${K} d="M12 7.500v7M12 9.500L5 6M12 9.500L19 6M12 14.500l-4.500 6.500M12 14.500l4.500 6.500"/>`,
+climb:`<circle ${F} cx="12" cy="5" r="2.300"/><path ${K} d="M12 8.500v7M12 10L8 3.500M12 10l4-6.500M12 15.500l-3.500 5.500M12 15.500l3.500 5.500"/>`,
+bow:`<path ${K} d="M6 3q13 9 0 18"/><path ${K} d="M6 12h16M18.500 8.500L22 12l-3.500 3.500"/>`,
+ninja:`<path ${F} d="M12 2.500a8.500 8.500 0 0 0-8.500 8.500v2c0 4.500 3.300 8.500 8.500 8.500s8.500-4 8.500-8.500v-2A8.500 8.500 0 0 0 12 2.500z"/><path d="M5.500 9.500h13v3.500h-13z" fill="#140f33"/><circle cx="9" cy="11.300" r="1.100" fill="#fff"/><circle cx="15" cy="11.300" r="1.100" fill="#fff"/>`,
+helm:`<path ${F} d="M3 15a9 9 0 0 1 18 0z"/><path ${F} d="M2 16h20v2.500H2z"/><path ${D} d="M11 6h2v9h-2z"/>`,
+snow:`<path ${K} d="M12 2v20M3.300 7l17.400 10M3.300 17L20.700 7M9 3.500l3 2.500 3-2.500M9 20.500l3-2.500 3 2.500"/>`,
+bulb:`<path ${F} d="M12 1.500a7 7 0 0 0-4 12.700V17h8v-2.800A7 7 0 0 0 12 1.500z"/><path ${F} d="M8.500 18.500h7v1.500a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2z"/>`,
+warn:`<path ${F} d="M12 2L22.500 20.500h-21z"/><path d="M12 9v5.500M12 17.200v.1" stroke="#140f33" stroke-width="2.300" stroke-linecap="round"/>`,
+check:`<path ${K} stroke-width="3" d="M4 12.500l5.500 5.500L20 6.500"/>`,
+target:`<path ${F} fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 3.500a6.500 6.500 0 1 1 0 13 6.500 6.500 0 0 1 0-13zm0 3.500a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>`,
+face:`<circle ${F} cx="12" cy="12" r="10"/><circle cx="8.500" cy="10" r="1.500" fill="#140f33"/><circle cx="15.500" cy="10" r="1.500" fill="#140f33"/><path d="M7.500 14.500q4.500 4.500 9 0" fill="none" stroke="#140f33" stroke-width="1.900" stroke-linecap="round"/>`,
+bin:`<path ${F} d="M9 2h6l1 2h5v2.500H3V4h5zM5 8.500h14l-1 12a2 2 0 0 1-2 1.500H8a2 2 0 0 1-2-1.500z"/>`,
+plank:`<circle ${F} cx="19" cy="8" r="2.200"/><path ${K} d="M17 11L7 14.500l-4 .5M7 14.500l-1 5.500M17 11l1.500 5M10 13l-.5 6"/>`,
+castle:`<path ${F} d="M2 21V6h4v2.5h2.5V6h7v2.5H18V6h4v15h-7v-5a3 3 0 0 0-6 0v5z"/>`,
+holy:`<path ${F} d="M12 1.5l9 3.5v6.5c0 5.5-3.800 9.500-9 11.500C6.800 21 3 17 3 11.500V5z"/><path d="M12 6v11M7.500 10.500h9" stroke="#140f33" stroke-width="2.600" stroke-linecap="round"/>`,
+axe:`<path ${K} d="M5 21L15.500 8"/><path ${F} d="M10 5C13 1.500 19 2 22 6c-1 4.500-5 6.500-9 5.500 1-1.500 1-3.500-3-6.500z"/>`,
+antler:`<path ${K} d="M12 22v-9M12 15C9 15 6 12 5 6M5 6V2M5 9L2 7M12 15c3 0 6-3 7-9M19 6V2M19 9l3-2"/>`,
+crosshair:`<circle ${K} cx="12" cy="12" r="8"/><path ${K} d="M12 1v6M12 17v6M1 12h6M17 12h6"/><circle ${F} cx="12" cy="12" r="1.800"/>`,
+note:`<path ${F} d="M9 3l12-2v14.500a3.500 3.500 0 1 1-2-3.100V6.500L11 8v10.500a3.500 3.500 0 1 1-2-3.100z"/>`,
+dagger:`<path ${F} d="M21.500 2.500c-6 .5-11.500 4.500-13.500 11l2.500 2.500c6.500-2 10.500-7 11-13.500z"/><path ${K} d="M5.500 15.500l3 3M3 21l3-3"/>`,
+wand:`<path ${K} d="M4 20L15 9"/><path ${F} d="M19 2l1.200 3.100 3 1.200-3 1.200L19 10.500l-1.200-3-3-1.200 3-1.200z"/><path ${F} d="M8 3l.7 1.800 1.800.7-1.800.7L8 8l-.7-1.800-1.800-.7 1.800-.7z"/>`,
+skull:`<path ${F} d="M12 2a9 9 0 0 0-9 9c0 3 1.500 5 3.500 6.200V21h3v-2h5v2h3v-3.800C19.500 16 21 14 21 11a9 9 0 0 0-9-9z"/><circle cx="8.500" cy="11.500" r="2.300" fill="#140f33"/><circle cx="15.500" cy="11.500" r="2.300" fill="#140f33"/><path d="M12 14l-1.200 2.500h2.400z" fill="#140f33"/>`,
+ghost:`<path ${F} d="M12 2a8 8 0 0 0-8 8v12l2.700-2.200L9.300 22 12 19.800 14.700 22l2.600-2.200L20 22V10a8 8 0 0 0-8-8z"/><circle cx="9" cy="10.500" r="1.800" fill="#140f33"/><circle cx="15" cy="10.500" r="1.800" fill="#140f33"/><circle cx="12" cy="15" r="1.300" fill="#140f33"/>`,
+bat:`<path ${F} d="M12 7c.8-2 1.700-3.500 3-4.500V8c3-2.500 6-2.500 8.500-1.500-1.500 2-1.500 5 .5 8-2.500-1.500-4-1-5.500 1l-2-2.500H8L6 15c-1.500-2-3-2.500-5.500-1 2-3 2-6 .5-8C3.500 5 6.500 5.500 9 8V2.500C10.300 3.500 11.200 5 12 7z"/>`,
+spider:`<ellipse ${F} cx="12" cy="14" rx="4.500" ry="5.500"/><circle ${F} cx="12" cy="7.500" r="2.800"/><path ${K} d="M8 12L2 8M8 14l-6 1M8.500 16.500L3 21M16 12l6-4M16 14l6 1M15.500 16.500L21 21"/>`,
+golem:`<path ${F} d="M5 22V9l3-6h8l3 6v13z"/><path d="M8 10h3v2.500H8zM13 10h3v2.500h-3zM11 14.500h2V18h-2z" fill="#140f33"/>`,
+gem:`<path ${F} d="M6.500 3h11l4.500 6-10 13L2 9z"/><path d="M2 9h20M9.500 9L12 22M14.500 9L12 22M9.500 9l-3-6M14.500 9l3-6" fill="none" stroke="#140f33" stroke-opacity=".55" stroke-width="1.300" stroke-linejoin="round"/>`,
+sit:`<path ${F} d="M6 3h3l1 9h8a2.500 2.500 0 0 1 2.500 2.500V16H12l-.5 5H9l.5-5H8z"/>`
+};
+// emoji -> [glyph, colour]
+const M={
+'🔥':['flame','#ff8a3d'],'😴':['moon','#a48dff'],'💪':['dumb','#ff8a3d'],'⚡':['bolt','#ffd23d'],'🏆':['trophy','#ffb938'],'✓':['check','#38e0c4'],'✅':['check','#38e0c4'],
+'⚖':['scale','#9fd0ff'],'🧘':['zen','#38e0c4'],'🏅':['medal','#ffb938'],'💧':['drop','#38a8ff'],'🥩':['meat','#ff6b7f'],'⏱':['timer','#9fd0ff'],'🌟':['star','#ffd23d'],'⭐':['star','#ffd23d'],
+'🫀':['heart','#ff5c7a'],'🌿':['leaf','#5be07a'],'🍃':['leaf','#5be07a'],'🔊':['spk','#38e0c4'],'🔇':['mute','#a09bcc'],'🦵':['boot','#a48dff'],'🦿':['boot','#38e0c4'],'🥾':['boot','#c98a4a'],
+'🏃':['run','#38e0c4'],'🚶':['walk','#38e0c4'],'⚔':['swords','#c9c4ff'],'🗡':['sword','#c9c4ff'],'🛡':['shield','#5aa8ff'],'👑':['crown','#ffb938'],'💥':['boom','#ff8a3d'],'🐲':['demon','#5be07a'],
+'✨':['spark','#ffd23d'],'🎉':['spark','#ff7ad9'],'⚠':['warn','#ffb938'],'🍽':['fork','#e6e1ff'],'🪙':['coin','#ffb938'],'🧱':['wall','#ff8a3d'],'🚴':['bike','#38e0c4'],'🏊':['swim','#38a8ff'],
+'🏋':['dumb','#a48dff'],'🌉':['bridge','#a48dff'],'🪑':['couch','#c98a4a'],'🤸':['jack','#ffb938'],'🧗':['climb','#c98a4a'],'🏹':['bow','#5be07a'],'🥷':['ninja','#a09bcc'],'🌋':['volc','#ff8a3d'],
+'📜':['scroll','#ffd9a0'],'🧭':['compass','#38e0c4'],'🛠':['wrench','#c9c4ff'],'🟢':['slime','#5be07a'],'🛋':['couch','#ff7ad9'],'🍩':['donut','#ff7ad9'],'😈':['demon','#a48dff'],'👹':['demon','#ff5c7a'],
+'⏹':['stop','#ff5c7a'],'💡':['bulb','#ffd23d'],'📏':['ruler','#ffb938'],'🪡':['needle','#c9c4ff'],'🛍':['bag','#ff7ad9'],'🥗':['salad','#5be07a'],'🏁':['flag','#e6e1ff'],'🧢':['helm','#5aa8ff'],
+'⛑':['helm','#ff5c7a'],'❄':['snow','#9fe8ff'],'🙂':['face','#ffd23d'],'🥇':['medal','#ffb938'],'🥈':['medal','#c9d1e6'],'🥉':['medal','#c98a4a'],'🗑':['bin','#a09bcc'],'📅':['cal','#a48dff'],'🗓':['cal','#a48dff'],
+'⛰':['mount','#a48dff'],'💠':['gem','#38e0c4'],'💎':['gem','#7fd4ff'],'🔱':['crown','#ff7ad9'],'🌠':['star','#ff5c7a'],'🏰':['castle','#5aa8ff'],'⚜':['holy','#ffd23d'],'🪓':['axe','#ff5c7a'],'🦌':['antler','#5be07a'],'🔭':['crosshair','#38e0c4'],'🎵':['note','#ff7ad9'],'🔪':['dagger','#c9c4ff'],'🪄':['wand','#ffb938'],'💀':['skull','#e6e1ff'],'👻':['ghost','#b9a8ff'],'🦇':['bat','#a48dff'],'🕷':['spider','#c98a4a'],'🗿':['golem','#a09bcc'],'🎯':['target','#ff5c7a']
+};
+// gym-pose overrides inside exercise cards keep unique shapes
+const keys=Object.keys(M).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+const RE=new RegExp('('+keys.join('|')+')\\uFE0F?','gu');
+const mk=s=>{const m=M[s];const sp=document.createElement('span');sp.className='gi';sp.setAttribute('aria-hidden','true');sp.dataset.e=s;sp.style.setProperty('--g',m[1]);sp.innerHTML='<svg viewBox="0 0 24 24" focusable="false">'+G[m[0]]+'</svg>';return sp};
+const SKIP=/^(SCRIPT|STYLE|TEXTAREA|TITLE|NOSCRIPT)$/;
+function one(t){const p=t.parentNode;if(!p||SKIP.test(p.nodeName)||(p.closest&&p.closest('.fx,.gi')))return;const s=t.nodeValue;RE.lastIndex=0;if(!RE.test(s))return;RE.lastIndex=0;
+ if(p.nodeName==='OPTION'){t.nodeValue=s.replace(RE,'').trim();return}
+ const f=document.createDocumentFragment();let i=0,m;while((m=RE.exec(s))){if(m.index>i)f.appendChild(document.createTextNode(s.slice(i,m.index)));f.appendChild(mk(m[1]));i=m.index+m[0].length}
+ if(i<s.length)f.appendChild(document.createTextNode(s.slice(i)));p.replaceChild(f,t)}
+function skin(root){if(!root)return;if(root.nodeType===3){one(root);return}if(root.nodeType!==1||root.classList&&root.classList.contains('gi'))return;
+ const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),a=[];let n;while((n=w.nextNode()))a.push(n);a.forEach(one)}
+window.gameSkin=skin;window.__ICONS=[G,M];
+skin(document.body);
+new MutationObserver(rs=>{rs.forEach(r=>{if(r.type==='characterData')one(r.target);else r.addedNodes.forEach(skin)})}).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+
+/* ===== PWA: ติดตั้งเป็นแอป ===== */
+const PWA_OK=(location.protocol==="https:"||location.hostname==="localhost")&&!/claude/i.test(location.hostname);
+let DEF=null;
+function pwa(){const el=$("pwa");if(!el)return;
+ if(!PWA_OK){el.textContent="ติดตั้งเป็นแอปได้เมื่อเปิดผ่านเว็บไซต์ของคุณเอง (เช่น GitHub Pages)";return}
+ if(matchMedia("(display-mode: standalone)").matches||navigator.standalone){el.textContent="กำลังใช้งานในโหมดแอป";return}
+ el.innerHTML="ติดตั้งเป็นแอป: "+(DEF?'<button class="ghost" id="pwaB">ติดตั้งเลย</button>':"Android (Chrome) กดเมนูสามจุดแล้วเลือก ติดตั้งแอป หรือ เพิ่มลงหน้าจอหลัก · iPhone (Safari) กดปุ่มแชร์แล้วเลือก เพิ่มลงหน้าจอโฮม");
+ const b=$("pwaB");if(b)b.onclick=async()=>{try{DEF.prompt();await DEF.userChoice}catch(e){}DEF=null;pwa()}}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();DEF=e;pwa()});
+window.addEventListener("appinstalled",()=>{DEF=null;pwa()});
+if(PWA_OK){
+ const a=document.createElement("link");a.rel="manifest";a.href="manifest.json";document.head.appendChild(a);
+ const b=document.createElement("link");b.rel="apple-touch-icon";b.href="apple-touch-icon.png";document.head.appendChild(b);
+ if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+pwa();
+
 render();
 </script>
 </body>
