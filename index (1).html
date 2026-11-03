@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FitQuest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* Layout: HUD-style panels with cut corners, one hero badge, bottom tab bar.
+   Look: midnight violet ground, ember-to-gold for XP, violet for UI, mint for progress.
+   Type: Kanit for Thai text, Press Start 2P only for numbers. Single dark look by design. */
+:root{--bg:#0e0c22;--panel:#171338;--panel2:#201a4c;--ink:#ece9ff;--mute:#a09bcc;--line:#352f70;--hp:#ff5c7a;--gold:#ffb938;--ember:#ff8a3d;--teal:#38e0c4;--ac:#a48dff;--acink:#140f33;--px:"Press Start 2P",Kanit,monospace;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;color:var(--ink);font-family:Kanit,"Noto Sans Thai",system-ui,sans-serif;line-height:1.5;background-color:var(--bg);background-image:radial-gradient(900px 480px at 12% -8%,rgba(139,108,255,.24),transparent 62%),radial-gradient(640px 400px at 100% 0,rgba(255,138,61,.12),transparent 60%)}
+main{max-width:880px;margin:0 auto;padding-block:20px 110px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;font-weight:700}
+section,.hero{--c:14px;position:relative;min-width:0;border:0;
+ background:linear-gradient(var(--ac),var(--ac)) top right/22px 2px no-repeat,linear-gradient(var(--ac),var(--ac)) top right/2px 22px no-repeat,linear-gradient(var(--ac),var(--ac)) bottom left/22px 2px no-repeat,linear-gradient(var(--ac),var(--ac)) bottom left/2px 22px no-repeat,linear-gradient(160deg,var(--panel2),var(--panel) 50%);
+ box-shadow:inset 0 0 0 1px var(--line);
+ clip-path:polygon(var(--c) 0,100% 0,100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,0 100%,0 var(--c))}
+section{padding:18px}
+section h2{font-size:17px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+section h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.hero{--c:22px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;padding:22px;background:linear-gradient(var(--gold),var(--gold)) top right/30px 3px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/3px 30px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/30px 3px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/3px 30px no-repeat,linear-gradient(135deg,#2b2266,var(--panel) 60%)}
+.lv{width:112px;height:126px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:linear-gradient(160deg,var(--gold),var(--ember));color:#2a1200;display:grid;place-items:center;text-align:center;line-height:1}
+.lv small{font-size:12px;font-weight:600}
+.lv b{display:block;margin-top:8px;font-family:var(--px);font-size:30px;font-weight:400}
+.title{font-size:24px;font-weight:800;line-height:1.2;text-wrap:balance}
+.sub{color:var(--mute);font-size:14px}
+.bar{position:relative;height:16px;border-radius:3px;background:#0a0820;overflow:hidden;margin:10px 0 4px;box-shadow:inset 0 0 0 1px var(--line)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ember),var(--gold));transition:width .6s}
+.bar::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 14px,#0a0820 14px 16px)}
+.pw{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px}
+.pw div{font-size:12px;color:var(--mute)}
+.pw b{display:block;margin-top:5px;font-family:var(--px);font-size:14px;font-weight:400;color:var(--ink);line-height:1.3}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr;justify-items:center;text-align:center}.pw{justify-content:center}}
+.stat{display:grid;grid-template-columns:44px 1fr 56px;gap:8px;align-items:center;font-size:14px;margin:8px 0}
+.stat .t{height:10px;background:#0a0820;border-radius:2px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.stat .t i{display:block;height:100%;transition:width .6s}
+.stat b{text-align:right;font-family:var(--px);font-size:11px;font-weight:400}
+svg.radar{width:100%;max-width:240px;display:block;margin:4px auto}
+.q{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q .i{font-size:26px}.q .m{flex:1;min-width:0}.q .m b{display:block}
+.q .m span{font-size:13px;color:var(--mute)}
+.q .p{height:6px;background:#0a0820;border-radius:2px;margin-top:5px;overflow:hidden}.q .p i{display:block;height:100%;background:var(--teal)}
+button,select,input{font:inherit;color:var(--ink)}
+button{cursor:pointer;border:0;border-radius:0;background:var(--ac);color:var(--acink);padding:10px 16px;font-weight:600;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:filter .15s,transform .1s}
+button:hover:not(:disabled){filter:brightness(1.12)}
+button:active:not(:disabled){transform:translateY(1px)}
+button:disabled{background:var(--line);color:var(--mute);cursor:default}
+button.claim{background:linear-gradient(135deg,var(--gold),var(--ember));color:#2a1200}
+button.claim:disabled{background:var(--line);color:var(--mute)}
+button.ghost{clip-path:none;background:transparent;color:var(--mute);border:1px solid var(--line);border-radius:6px;font-size:13px;padding:6px 12px;font-weight:500}
+button.ghost:hover:not(:disabled){color:var(--ink);border-color:var(--ac)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.form{display:grid;grid-template-columns:1fr 90px;gap:8px}
+.form button{grid-column:1/-1}
+select,input{border:1px solid var(--line);border-radius:6px;padding:9px;background:var(--bg);width:100%}
+select:focus,input:focus{border-color:var(--ac)}
+.hist{max-height:190px;overflow:auto;font-size:14px;margin-top:10px}
+.hist div{display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid var(--line)}
+.hist em{font-style:normal;color:var(--gold);font-weight:700}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);background:var(--panel2);color:var(--ink);border:1px solid var(--ember);padding:10px 18px;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.5);opacity:0;transition:.3s;pointer-events:none;text-align:center;z-index:12;max-width:min(92vw,520px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.wide{grid-column:1/-1}
+.cls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cls button{background:var(--bg);color:var(--ink);text-align:left;line-height:1.3;box-shadow:inset 0 0 0 1px var(--line)}
+.cls button.on{background:var(--ac);color:var(--acink)}
+.cls small{display:block;font-weight:400;opacity:.85}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.form2 label{font-size:13px;color:var(--mute)}
+.form2 button{grid-column:1/-1}
+.wrow{display:flex;gap:8px;margin-top:12px}
+.wrow button{white-space:nowrap}
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ab{border:1px solid var(--line);border-radius:8px;padding:12px 10px;text-align:center;font-size:13px;background:var(--bg);line-height:1.35}
+.ab .i{font-size:30px}
+.ab b{display:block;font-size:14px}
+.ab.lock{opacity:.45;filter:grayscale(1);border-style:dashed}
+.ab.on{background:linear-gradient(160deg,var(--gold),var(--ember));color:#2a1200;border-color:transparent}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;max-width:420px}
+.cal div{aspect-ratio:1;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;font-size:12px}
+.cal div.t{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.wk{display:flex;gap:10px;align-items:flex-end;height:120px;margin-top:16px;max-width:420px}
+.wk div{flex:1;text-align:center;font-size:12px;color:var(--mute);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.wk i{display:block;background:linear-gradient(to top,var(--ac),#d6caff);border-radius:3px 3px 0 0;min-height:2px}
+details summary{cursor:pointer;color:var(--mute);font-size:13px;margin-top:8px}
+.tm{font-family:var(--px);font-size:12px;margin-left:10px;font-variant-numeric:tabular-nums}
+.warn{border:1px solid var(--hp);border-radius:6px;padding:8px 10px;margin-top:10px;font-size:13px;background:color-mix(in srgb,var(--hp) 14%,transparent)}
+.av{position:relative;width:128px;height:128px;border-radius:50%;background:radial-gradient(circle at 50% 35%,var(--panel2),var(--bg));border:2px solid var(--ac);display:grid;place-items:center;font-size:60px;margin:18px auto 10px}
+.av .h{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:34px}
+.av .r{position:absolute;right:-12px;bottom:6px;font-size:34px}
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}
+.shop button{background:var(--bg);color:var(--ink);padding:8px;font-size:13px;line-height:1.3;box-shadow:inset 0 0 0 1px var(--line)}
+.shop button.on{background:var(--ac);color:var(--acink)}
+.lbr{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--line)}
+.lbr.me{font-weight:700;color:var(--ac)}
+.fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+.fx span{position:absolute;top:-40px;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.8}}
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;gap:4px;padding:6px max(12px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:rgba(14,12,34,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:10}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;clip-path:none;background:transparent;color:var(--mute);padding:8px 2px 6px;font-size:12px;line-height:1.2;font-weight:500}
+.tabs button:hover:not(:disabled){filter:none;color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--ac);background:linear-gradient(to top,rgba(164,141,255,.18),transparent);box-shadow:inset 0 2px 0 var(--ac)}
+.hr{display:grid;grid-template-columns:1fr 86px 40px;gap:8px;align-items:center;padding:5px 0;border-top:1px solid var(--line);font-size:14px}
+.hr input{padding:5px 7px}
+.hr button{padding:3px 8px}
+</style>
+</head>
+<body>
+<main>
+ <div class="hero">
+  <div class="lv"><div><small>เลเวล</small><br><b id="lv">1</b></div></div>
+  <div>
+   <h1 class="title" id="rank">มือใหม่หัดเดิน</h1>
+   <div class="sub" id="streak"></div>
+   <button class="ghost" id="restBtn" style="margin-top:4px">😴 วันนี้ขอพัก</button>
+   <div class="bar"><i id="xpbar"></i></div>
+   <div class="sub" id="xptxt"></div>
+   <div class="pw"><div>ค่าพลังรวม<b id="power">0</b></div><div>XP ทั้งหมด<b id="xp">0</b></div><div>เควสวันนี้<b id="qdone">0/4</b></div></div>
+  </div>
+ </div>
+
+ <nav class="tabs" id="tabs" role="tablist" aria-label="หมวดหน้า">
+  <button role="tab" data-t="t"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>วันนี้</span></button>
+  <button role="tab" data-t="c"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/></svg><span>ตัวละคร</span></button>
+  <button role="tab" data-t="b"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg><span>ร่างกาย</span></button>
+  <button role="tab" data-t="s"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg><span>สถิติ</span></button>
+ </nav>
+ <div class="grid">
+  <section>
+   <h2>เควสประจำวัน</h2>
+   <div id="quests"></div>
+  </section>
+  <section>
+   <h2>บันทึกการออกกำลังกาย</h2>
+   <div class="form">
+    <select id="ex" aria-label="ท่าออกกำลังกาย"></select>
+    <input id="amt" type="number" min="1" inputmode="numeric" value="10" aria-label="จำนวน">
+    <button id="add">บันทึกและรับ XP</button>
+   </div>
+   <div class="sub" id="hint" style="margin-top:6px"></div>
+   <div style="margin-top:8px"><button class="ghost" id="tBtn">⏱ จับเวลา</button><span class="tm" id="tm"></span></div>
+   <details><summary>เพิ่มท่าออกกำลังกายของตัวเอง</summary><div class="form2" style="margin-top:8px"><input id="cN" placeholder="ชื่อท่า" aria-label="ชื่อท่า" maxlength="24"><select id="cS" aria-label="ค่าพลังที่เพิ่ม"><option value="STR">STR พลังกาย</option><option value="END">END ความอึด</option><option value="AGI">AGI ความคล่อง</option><option value="VIT">VIT ความยืดหยุ่น</option></select><select id="cU" aria-label="หน่วย"><option>นาที</option><option>ครั้ง</option></select><button id="cAdd">เพิ่มท่า</button></div></details>
+   <div class="hist" id="hist"></div>
+  </section>
+  <section>
+   <h2>บอสประจำสัปดาห์</h2>
+   <div id="boss"></div>
+  </section>
+  <section id="profile">
+   <h2>ร่างกายและเป้าหมาย</h2>
+   <div class="form2">
+    <label>ส่วนสูง (ซม.)<input id="pH" type="number" min="100" max="250" inputmode="decimal"></label>
+    <label>น้ำหนักเริ่มต้น (กก.)<input id="pW0" type="number" step="0.1" inputmode="decimal"></label>
+    <label>อายุ (ปี)<input id="pA" type="number" min="10" max="100" inputmode="numeric"></label>
+    <label>เพศ (ใช้คำนวณพลังงาน)<select id="pS"><option value="m">ชาย</option><option value="f">หญิง</option></select></label>
+    <label style="grid-column:1/-1">ระดับกิจกรรมโดยรวม (ใช้คำนวณพลังงาน)<select id="pAct"><option value="1.2">นั่งทำงานเป็นหลัก แทบไม่ออกกำลังกาย</option><option value="1.375">ออกกำลังกายเบา 1–3 วัน/สัปดาห์</option><option value="1.55">ออกกำลังกายปานกลาง 3–5 วัน/สัปดาห์</option><option value="1.725">ออกกำลังกายหนัก 6–7 วัน/สัปดาห์</option></select></label>
+    <label style="grid-column:1/-1">เป้าหมายหลัก (กำหนดเควสและท่าแนะนำ)<select id="pF"><option value="gen">🌟 สุขภาพทั่วไป</option><option value="fat">🔥 ลดไขมัน</option><option value="muscle">💪 เพิ่มกล้ามเนื้อ</option><option value="recomp">⚖️ ลดไขมันและเพิ่มกล้ามเนื้อ</option><option value="endurance">🫀 เพิ่มความอึด / หัวใจแข็งแรง</option><option value="agility">⚡ คล่องแคล่วว่องไว</option><option value="flex">🌿 ยืดหยุ่นและผ่อนคลาย</option></select></label>
+    <label>ทิศทางน้ำหนัก<select id="pG"><option value="lose">ลดน้ำหนัก</option><option value="gain">เพิ่มน้ำหนัก</option><option value="keep">รักษาน้ำหนัก</option></select></label>
+    <label>น้ำหนักเป้าหมาย (กก.)<input id="pT" type="number" step="0.1" inputmode="decimal"></label>
+    <button id="pSave">บันทึกโปรไฟล์</button>
+   </div>
+   <div id="warn"></div><div id="pInfo"></div>
+   <div class="wrow"><input id="wNow" type="number" step="0.1" inputmode="decimal" placeholder="น้ำหนักวันนี้ (กก.)" aria-label="น้ำหนักวันนี้"><button id="wAdd">ชั่งน้ำหนัก</button></div>
+  </section>
+  <section>
+   <h2>แผนแนะนำ</h2>
+   <div id="plan"></div>
+  </section>
+  <section>
+   <h2>อาหารและน้ำวันนี้</h2>
+   <div id="food"></div>
+  </section>
+  <section>
+   <h2>รอบเอวและสัดส่วน</h2>
+   <div id="body"></div>
+   <div class="wrow"><input id="wcm" type="number" step="0.1" inputmode="decimal" placeholder="รอบเอววันนี้ (ซม.)" aria-label="รอบเอว"><button id="wcAdd">บันทึก</button></div>
+  </section>
+  <section>
+   <h2>ตัวละครและร้านค้า</h2>
+   <div id="shop"></div>
+  </section>
+  <section>
+   <h2>อาชีพ</h2>
+   <div class="cls" id="cls"></div>
+  </section>
+  <section>
+   <h2>ประวัติและแก้ไข</h2>
+   <div id="hedit"></div>
+  </section>
+  <section>
+   <h2>ค่าพลังตัวละคร</h2>
+   <svg class="radar" id="radar" viewBox="0 0 240 240" role="img" aria-label="กราฟค่าพลัง"></svg>
+   <div id="stats"></div>
+  </section>
+  <section>
+   <h2>เป้าหมายถัดไป</h2>
+   <div id="next" class="sub"></div>
+   <p class="sub" style="margin-top:14px">STR มาจากวิดพื้นและสควอต, END มาจากวิ่งหรือเดิน, AGI มาจากกระโดดเชือก, VIT มาจากยืดเหยียดและโยคะ ยิ่งทำสม่ำเสมอ ค่าพลังยิ่งสูง</p>
+   <button class="ghost" id="reset">เริ่มเกมใหม่</button>
+   <div style="margin-top:12px"><button class="ghost" id="mute">🔊 เสียงเปิด</button> <button class="ghost" id="exp">คัดลอกข้อมูลสำรอง</button> <button class="ghost" id="imp">นำเข้าข้อมูล</button><textarea id="bk" rows="3" aria-label="ข้อมูลสำรอง" placeholder="วางข้อมูลสำรองที่นี่เพื่อนำเข้า" style="width:100%;margin-top:8px;border:2px solid var(--ink);border-radius:10px;padding:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:12px"></textarea></div>
+  </section>
+ </div>
+<section class="wide" style="margin-top:16px">
+  <h2>ปฏิทิน 28 วันและสถิติรายสัปดาห์</h2>
+  <div class="cal" id="cal"></div>
+  <div class="wk" id="wk"></div>
+ </section>
+ <section class="wide" style="margin-top:16px">
+  <h2>เหรียญความสำเร็จ <span class="sub" id="achc"></span></h2>
+  <div class="ach" id="ach"></div>
+ </section>
+<section class="wide" style="margin-top:16px">
+  <h2>อันดับเพื่อน</h2>
+  <div class="sub" id="lbMsg">กำลังเชื่อมต่อ...</div>
+  <div class="form" style="margin:8px 0;max-width:420px"><input id="lbNick" maxlength="16" placeholder="ชื่อเล่นของคุณ" aria-label="ชื่อเล่น"><button id="lbJoin" style="grid-column:auto">เข้าร่วม</button></div>
+  <div class="sub" style="font-size:12px;margin-bottom:6px">เมื่อเข้าร่วม ชื่อเล่น เลเวล และค่าพลังรวมของคุณจะแสดงให้ทุกคนที่เปิดหน้านี้เห็น ข้อมูลอื่นยังอยู่ในเครื่องคุณ</div>
+  <div id="lb"></div>
+  <button class="ghost" id="lbLeave" hidden>ออกจากอันดับ</button>
+ </section>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const EX={
+ push:{n:"วิดพื้น",i:"💪",u:"ครั้ง",s:"STR",r:1},
+ squat:{n:"สควอต",i:"🦵",u:"ครั้ง",s:"STR",r:1},
+ run:{n:"วิ่ง / เดินเร็ว",i:"🏃",u:"นาที",s:"END",r:3},
+ jump:{n:"กระโดดเชือก",i:"⚡",u:"นาที",s:"AGI",r:4},
+ stretch:{n:"ยืดเหยียด / โยคะ",i:"🧘",u:"นาที",s:"VIT",r:2},
+ plank:{n:"แพลงก์",i:"🧱",u:"นาที",s:"STR",r:5},
+ bike:{n:"ปั่นจักรยาน",i:"🚴",u:"นาที",s:"END",r:3},
+ swim:{n:"ว่ายน้ำ",i:"🏊",u:"นาที",s:"END",r:4},
+ weights:{n:"เล่นเวท",i:"🏋️",u:"นาที",s:"STR",r:3}
+};
+const ST={STR:{n:"พลังกาย",c:"#ef476f"},END:{n:"ความอึด",c:"#2bb3a0"},AGI:{n:"ความคล่อง",c:"#e0a100"},VIT:{n:"ความยืดหยุ่น",c:"#7c6cff"}};
+let QUESTS=[{id:"q1",k:"push",t:20,b:30},{id:"q2",k:"squat",t:30,b:30},{id:"q3",k:"run",t:15,b:50},{id:"q4",k:"stretch",t:10,b:30}];
+const RANKS=["มือใหม่หัดเดิน","นักสู้ฝึกหัด","นักรบสายเลือดร้อน","จอมพลังประจำเมือง","อัศวินเหล็ก","ผู้พิชิตดันเจี้ยน","ยอดมนุษย์","ตำนานแห่งฟิตเนส"];
+const KEY="fitquest-v1";
+let S={log:[],claimed:{},ach:{},wlog:[],prof:{}};let PEND=[];
+try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
+function norm(){S.ach=S.ach||{};S.wlog=S.wlog||[];S.prof=S.prof||{};S.custom=S.custom||[];S.rest=S.rest||{};S.boss=S.boss||{};S.bhp=S.bhp||{};S.food=S.food||{};S.waist=S.waist||[];S.spent=S.spent||0;S.own=S.own||{};S.eq=S.eq||{};S.custom.forEach(c=>EX[c.k]=c)}norm();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const lvOf=xp=>Math.floor(Math.sqrt(xp/50))+1;
+const needFor=l=>50*(l-1)*(l-1);
+function calc(){
+ const st={STR:0,END:0,AGI:0,VIT:0};let xp=0;
+ S.log.forEach(e=>{const x=EX[e.k];if(!x)return;const v=e.n*x.r;xp+=v*(S.cls&&CL[S.cls]&&CL[S.cls].s===x.s?1.25:1);st[x.s]+=v});
+ let bonus=0;Object.values(S.claimed).forEach(a=>a.forEach(id=>{bonus+=qb(id)}));
+ xp=Math.round(xp+bonus+Object.values(S.boss||{}).reduce((a,b)=>a+b,0));
+ const lv=lvOf(xp);
+ const power=Math.round(Object.values(st).reduce((a,b)=>a+b,0)*(1+lv*0.1));
+ return{st,xp,lv,power};
+}
+function amountToday(k){return S.log.filter(e=>e.d===today()&&e.k===k).reduce((a,e)=>a+e.n,0)}
+function streak(){
+ const days=new Set(S.log.map(e=>e.d).concat(Object.keys(S.rest||{})));let c=0;const d=new Date();
+ const f=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");
+ if(!days.has(f(d)))d.setDate(d.getDate()-1);
+ while(days.has(f(d))){c++;d.setDate(d.getDate()-1)}
+ return c;
+}
+function toast(m){const p=PEND.splice(0);if(p.length)m=(m?m+" · ":"")+"🏅 ปลดล็อก: "+p.join(", ");if(!m)return;const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),2400)}
+function radar(st,max){
+ const cx=120,cy=120,R=80,ks=["STR","END","AGI","VIT"];
+ const pt=(i,v)=>{const a=-Math.PI/2+i*Math.PI/2;return[cx+Math.cos(a)*R*v,cy+Math.sin(a)*R*v]};
+ let h="";
+ [0.33,0.66,1].forEach(g=>{h+=`<polygon points="${ks.map((_,i)=>pt(i,g).join(",")).join(" ")}" fill="none" stroke="var(--line)" stroke-width="1.5"/>`});
+ h+=`<polygon points="${ks.map((k,i)=>pt(i,Math.min(1,st[k]/max)).join(",")).join(" ")}" fill="var(--ac)" fill-opacity=".35" stroke="var(--ac)" stroke-width="3" stroke-linejoin="round"/>`;
+ ks.forEach((k,i)=>{const[x,y]=pt(i,1.28);h+=`<text x="${x}" y="${y+4}" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)" font-family="Kanit,sans-serif">${k}</text>`});
+ $("radar").innerHTML=h;
+}
+const CL={war:{n:"นักรบ",i:"⚔️",s:"STR",d:"โบนัส XP +25% จากวิดพื้นและสควอต"},ran:{n:"เรนเจอร์",i:"🏹",s:"END",d:"โบนัส XP +25% จากวิ่งหรือเดินเร็ว"},nin:{n:"นินจา",i:"🥷",s:"AGI",d:"โบนัส XP +25% จากกระโดดเชือก"},mon:{n:"จอมยุทธ์",i:"🧘",s:"VIT",d:"โบนัส XP +25% จากยืดเหยียดและโยคะ"}};
+const ACH=[
+{id:"first",i:"🥾",n:"ก้าวแรก",t:"บันทึกการออกกำลังกายครั้งแรก",f:c=>c.n>=1},
+{id:"push",i:"💪",n:"นักดันพื้น",t:"วิดพื้นสะสม 100 ครั้ง",f:c=>c.tot("push")>=100},
+{id:"squat",i:"🦵",n:"ขาเหล็ก",t:"สควอตสะสม 200 ครั้ง",f:c=>c.tot("squat")>=200},
+{id:"run",i:"🏃",n:"เท้าปลิว",t:"วิ่งสะสม 60 นาที",f:c=>c.tot("run")>=60},
+{id:"jump",i:"⚡",n:"กระต่ายน้อย",t:"กระโดดเชือกสะสม 30 นาที",f:c=>c.tot("jump")>=30},
+{id:"yoga",i:"🧘",n:"ใจสงบ",t:"ยืดเหยียดสะสม 60 นาที",f:c=>c.tot("stretch")>=60},
+{id:"s3",i:"🔥",n:"ไฟเริ่มติด",t:"ออกกำลังกายติดกัน 3 วัน",f:c=>c.sk>=3},
+{id:"s7",i:"🌋",n:"ไฟลุกโชน",t:"ออกกำลังกายติดกัน 7 วัน",f:c=>c.sk>=7},
+{id:"l5",i:"🛡️",n:"ผู้กล้า",t:"ถึงเลเวล 5",f:c=>c.lv>=5},
+{id:"l10",i:"👑",n:"ผู้เกรียงไกร",t:"ถึงเลเวล 10",f:c=>c.lv>=10},
+{id:"p500",i:"💥",n:"พลังล้น",t:"ค่าพลังรวมถึง 500",f:c=>c.power>=500},
+{id:"q4",i:"📜",n:"ภารกิจครบ",t:"ทำเควสครบ 4 ข้อในวันเดียว",f:c=>Object.values(S.claimed).some(a=>a.filter(x=>x[0]==="q").length>=4)},
+{id:"cls",i:"🧭",n:"เลือกเส้นทาง",t:"เลือกอาชีพ",f:()=>!!S.cls},
+{id:"wt",i:"⚖️",n:"รู้จักตัวเอง",t:"ตั้งค่าน้ำหนักและส่วนสูง",f:c=>!!(c.w.w0&&c.w.h)},
+{id:"goal",i:"🏆",n:"ถึงเป้าหมาย",t:"น้ำหนักถึงเป้าที่ตั้งไว้",f:c=>c.w.reached}
+];
+function wInfo(){
+ const p=S.prof||{},w0=+p.w0||0,h=+p.h||0,t=+p.t||0,g=p.g||"lose";
+ const cur=S.wlog.length?+S.wlog[S.wlog.length-1].w:w0;
+ const bmi=h&&cur?cur/((h/100)*(h/100)):0;
+ let prog=0,ok=false;
+ if(w0&&t){
+  if(g==="lose"){ok=cur<=t;prog=w0>t?(w0-cur)/(w0-t):0}
+  else if(g==="gain"){ok=cur>=t;prog=t>w0?(cur-w0)/(t-w0):0}
+  else{ok=Math.abs(cur-t)<=0.5;prog=ok?1:Math.max(0,1-Math.abs(cur-t)/Math.max(1,Math.abs(w0-t)||5))}
+ }
+ return{w0,h,t,g,cur,bmi,prog:Math.max(0,Math.min(1,prog)),reached:ok&&S.wlog.length>0};
+}
+const bmiCat=b=>b<18.5?"น้ำหนักต่ำกว่าเกณฑ์":b<23?"สมส่วน":b<25?"น้ำหนักเกิน":b<30?"อ้วนระดับ 1":"อ้วนระดับ 2";
+function fillProfile(){const p=S.prof||{};$("pH").value=p.h||"";$("pW0").value=p.w0||"";$("pT").value=p.t||"";$("pG").value=p.g||"lose";$("pF").value=p.f||"gen";$("pA").value=p.a||"";$("pS").value=p.s||"m";$("pAct").value=p.x||"1.375"}
+function extra(st,xp,lv,power){
+ const tot=k=>S.log.filter(e=>e.k===k).reduce((a,e)=>a+e.n,0);
+ const w=wInfo(),C={tot,lv,power,sk:streak(),w,n:S.log.length};
+ ACH.forEach(a=>{if(!S.ach[a.id]&&a.f(C)){S.ach[a.id]=today();PEND.push(a.n)}});
+ if(PEND.length){save();fx("ach")}
+ // profile
+ if(!w.w0){$("pInfo").innerHTML='<div class="sub" style="margin-top:8px">กรอกส่วนสูง น้ำหนักเริ่มต้น และเป้าหมาย แล้วกดบันทึก</div>'}
+ else{
+  const gl={lose:"ลดน้ำหนัก",gain:"เพิ่มน้ำหนัก",keep:"รักษาน้ำหนัก"}[w.g],d=w.cur-w.w0;
+  const ws=[w.w0].concat(S.wlog.slice(-13).map(e=>+e.w));
+  let sp="";
+  if(ws.length>1){const mn=Math.min(...ws),mx=Math.max(...ws),r=(mx-mn)||1;sp=`<svg viewBox="0 0 300 50" style="width:100%;height:50px" preserveAspectRatio="none" role="img" aria-label="กราฟน้ำหนัก"><polyline fill="none" stroke="var(--ac)" stroke-width="3" stroke-linejoin="round" vector-effect="non-scaling-stroke" points="${ws.map((v,i)=>(i/(ws.length-1)*296+2)+","+(46-(v-mn)/r*42)).join(" ")}"/></svg>`}
+  $("pInfo").innerHTML=`<div style="margin-top:12px"><div class="sub">เป้าหมาย: <b style="color:var(--ink)">${gl}</b> ${w.w0} → ${w.t||"-"} กก. · ความคืบหน้า ${Math.round(w.prog*100)}%</div><div class="bar"><i style="width:${w.prog*100}%;background:var(--teal)"></i></div><div class="pw"><div>น้ำหนักตอนนี้<b>${w.cur}</b></div><div>เปลี่ยนไป<b>${d>0?"+":""}${d.toFixed(1)}</b></div><div>BMI<b>${w.bmi?w.bmi.toFixed(1):"-"}</b></div></div>${w.bmi?`<div class="sub">${bmiCat(w.bmi)} (เกณฑ์คนเอเชีย)</div>`:""}${sp}</div>`;
+ }
+ // class
+ const rec=S.prof.f&&S.prof.f!=="gen"&&PLANS[S.prof.f]?"เป้าหมาย"+PLANS[S.prof.f].n+" แนะนำอาชีพ"+CL[PLANS[S.prof.f].c].n:!w.w0?"เลือกตามสไตล์ที่ชอบ เปลี่ยนได้ตลอด":w.g==="lose"?"เป้าหมายลดน้ำหนัก แนะนำเรนเจอร์หรือนินจา เน้นคาร์ดิโอ":w.g==="gain"?"เป้าหมายเพิ่มน้ำหนัก แนะนำนักรบ เน้นสร้างกล้ามเนื้อ":"เป้าหมายรักษาน้ำหนัก แนะนำจอมยุทธ์ เน้นสมดุลร่างกาย";
+ $("cls").innerHTML=Object.entries(CL).map(([k,c])=>`<button data-c="${k}" class="${S.cls===k?"on":""}" aria-pressed="${S.cls===k}"><span style="font-size:22px">${c.i}</span> ${c.n}<small>${c.d}</small></button>`).join("")+`<div class="sub" style="grid-column:1/-1">${rec}</div>`;
+ document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{S.cls=b.dataset.c;save();render();toast("เลือกอาชีพ "+CL[S.cls].n+" แล้ว")});
+ // achievements
+ $("ach").innerHTML=ACH.map(a=>`<div class="ab ${S.ach[a.id]?"on":"lock"}"><div class="i">${a.i}</div><b>${a.n}</b><span>${a.t}</span></div>`).join("");
+ $("achc").textContent=ACH.filter(a=>S.ach[a.id]).length+" / "+ACH.length;
+ applyPlan();extra2(lv);extra3(st,xp,lv,power);extra4();setTimeout(()=>toast(""),0);
+}
+$("pSave").onclick=()=>{
+ const h=+$("pH").value,w0=+$("pW0").value,g=$("pG").value,f=$("pF").value,t=+$("pT").value||(g==="keep"?w0:0);
+ if(!(h>=100&&h<=250)||!(w0>=20&&w0<=300)||!(t>=20&&t<=300)){toast("กรอกส่วนสูง (100–250 ซม.) น้ำหนักเริ่มต้น และน้ำหนักเป้าหมายให้ถูกต้อง");return}
+ if(g==="lose"&&t>=w0){toast("เป้าหมายลดน้ำหนักต้องน้อยกว่าน้ำหนักเริ่มต้น");return}
+ if(g==="gain"&&t<=w0){toast("เป้าหมายเพิ่มน้ำหนักต้องมากกว่าน้ำหนักเริ่มต้น");return}
+ S.prof={h,w0,t,g,f,a:+$("pA").value||0,s:$("pS").value,x:+$("pAct").value};save();render();toast("บันทึกโปรไฟล์แล้ว");
+};
+$("wAdd").onclick=()=>{
+ const w=+$("wNow").value;
+ if(!S.prof.w0){toast("ตั้งค่าโปรไฟล์ก่อน");return}
+ if(!(w>=20&&w<=300)){toast("ใส่น้ำหนักให้ถูกต้อง");return}
+ S.wlog=S.wlog.filter(e=>e.d!==today());S.wlog.push({d:today(),w});save();$("wNow").value="";render();toast("บันทึกน้ำหนัก "+w+" กก.");
+};
+fillProfile();
+ACH.push({id:"boss",i:"🐲",n:"นักล่าบอส",t:"ปราบบอสประจำสัปดาห์",f:()=>Object.keys(S.boss).length>=1},{id:"mine",i:"🛠️",n:"ทางของฉัน",t:"เพิ่มท่าออกกำลังกายของตัวเอง",f:()=>S.custom.length>=1},{id:"rest",i:"😴",n:"พักเป็นก็เก่ง",t:"ใช้วันพักครั้งแรก",f:()=>Object.keys(S.rest).length>=1});
+const BOSS=[{n:"สไลม์ขี้เกียจ",i:"🟢"},{n:"ม็อบมนุษย์โซฟา",i:"🛋️"},{n:"มังกรไขมัน",i:"🐲"},{n:"ยักษ์น้ำตาล",i:"🍩"},{n:"ปีศาจขี้เซา",i:"😈"},{n:"ราชาแห่งความท้อ",i:"👹"}];
+const fmt=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");
+function mon(d){const x=typeof d==="string"?new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10)):new Date(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return fmt(x)}
+function qt(q,lv){
+ const w=wInfo();let m=1+(lv-1)*0.08;
+ if(w.g==="lose"&&q.k==="run")m*=1.3;
+ if(w.g==="gain"&&(q.k==="push"||q.k==="squat"))m*=1.2;
+ const s=q.t<10?1:5;return Math.max(q.t,Math.round(q.t*m/s)*s);
+}
+function extra2(lv){
+ const now=new Date(),wk=mon(now);
+ if(!S.bhp[wk]){S.bhp[wk]=300+lv*80;save()}
+ const hp=S.bhp[wk],dmg=S.log.filter(e=>e.d>=wk&&EX[e.k]).reduce((a,e)=>a+e.n*EX[e.k].r,0);
+ const B=BOSS[Math.floor(Date.parse(wk)/6048e5)%BOSS.length],left=7-((now.getDay()+6)%7),got=S.boss[wk],rw=150+lv*20;
+ $("boss").innerHTML=`<div style="display:flex;gap:12px;align-items:center"><div style="font-size:48px">${B.i}</div><div style="flex:1"><b>${B.n}</b><div class="bar"><i style="width:${Math.max(0,100-dmg/hp*100)}%;background:var(--hp)"></i></div><div class="sub">HP ${Math.max(0,hp-dmg)} / ${hp} · เหลือ ${left} วัน</div></div></div>`+(dmg>=hp?`<button class="claim" id="bossClaim" style="margin-top:10px" ${got?"disabled":""}>${got?"รับรางวัลแล้ว":"บอสแพ้แล้ว! รับ +"+rw+" XP"}</button>`:`<div class="sub" style="margin-top:6px">ทุกการบันทึกคือการโจมตีบอส ปราบให้ได้ก่อนสิ้นสัปดาห์</div>`);
+ const bc=$("bossClaim");if(bc&&!got)bc.onclick=()=>{S.boss[wk]=rw;save();render();fx("boss");toast("ปราบบอสสำเร็จ! +"+rw+" XP")};
+ const rn=Object.keys(S.rest).filter(d=>d>=wk).length,rb=$("restBtn"),rt=!!S.rest[today()];
+ rb.disabled=rt||rn>=2;rb.textContent=rt?"😴 พักวันนี้แล้ว สตรีคยังอยู่":rn>=2?"😴 ครบโควตาพัก 2 วันต่อสัปดาห์":"😴 วันนี้ขอพัก (สตรีคไม่ขาด)";
+ const dx={};S.log.forEach(e=>{if(EX[e.k])dx[e.d]=(dx[e.d]||0)+e.n*EX[e.k].r});
+ let c="";
+ for(let i=27;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);const s=fmt(d),v=dx[s]||0,p=v?Math.min(90,25+v/3):0;
+  c+=`<div class="${i?"":"t"}" style="background:${p?`color-mix(in srgb,var(--teal) ${p}%,transparent)`:"transparent"};color:${p?"var(--ink)":"var(--mute)"}" title="${s}: ${v} XP">${S.rest[s]&&!v?"😴":d.getDate()}</div>`}
+ $("cal").innerHTML=c;
+ const ws={};Object.keys(dx).forEach(d=>{const k=mon(d);ws[k]=(ws[k]||0)+dx[d]});
+ const arr=[];for(let i=5;i>=0;i--){const a=new Date(now);a.setDate(a.getDate()-7*i);arr.push([i?"-"+i+" สป.":"สัปดาห์นี้",ws[mon(a)]||0])}
+ const mx=Math.max(1,...arr.map(a=>a[1]));
+ $("wk").innerHTML=arr.map(a=>`<div><span>${a[1]}</span><i style="height:${a[1]/mx*60}px"></i><span>${a[0]}</span></div>`).join("");
+}
+$("restBtn").onclick=()=>{S.rest[today()]=1;save();render();toast("พักผ่อนเต็มที่ สตรีคยังอยู่")};
+let T0=0,TI=0;
+function tick(){const s=Math.floor((Date.now()-T0)/1000);$("tm").textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+$("tBtn").onclick=()=>{
+ if(!T0){T0=Date.now();TI=setInterval(tick,500);tick();$("tBtn").textContent="⏹ หยุดและใช้เวลา";return}
+ clearInterval(TI);const m=Math.max(1,Math.round((Date.now()-T0)/60000));T0=0;$("tBtn").textContent="⏱ จับเวลา";$("tm").textContent="";
+ if(EX[$("ex").value].u==="นาที"){$("amt").value=m;toast("ใส่ "+m+" นาทีแล้ว กดบันทึกได้เลย")}else toast("ท่านี้นับเป็นครั้ง เลือกท่าที่นับเป็นนาที");
+};
+$("cAdd").onclick=()=>{
+ const n=$("cN").value.trim();if(!n){toast("ใส่ชื่อท่าก่อน");return}
+ const u=$("cU").value,k="c"+Date.now(),c={k,n,i:"🏅",u,s:$("cS").value,r:u==="นาที"?3:1};
+ S.custom.push(c);EX[k]=c;save();$("cN").value="";fillEx();$("ex").value=k;hint();render();toast("เพิ่มท่า "+n+" แล้ว");
+};
+$("exp").onclick=async()=>{const j=JSON.stringify(S);$("bk").value=j;try{await navigator.clipboard.writeText(j);toast("คัดลอกแล้ว เก็บไว้ในที่ปลอดภัย")}catch(e){$("bk").select();toast("คัดลอกข้อความในช่องด้วยตัวเอง")}};
+$("imp").onclick=()=>{
+ try{const d=JSON.parse($("bk").value);if(!d||!Array.isArray(d.log))throw 0;
+  if(!armed($("imp")))return;
+  S=d;norm();save();fillProfile();fillEx();render();toast("นำเข้าสำเร็จ")}
+ catch(e){toast("ข้อมูลไม่ถูกต้อง")}
+};
+const Q0=[...QUESTS];
+const OLDB={q1:30,q2:30,q3:50,q4:30,w_water:20,w_prot:20};
+const qb=id=>OLDB[id]||(id.indexOf("q_")===0?40:0);
+const PLANS={
+ gen:{i:"🌟",n:"สุขภาพทั่วไป",d:"ผสมกล้ามเนื้อ หัวใจ และความยืดหยุ่น เหมาะกับการเริ่มต้น",t:"ทำให้สม่ำเสมอ 3–4 วันต่อสัปดาห์ก่อน แล้วค่อยเพิ่มความหนัก",g:"keep",c:"war",q:[["push",20],["squat",30],["run",15],["stretch",10]]},
+ fat:{i:"🔥",n:"ลดไขมัน",d:"เน้นคาร์ดิโอสลับท่ากล้ามเนื้อมัดใหญ่ เผาผลาญพลังงานได้มาก",t:"คาร์ดิโอ 3–5 วันต่อสัปดาห์ และคุมอาหารควบคู่ด้วยจึงจะเห็นผลชัด",g:"lose",c:"ran",q:[["run",20],["jump",8],["squat",30],["stretch",10]]},
+ muscle:{i:"💪",n:"เพิ่มกล้ามเนื้อ",d:"เน้นท่ามีแรงต้านและกล้ามเนื้อหลัก ลดคาร์ดิโอหนักเพื่อเก็บพลังงาน",t:"เล่นเวท 3–4 วันต่อสัปดาห์ กินโปรตีนให้พอ และนอนอย่างน้อย 7 ชั่วโมง",g:"gain",c:"war",q:[["weights",20],["push",25],["squat",35],["plank",2]]},
+ recomp:{i:"⚖️",n:"ลดไขมันและเพิ่มกล้ามเนื้อ",d:"ผสมเวทกับคาร์ดิโอเบา ๆ น้ำหนักอาจนิ่ง แต่รูปร่างจะกระชับขึ้น",t:"ดูรอบเอวและรูปร่างควบคู่กับน้ำหนัก เพราะตัวเลขอาจไม่ขยับขณะที่ไขมันลดและกล้ามเนื้อเพิ่ม",g:"keep",c:"war",q:[["weights",20],["squat",30],["run",15],["plank",2]]},
+ endurance:{i:"🫀",n:"เพิ่มความอึดและหัวใจแข็งแรง",d:"สลับคาร์ดิโอหลายแบบ ไม่เบื่อและไม่ให้ข้อต่อรับแรงซ้ำ ๆ",t:"เพิ่มเวลาทีละไม่เกิน 10% ต่อสัปดาห์เพื่อลดความเสี่ยงบาดเจ็บ",g:"keep",c:"ran",q:[["run",25],["bike",20],["swim",15],["jump",5]]},
+ agility:{i:"⚡",n:"คล่องแคล่วว่องไว",d:"เน้นฝีเท้า กำลังขา และแกนกลางลำตัว",t:"วอร์มอัพข้อเท้าและเข่าก่อนกระโดดทุกครั้ง",g:"keep",c:"nin",q:[["jump",10],["squat",25],["plank",2],["run",10]]},
+ flex:{i:"🌿",n:"ยืดหยุ่นและผ่อนคลาย",d:"เน้นยืดเหยียด การทรงตัว และกิจกรรมเบา ๆ เพื่อลดความเครียด",t:"ยืดค้างท่าละ 20–30 วินาที และไม่ฝืนจนเจ็บ",g:"keep",c:"mon",q:[["stretch",15],["plank",2],["squat",15],["run",10]]}
+};
+function applyPlan(){
+ const f=(S.prof&&PLANS[S.prof.f])?S.prof.f:"gen",P=PLANS[f];
+ QUESTS=f==="gen"?Q0:P.q.map(([k,t])=>({id:"q_"+k,k,t,b:40}));
+ $("plan").innerHTML=`<div><b style="font-size:17px">${P.i} ${P.n}</b><div class="sub">${P.d}</div></div><div style="margin-top:8px">${P.q.map(([k,t])=>{const x=EX[k];return `<div class="q"><div class="i">${x.i}</div><div class="m"><b>${x.n}</b><span>เป้าเริ่มต้น ${t} ${x.u}ต่อวัน (เพิ่มตามเลเวล)</span></div></div>`}).join("")}</div><div class="sub" style="margin-top:8px">💡 ${P.t}</div><div class="sub" style="margin-top:4px;font-size:12px">หากมีโรคประจำตัวหรือไม่แน่ใจ ควรปรึกษาแพทย์ก่อนเริ่มโปรแกรม</div>`;
+}
+$("pF").onchange=()=>{$("pG").value=PLANS[$("pF").value].g};
+ACH.push({id:"wa2",i:"📏",n:"รู้จักรอบเอว",t:"บันทึกรอบเอวอย่างน้อย 2 ครั้ง",f:()=>S.waist.length>=2},{id:"wa5",i:"🪡",n:"เอวเอสสวย",t:"รอบเอวลดลง 5 ซม.",f:()=>S.waist.length>=2&&S.waist[0].c-S.waist[S.waist.length-1].c>=5},{id:"shop",i:"🛍️",n:"นักช้อป",t:"ซื้อไอเท็มชิ้นแรก",f:()=>Object.keys(S.own).length>=1},{id:"food",i:"🥗",n:"กินดีมีวินัย",t:"ทำเป้าน้ำหรือโปรตีนครบ",f:()=>Object.values(S.claimed).some(a=>a.some(x=>x[0]==="w"))},{id:"lb",i:"🏁",n:"ขึ้นกระดาน",t:"เข้าร่วมอันดับเพื่อน",f:()=>!!S.lb});
+const ITEMS=[{id:"cap",s:"h",i:"🧢",n:"หมวกแก๊ป",p:40},{id:"helm",s:"h",i:"⛑️",n:"หมวกกู้ภัย",p:90},{id:"crown",s:"h",i:"👑",n:"มงกุฎ",p:250},{id:"sword",s:"r",i:"🗡️",n:"ดาบ",p:80},{id:"shield",s:"r",i:"🛡️",n:"โล่",p:120},{id:"trophy",s:"r",i:"🏆",n:"ถ้วยรางวัล",p:300},{id:"fire",s:"a",i:"🔥",n:"ออร่าไฟ",p:150,c:"#ff7a45"},{id:"ice",s:"a",i:"❄️",n:"ออร่าน้ำแข็ง",p:150,c:"#5cc8ff"},{id:"leaf",s:"a",i:"🍃",n:"ออร่าป่า",p:150,c:"#4fd16b"}];
+let AC=null;
+function beep(seq){if(S.mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();seq.forEach(([f,t])=>{const o=AC.createOscillator(),g=AC.createGain(),T=AC.currentTime+t;o.type="square";o.frequency.value=f;g.gain.setValueAtTime(.05,T);g.gain.exponentialRampToValueAtTime(.001,T+.18);o.connect(g);g.connect(AC.destination);o.start(T);o.stop(T+.2)})}catch(e){}}
+function fx(k){
+ if(performance.now()<2500)return;
+ beep(k==="lv"?[[523,0],[659,.12],[784,.24],[1047,.36]]:k==="boss"?[[196,0],[262,.1],[392,.2],[523,.3],[784,.45]]:[[784,0],[1047,.12]]);
+ if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+ const e=k==="lv"?["⭐","✨","🎉"]:k==="boss"?["💥","🏆","⚔️"]:["🏅","✨"],d=document.createElement("div");
+ d.className="fx";d.setAttribute("aria-hidden","true");
+ for(let i=0;i<22;i++){const s=document.createElement("span");s.textContent=e[i%e.length];s.style.left=Math.random()*100+"%";s.style.animationDelay=Math.random()*.4+"s";s.style.fontSize=18+Math.random()*22+"px";d.appendChild(s)}
+ document.body.appendChild(d);setTimeout(()=>d.remove(),2300);
+}
+function needs(){
+ const p=S.prof,w=wInfo();if(!w.w0||!w.h||!p.a)return null;
+ const bmr=10*w.cur+6.25*w.h-5*p.a+(p.s==="f"?-161:5),f=p.f||"gen";
+ const d=f==="fat"?-1:f==="muscle"?1:f==="recomp"?0:(w.g==="lose"?-1:w.g==="gain"?1:0);
+ let k=bmr*1.45+(d<0?-400:d>0?250:(f==="recomp"?-100:0));
+ k=Math.max(k,p.s==="f"?1200:1500);
+ return{kcal:Math.round(k/10)*10,bmr:Math.round(bmr),pr:Math.round(w.cur*((f==="muscle"||f==="recomp"||f==="fat")?1.6:1.2)),gl:Math.ceil(w.cur*35/250)};
+}
+function extra3(st,xp,lv,power){
+ const p=S.prof,w=wInfo(),n=needs2(),td=today(),fd=S.food[td]||{w:0,p:0},cl=S.claimed[td]||[];
+ const m=[],dt=s=>new Date(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10)),lim=Date.now()-28*864e5,rc=S.wlog.filter(e=>dt(e.d)>=lim);
+ if(rc.length>=2){const a=rc[0],b=rc[rc.length-1],dy=Math.round((dt(b.d)-dt(a.d))/864e5);
+  if(dy>=7){const r=(b.w-a.w)/(dy/7);
+   if(r<-Math.max(1,b.w*0.01))m.push("น้ำหนักลดเฉลี่ย "+(-r).toFixed(1)+" กก./สัปดาห์ ซึ่งเร็วเกินไป เสี่ยงเสียกล้ามเนื้อ ลองกินให้พอและพักให้เพียงพอ ถ้าเวียนหัวหรืออ่อนเพลียมากควรปรึกษาแพทย์");
+   if(r>Math.max(0.7,b.w*0.01)&&p.f==="muscle")m.push("น้ำหนักขึ้นเฉลี่ย "+r.toFixed(1)+" กก./สัปดาห์ เร็วเกินไป ส่วนเกินมักกลายเป็นไขมัน ลองลดแคลอรีส่วนเกินลงเล็กน้อย")}}
+ if(w.bmi&&w.bmi<18.5&&w.g==="lose")m.push("BMI ตอนนี้ต่ำกว่า 18.5 แล้ว ไม่แนะนำให้ลดน้ำหนักต่อ ควรปรึกษาแพทย์หรือนักโภชนาการ");
+ if(w.t&&w.h&&w.g==="lose"&&w.t/((w.h/100)**2)<18.5)m.push("น้ำหนักเป้าหมายทำให้ BMI ต่ำกว่า 18.5 ควรปรับเป้าหมายให้สูงขึ้น");
+ $("warn").innerHTML=m.map(x=>`<div class="warn">⚠️ ${x}</div>`).join("");
+ // food
+ if(!n)$("food").innerHTML=`<div class="sub">ใส่อายุ เพศ ส่วนสูง และน้ำหนักในส่วนร่างกายและเป้าหมาย แล้วกดบันทึกโปรไฟล์ เพื่อคำนวณเป้าอาหารและน้ำ (รองรับอายุ 18 ปีขึ้นไป ผู้ที่อายุน้อยกว่านี้ควรปรึกษานักกำหนดอาหาร)</div>`;
+ else{
+  const row=(l,c,mx,col,t)=>`<div class="stat" style="grid-template-columns:70px 1fr 92px"><span>${l}</span><div class="t"><i style="width:${Math.min(100,c/mx*100)}%;background:${col}"></i></div><b>${t}</b></div>`;
+  const cb=(id,ok,txt)=>ok?`<button class="claim" data-fc="${id}" ${cl.includes(id)?"disabled":""}>${cl.includes(id)?"รับแล้ว":txt}</button>`:"";
+  $("food").innerHTML=`${n.html}${row("🔥 แคลอรี",fd.k||0,n.cap,(fd.k||0)>n.cap?"var(--hp)":"var(--teal)",(fd.k||0)+"/"+n.cap)}${row("💧 น้ำ",fd.w,n.gl,"#2b8cf0",fd.w+"/"+n.gl+" แก้ว")}${row("🥩 โปรตีน",fd.p,n.pr,"var(--hp)",fd.p+"/"+n.pr+" ก.")}<div class="wrow" style="flex-wrap:wrap"><button data-f="w">💧 +1 แก้ว</button><input id="pgIn" type="number" value="25" min="1" max="200" style="width:80px" aria-label="กรัมโปรตีน"><button data-f="p">🥩 เพิ่มโปรตีน</button></div><div class="wrow"><input id="kIn" type="number" value="300" min="1" max="3000" style="width:90px" aria-label="แคลอรี"><button data-f="k">🍽 เพิ่มแคลอรี</button></div><div class="wrow" style="flex-wrap:wrap">${cb("w_water",fd.w>=n.gl,"ดื่มน้ำครบ รับ +20 XP")}${cb("w_prot",fd.p>=n.pr,"โปรตีนครบ รับ +20 XP")}</div><div class="sub" style="font-size:12px;margin-top:6px">เป็นค่าประมาณทั่วไป ไม่ใช่คำแนะนำทางการแพทย์</div>`;
+  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{const f=S.food[td]=S.food[td]||{w:0,p:0};if(b.dataset.f==="w")f.w++;else if(b.dataset.f==="k"){const k=Math.floor(+$("kIn").value);if(!(k>=1&&k<=3000)){toast("ใส่แคลอรี 1–3000");return}f.k=(f.k||0)+k}else{const g=Math.floor(+$("pgIn").value);if(!(g>=1&&g<=200)){toast("ใส่โปรตีน 1–200 กรัม");return}f.p+=g}save();render()});
+  document.querySelectorAll("[data-fc]").forEach(b=>b.onclick=()=>{(S.claimed[td]=S.claimed[td]||[]).push(b.dataset.fc);save();render();fx("ach");toast("+20 XP")});
+ }
+ // waist
+ const wl=S.waist;
+ if(!wl.length)$("body").innerHTML=`<div class="sub">วัดรอบเอวระดับสะดือ ตอนหายใจออกตามปกติ ทุกสัปดาห์ น้ำหนักอาจนิ่งแม้รูปร่างเปลี่ยน รอบเอวบอกความคืบหน้าได้ดีกว่า</div>`;
+ else{const a=wl[0].c,b=wl[wl.length-1].c,d=b-a,r=w.h?b/w.h:0;
+  $("body").innerHTML=`<div class="pw"><div>รอบเอวตอนนี้<b>${b}</b></div><div>เปลี่ยนไป<b>${d>0?"+":""}${d.toFixed(1)}</b></div>${r?`<div>เอวต่อส่วนสูง<b>${r.toFixed(2)}</b></div>`:""}</div>${r?`<div class="sub">${r<0.5?"✅ ต่ำกว่า 0.5 อยู่ในเกณฑ์ดี":"ควรให้ต่ำกว่า 0.5 (รอบเอวไม่เกินครึ่งหนึ่งของส่วนสูง)"}</div>`:""}`}
+ // shop
+ const coins=Math.floor(xp/5)-S.spent,eq=S.eq,it=id=>ITEMS.find(x=>x.id===id),au=eq.a?it(eq.a):null,ci=S.cls&&CL[S.cls]?CL[S.cls].i:"🙂";
+ $("shop").innerHTML=`<div class="av" style="box-shadow:${au?`0 0 0 4px ${au.c},0 0 26px ${au.c}`:"none"}">${eq.h?`<span class="h">${it(eq.h).i}</span>`:""}${ci}${eq.r?`<span class="r">${it(eq.r).i}</span>`:""}</div><div class="sub" style="text-align:center">🪙 เหรียญ <b style="color:var(--ink)">${coins}</b> (ได้ 1 เหรียญต่อ 5 XP)</div><div class="shop">${ITEMS.map(x=>{const o=S.own[x.id],on=eq[x.s]===x.id;return `<button data-i="${x.id}" class="${on?"on":""}"><div style="font-size:26px">${x.i}</div>${x.n}<br>${o?(on?"สวมอยู่":"สวมใส่"):"🪙 "+x.p}</button>`}).join("")}</div>`;
+ document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{const x=it(b.dataset.i);
+  if(!S.own[x.id]){if(coins<x.p){toast("เหรียญไม่พอ ออกกำลังกายเพิ่มอีกนิด");return}S.own[x.id]=1;S.spent+=x.p;S.eq[x.s]=x.id;save();render();fx("ach");toast("ซื้อ "+x.n+" แล้ว")}
+  else{S.eq[x.s]=S.eq[x.s]===x.id?null:x.id;save();render()}});
+ $("mute").textContent=S.mute?"🔇 เสียงปิด":"🔊 เสียงเปิด";
+ if(S.lb){$("lbNick").value=S.lb.nick}
+ $("lbJoin").textContent=S.lb?"เปลี่ยนชื่อ":"เข้าร่วม";
+ syncBoard();
+}
+let DB=null,UID=null,BOARD=[],lastK="";
+function syncBoard(){
+ if(!DB||!UID||!S.lb)return;
+ const c=calc(),k=S.lb.nick+"|"+c.lv+"|"+c.power+"|"+c.xp;if(k===lastK)return;lastK=k;
+ DB.collection("board").doc(UID).set({nick:S.lb.nick,lv:c.lv,power:c.power,xp:c.xp,t:Date.now()}).catch(()=>{lastK="";$("lbMsg").textContent="ส่งคะแนนไม่ได้ (บัญชีของคุณอาจมีสิทธิ์ดูอย่างเดียว)"});
+}
+function drawBoard(){
+ const el=$("lb");el.textContent="";
+ BOARD.forEach((r,i)=>{const d=document.createElement("div"),a=document.createElement("span"),b=document.createElement("span");
+  d.className="lbr"+(r.id===UID?" me":"");
+  a.textContent=(["🥇","🥈","🥉"][i]||(i+1)+".")+" "+String(r.nick||"นักสู้").slice(0,16)+(r.id===UID?" (คุณ)":"");
+  b.textContent="Lv."+(+r.lv||0)+" · พลัง "+(+r.power||0);d.append(a,b);el.appendChild(d)});
+ if(!BOARD.length)el.textContent="ยังไม่มีใครเข้าร่วม";
+ $("lbLeave").hidden=!S.lb;
+}
+(async()=>{
+ try{
+  if(!window.claude||!claude.use)throw 0;
+  DB=await claude.use("db");const u=await claude.use("user");UID=u?await u.id():null;
+  if(!DB||!UID)throw 0;
+  $("lbMsg").textContent="เชื่อมต่อแล้ว";
+  DB.collection("board").orderBy("power","desc").limit(20).onSnapshot(s=>{BOARD=s.docs.map(d=>Object.assign({id:d.id},d.data()));drawBoard()},()=>{$("lbMsg").textContent="โหลดอันดับไม่ได้ในตอนนี้"});
+  syncBoard();
+ }catch(e){$("lbMsg").textContent="อันดับใช้ได้เมื่อเปิดหน้านี้ผ่านบัญชีที่มีสิทธิ์เข้าถึง";$("lbJoin").disabled=true}
+})();
+$("lbJoin").onclick=()=>{const n=$("lbNick").value.trim().slice(0,16);if(!n){toast("ตั้งชื่อเล่นก่อน");return}S.lb={nick:n};save();lastK="";render();drawBoard();toast("เข้าร่วมอันดับแล้ว")};
+$("lbLeave").onclick=()=>{if(DB&&UID)DB.collection("board").doc(UID).delete().catch(()=>{});S.lb=null;lastK="";save();$("lbNick").value="";render();drawBoard();toast("ออกจากอันดับแล้ว")};
+$("wcAdd").onclick=()=>{const c=+$("wcm").value;if(!(c>=30&&c<=200)){toast("ใส่รอบเอว 30–200 ซม.");return}S.waist=S.waist.filter(e=>e.d!==today());S.waist.push({d:today(),c});save();$("wcm").value="";render();toast("บันทึกรอบเอว "+c+" ซม.")};
+$("mute").onclick=()=>{S.mute=!S.mute;save();render()};
+const TABS={"เควสประจำวัน":"t","บันทึกการออกกำลังกาย":"t","บอสประจำสัปดาห์":"t","อาหารและน้ำวันนี้":"t",
+ "ค่าพลังตัวละคร":"c","อาชีพ":"c","ตัวละครและร้านค้า":"c","เหรียญความสำเร็จ":"c","อันดับเพื่อน":"c",
+ "ร่างกายและเป้าหมาย":"b","แผนแนะนำ":"b","รอบเอวและสัดส่วน":"b",
+ "ประวัติและแก้ไข":"s","ปฏิทิน 28 วันและสถิติรายสัปดาห์":"s","เป้าหมายถัดไป":"s"};
+function showTab(t,scroll){
+ if(!["t","c","b","s"].includes(t))t="t";
+ S.tab=t;
+ document.querySelectorAll("main section").forEach(s=>{const h=s.querySelector("h2"),k=h&&h.firstChild?h.firstChild.textContent.trim():"";s.hidden=(TABS[k]||"t")!==t});
+ document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.t===t)));
+ if(scroll)window.scrollTo({top:0});
+}
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{showTab(b.dataset.t,true);save()});
+showTab(S.tab||"t",false);
+function armed(b){
+ if(b.dataset.arm){clearTimeout(+b.dataset.arm);b.textContent=b.dataset.old;delete b.dataset.arm;return true}
+ b.dataset.old=b.textContent;b.textContent="กดอีกครั้งเพื่อยืนยัน";
+ b.dataset.arm=setTimeout(()=>{b.textContent=b.dataset.old;delete b.dataset.arm},3500);
+ return false;
+}
+function hrow(lbl,val,min,max,step,ed,del){
+ const d=document.createElement("div"),s=document.createElement("span"),i=document.createElement("input"),b=document.createElement("button");
+ d.className="hr";s.textContent=lbl;
+ i.type="number";i.value=val;i.step=step;i.setAttribute("aria-label","แก้ไข "+lbl);
+ i.onchange=()=>{const v=+i.value;if(i.value===""||!(v>=min&&v<=max)){toast("ค่าไม่ถูกต้อง ("+min+"–"+max+")");i.value=val;return}ed(v);save();render();toast("แก้ไขแล้ว")};
+ b.className="ghost";b.textContent="🗑";b.setAttribute("aria-label","ลบ "+lbl);
+ b.onclick=()=>{del();save();render();toast("ลบแล้ว")};
+ d.append(s,i,b);return d;
+}
+function extra4(){
+ const el=$("hedit"),td=today();el.textContent="";
+ const note=(t,top)=>{const d=document.createElement("div");d.className="sub";if(top)d.style.marginTop="14px";d.textContent=t;el.appendChild(d)};
+ note("บันทึกผิด? แก้จำนวนในช่อง หรือกดถังขยะเพื่อลบ XP และค่าพลังจะคำนวณใหม่ให้",false);
+ note("ออกกำลังกายล่าสุด",true);
+ let c=0;
+ for(let i=S.log.length-1;i>=0&&c<15;i--){const e=S.log[i],x=EX[e.k];if(!x)continue;c++;
+  el.appendChild(hrow(e.d.slice(5)+" "+x.i+" "+x.n+" ("+x.u+")",e.n,1,9999,1,v=>{S.log[i].n=Math.round(v)},()=>{S.log.splice(i,1)}))}
+ if(!c)note("ยังไม่มีข้อมูล");
+ note("น้ำและโปรตีนวันนี้",true);
+ const f=S.food[td]||{w:0,p:0},sf=k=>v=>{(S.food[td]=S.food[td]||{w:0,p:0})[k]=Math.round(v)};
+ el.appendChild(hrow("💧 น้ำ (แก้ว)",f.w,0,50,1,sf("w"),()=>sf("w")(0)));
+ el.appendChild(hrow("🥩 โปรตีน (กรัม)",f.p,0,1000,1,sf("p"),()=>sf("p")(0)));
+ el.appendChild(hrow("🍽 แคลอรี (kcal)",f.k||0,0,20000,1,sf("k"),()=>sf("k")(0)));
+ note("น้ำหนักที่บันทึก (กก.)",true);
+ const wn=S.wlog.length;
+ S.wlog.slice(-5).forEach((e,j)=>{const i=wn-Math.min(5,wn)+j;el.appendChild(hrow(e.d.slice(5),e.w,20,300,0.1,v=>{S.wlog[i].w=v},()=>{S.wlog.splice(i,1)}))});
+ if(!wn)note("ยังไม่มีข้อมูล");
+ note("รอบเอวที่บันทึก (ซม.)",true);
+ const cn=S.waist.length;
+ S.waist.slice(-5).forEach((e,j)=>{const i=cn-Math.min(5,cn)+j;el.appendChild(hrow(e.d.slice(5),e.c,30,200,0.1,v=>{S.waist[i].c=v},()=>{S.waist.splice(i,1)}))});
+ if(!cn)note("ยังไม่มีข้อมูล");
+}
+function needs2(){
+ const p=S.prof,w=wInfo();
+ if(!w.w0||!w.h||!p.a||p.a<18)return null;
+ const act=+p.x||1.375,f=p.f||"gen",bmi=w.bmi||0,R=Math.round,K=x=>Math.round(x/10)*10;
+ const bmr=10*w.cur+6.25*w.h-5*p.a+(p.s==="f"?-161:5),tdee=bmr*act;
+ let mode=f==="fat"?"lose":f==="muscle"?"gain":f==="recomp"?"recomp":w.g,warn="",rt="",cap,tgt,flo;
+ if(mode==="lose"&&bmi&&bmi<18.5){mode="keep";warn="BMI ต่ำกว่า 18.5 จึงไม่แนะนำให้ลดน้ำหนัก ระบบใช้ระดับรักษาน้ำหนักแทน"}
+ if(mode==="lose"){
+  const d=r=>w.cur*r*1100,hi=bmi&&bmi<23?0.005:0.01;
+  flo=Math.max(tdee-d(hi),bmr,1200);cap=Math.max(tdee-d(0.005),flo);tgt=(cap+flo)/2;
+  rt="ถ้ากินตามเป้า คาดว่าน้ำหนักลดประมาณ "+((tdee-tgt)*7/7700).toFixed(2)+" กก./สัปดาห์";
+ }else if(mode==="gain"){cap=tdee*1.2;tgt=tdee*1.1;flo=tdee}
+ else if(mode==="recomp"){cap=tdee;tgt=tdee;flo=tdee*0.9}
+ else{cap=tdee*1.05;tgt=tdee;flo=tdee*0.95}
+ const PR={lose:[1.6,2.0,2.0],gain:[1.6,2.0,1.8],recomp:[1.6,2.0,2.0]},FP={endurance:[1.2,1.6,1.4],agility:[1.4,1.7,1.5]};
+ const pr=PR[mode]||FP[f]||[1.2,1.6,1.4],rw=(mode==="lose"&&w.t&&w.t<w.cur&&bmi>=25)?w.t:w.cur;
+ const P=R(rw*pr[2]),Pl=R(rw*pr[0]),Ph=R(rw*pr[1]),fat=R(tgt*0.25/9),Fl=R(tgt*0.2/9),Fh=R(tgt*0.35/9),C=Math.max(0,R((tgt-4*P-9*fat)/4));
+ const cg=act<=1.375?"3–5":act<=1.55?"5–7":"6–10";
+ const src={lose:"ลดน้ำหนักราว 0.5–1% ของน้ำหนักตัวต่อสัปดาห์เพื่อรักษากล้ามเนื้อ (Helms และคณะ 2014) คนที่ไขมันน้อยควรลดช้าลง (ISSN 2017) คิด 1 กก. ≈ 7,700 kcal โดยประมาณ และไม่ให้ต่ำกว่า BMR หรือ 1,200 kcal เพราะอาหารพลังงานต่ำมากไม่มีข้อได้เปรียบระยะยาว (ISSN)",
+  gain:"ส่วนเกิน 10–20% เหนือระดับรักษาน้ำหนัก ผู้ฝึกมานานควรอยู่ช่วงล่าง (Iraki และคณะ 2019) ส่วนที่เกินกว่านี้มักกลายเป็นไขมันมากกว่ากล้ามเนื้อ",
+  recomp:"ใกล้ระดับรักษาน้ำหนัก ร่วมกับโปรตีนสูงและเวทสม่ำเสมอ ส่วนนี้เป็นแนวปฏิบัติของเทรนเนอร์ ไม่มีตัวเลขมาตรฐานทางการเพียงค่าเดียว",
+  keep:"ใกล้ระดับรักษาน้ำหนัก (ADA/DC/ACSM ระบุว่าควรกินพอรักษาน้ำหนักเพื่อให้ร่างกายใช้โปรตีนได้เต็มที่)"}[mode];
+ const html=`<div class="sub"><b style="color:var(--ink)">${PLANS[f]?PLANS[f].n:"สุขภาพทั่วไป"}</b> · พลังงานที่ใช้ต่อวัน (TDEE) ≈ ${K(tdee)} kcal (BMR ${K(bmr)})</div><div class="pw"><div>กินได้ไม่เกิน<b>${K(cap)}</b>kcal/วัน</div><div>เป้าหมาย<b>${K(tgt)}</b>kcal</div><div>ไม่ควรต่ำกว่า<b>${K(flo)}</b>kcal</div></div><div class="pw"><div>โปรตีน<b>${P} ก.</b>ช่วง ${Pl}–${Ph}</div><div>ไขมัน<b>${fat} ก.</b>ช่วง ${Fl}–${Fh}</div><div>คาร์บ<b>${C} ก.</b>ส่วนที่เหลือ</div></div>${rt?`<div class="sub">${rt}</div>`:""}${warn?`<div class="warn">⚠️ ${warn}</div>`:""}<details><summary>ที่มาของตัวเลข</summary><div class="sub" style="font-size:12px;line-height:1.6">• พลังงานพื้นฐานคำนวณด้วยสมการ Mifflin–St Jeor คูณตัวคูณกิจกรรมมาตรฐาน เป็นเพียงค่าประมาณ ควรดูน้ำหนักจริงต่อเนื่อง 2–4 สัปดาห์ แล้วปรับเพิ่มลด<br>• ${src}<br>• โปรตีน: ผู้ออกกำลังกายควรได้ 1.4–2.0 ก./กก./วัน (ISSN 2017) ส่วน ADA/DC/ACSM ระบุ 1.2–2.0 สายอึดอยู่ช่วงล่าง สายเวทและช่วงลดน้ำหนักอยู่ช่วงบน${rw!==w.cur?" คิดจากน้ำหนักเป้าหมายเพื่อไม่ให้สูงเกินจำเป็น (แนวปฏิบัติของนักกำหนดอาหาร)":""}<br>• ไขมัน 20–35% ของพลังงาน (ADA/DC/ACSM) คาร์โบไฮเดรตคือส่วนที่เหลือ${f==="endurance"?` ซึ่ง ADA/DC/ACSM แนะนำคาร์บ ${cg} ก./กก./วันตามความหนักของการฝึก (ตอนนี้คุณได้ ${(C/w.cur).toFixed(1)})`:""}<br>• ปริมาณน้ำเป็นเกณฑ์คร่าว ๆ 35 มล./กก. ไม่ใช่ค่ามาตรฐานทางการ<br>• ไม่เหมาะกับผู้ตั้งครรภ์ ให้นมบุตร มีโรคประจำตัว หรือมีประวัติการกินผิดปกติ ควรปรึกษาแพทย์หรือนักกำหนดอาหาร</div></details>`;
+ return{kcal:K(tgt),cap:K(cap),flo:K(flo),bmr:K(bmr),pr:P,gl:Math.ceil(w.cur*35/250),html};
+}
+function render(){
+ const{st,xp,lv,power}=calc();extra(st,xp,lv,power);
+ $("lv").textContent=lv;
+ $("rank").textContent=(S.cls&&CL[S.cls]?CL[S.cls].i+" "+CL[S.cls].n+" · ":"")+RANKS[Math.min(RANKS.length-1,Math.floor((lv-1)/2))];
+ const lo=needFor(lv),hi=needFor(lv+1);
+ $("xpbar").style.width=Math.round((xp-lo)/(hi-lo)*100)+"%";
+ $("xptxt").textContent=`${xp-lo} / ${hi-lo} XP เพื่อขึ้นเลเวล ${lv+1}`;
+ $("power").textContent=power.toLocaleString("th-TH");
+ $("xp").textContent=xp.toLocaleString("th-TH");
+ const s=streak();$("streak").textContent=s>0?`🔥 ออกกำลังกายต่อเนื่อง ${s} วัน`:"ยังไม่มีสตรีค ลองบันทึกท่าแรกของวันนี้เลย";
+ const cl=S.claimed[today()]||[];let done=0;
+ $("quests").innerHTML=QUESTS.map(q0=>{const q={...q0,t:qt(q0,lv)};
+  const x=EX[q.k],a=amountToday(q.k),ok=a>=q.t,got=cl.includes(q.id);if(got)done++;
+  return `<div class="q"><div class="i">${x.i}</div><div class="m"><b>${x.n} ${q.t} ${x.u}</b><span>วันนี้ ${Math.min(a,q.t)} / ${q.t} · โบนัส +${q.b} XP</span><div class="p"><i style="width:${Math.min(100,a/q.t*100)}%"></i></div></div>
+  <button class="claim" data-q="${q.id}" ${ok&&!got?"":"disabled"}>${got?"รับแล้ว":"รับรางวัล"}</button></div>`}).join("");
+ $("qdone").textContent=done+"/"+QUESTS.length;
+ document.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{
+  const id=b.dataset.q,q=QUESTS.find(q=>q.id===id);
+  (S.claimed[today()]=S.claimed[today()]||[]).push(id);save();render();toast(`เควสสำเร็จ! +${q.b} XP`)});
+ const mx=Math.max(100,Math.ceil(Math.max(...Object.values(st))*1.2/100)*100);
+ radar(st,mx);
+ $("stats").innerHTML=Object.keys(ST).map(k=>`<div class="stat"><span>${k}</span><div class="t"><i style="width:${Math.min(100,st[k]/mx*100)}%;background:${ST[k].c}"></i></div><b>${st[k]}</b></div>`).join("");
+ const weak=Object.keys(st).sort((a,b)=>st[a]-st[b])[0];
+ $("next").innerHTML=`อีก <b style="color:var(--ink)">${hi-xp} XP</b> จะถึงเลเวล ${lv+1}<br>ค่าพลังที่ต่ำที่สุดตอนนี้คือ <b style="color:var(--ink)">${weak} (${ST[weak].n})</b> ลองฝึกเพิ่มเพื่อสร้างสมดุล`;
+ const h=S.log.slice(-12).reverse();
+ $("hist").innerHTML=h.length?h.map(e=>`<div><span>${EX[e.k].i} ${EX[e.k].n} ${e.n} ${EX[e.k].u}</span><em>+${e.n*EX[e.k].r}</em></div>`).join(""):`<div class="sub">ยังไม่มีประวัติ เริ่มบันทึกท่าแรกได้เลย</div>`;
+}
+function fillEx(){const v=$("ex").value;$("ex").innerHTML=Object.entries(EX).map(([k,x])=>`<option value="${k}">${x.i} ${x.n} (${x.u})</option>`).join("");if(EX[v])$("ex").value=v}fillEx();
+function hint(){const x=EX[$("ex").value];$("hint").textContent=`ได้ ${x.r} XP ต่อ${x.u} และเพิ่มค่า ${x.s}`}
+$("ex").onchange=hint;hint();
+$("add").onclick=()=>{
+ const k=$("ex").value,n=Math.floor(+$("amt").value);
+ if(!n||n<1){toast("ใส่จำนวนที่มากกว่า 0");return}
+ const before=calc().lv;
+ S.log.push({d:today(),k,n});save();render();
+ const after=calc().lv;
+ if(after>before)fx("lv");toast(after>before?`🎉 เลเวลอัป! ตอนนี้เลเวล ${after}`:`+${n*EX[k].r} XP`);
+};
+$("reset").onclick=()=>{if(armed($("reset"))){S={log:[],claimed:{}};norm();Object.keys(EX).forEach(k=>{if(k[0]==="c")delete EX[k]});PEND=[];save();fillProfile();fillEx();render()}};
+render();
+</script>
+</body>
+</html>
+
